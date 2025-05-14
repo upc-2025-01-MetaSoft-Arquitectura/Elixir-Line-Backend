@@ -3,7 +3,7 @@ package com.elixirline.service.elixirline_backend.userandrolemanagement.iam.appl
 import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.domain.model.aggregates.User;
 import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.domain.model.queries.GetAllUsersQuery;
 import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.domain.model.queries.GetUserByIdQuery;
-import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.domain.model.queries.GetUserByUsernameQuery;
+import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.domain.model.queries.GetUserByEmailQuery;
 import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.domain.services.UserQueryService;
 import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.infrastructure.persistence.jpa.repositories.UserRepository;
 import org.springframework.stereotype.Service;
@@ -51,13 +51,13 @@ public class UserQueryServiceImpl implements UserQueryService {
 
 
     /**
-     * This method is used to handle {@link GetUserByUsernameQuery} query.
-     * @param query {@link GetUserByUsernameQuery} instance.
+     * This method is used to handle {@link GetUserByEmailQuery} query.
+     * @param query {@link GetUserByEmailQuery} instance.
      * @return {@link Optional} of {@link User} instance.
      */
     @Override
-    public Optional<User> handle(GetUserByUsernameQuery query) {
-        return userRepository.findByUsername(query.username());
+    public Optional<User> handle(GetUserByEmailQuery query) {
+        return userRepository.findByEmail(query.email());
     }
 
 }

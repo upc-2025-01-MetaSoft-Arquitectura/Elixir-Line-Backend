@@ -3,7 +3,7 @@ package com.elixirline.service.elixirline_backend.userandrolemanagement.iam.inte
 import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.domain.model.commands.SignUpCommand;
 import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.domain.model.entities.Role;
 import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.domain.model.queries.GetUserByIdQuery;
-import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.domain.model.queries.GetUserByUsernameQuery;
+import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.domain.model.queries.GetUserByEmailQuery;
 import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.domain.services.UserCommandService;
 import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.domain.services.UserQueryService;
 import org.apache.logging.log4j.util.Strings;
@@ -63,7 +63,7 @@ public class IamContextFacade {
      * @return The id of the user.
      */
     public Long fetchUserIdByUsername(String username) {
-        var getUserByUsernameQuery = new GetUserByUsernameQuery(username);
+        var getUserByUsernameQuery = new GetUserByEmailQuery(username);
         var result = userQueryService.handle(getUserByUsernameQuery);
         if (result.isEmpty()) return 0L;
         return result.get().getId();
@@ -78,7 +78,7 @@ public class IamContextFacade {
         var getUserByIdQuery = new GetUserByIdQuery(userId);
         var result = userQueryService.handle(getUserByIdQuery);
         if (result.isEmpty()) return Strings.EMPTY;
-        return result.get().getUsername();
+        return result.get().getEmail();
     }
 
 }

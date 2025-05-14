@@ -50,7 +50,7 @@ public class BearerAuthorizationRequestFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         try {
             String token = tokenService.getBearerTokenFrom(request);
-            LOGGER.info("Token: {}", token);
+            // LOGGER.info("Token: {}", token);
             if (token != null && tokenService.validateToken(token)) {
                 String username = tokenService.getUsernameFromToken(token);
                 var userDetails = userDetailsService.loadUserByUsername(username);

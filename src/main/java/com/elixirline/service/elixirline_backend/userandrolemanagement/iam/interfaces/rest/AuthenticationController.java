@@ -1,7 +1,7 @@
 package com.elixirline.service.elixirline_backend.userandrolemanagement.iam.interfaces.rest;
 
 import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.domain.model.commands.SignInCommand;
-import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.domain.model.queries.GetUserByUsernameQuery;
+import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.domain.model.queries.GetUserByEmailQuery;
 import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.domain.services.UserCommandService;
 import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.domain.services.UserQueryService;
 import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.infrastructure.tokens.jwt.BearerTokenService;
@@ -29,13 +29,9 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "Authentication", description = "Authentication Endpoints")
 public class AuthenticationController {
     private final UserCommandService userCommandService;
-    private final BearerTokenService tokenService;
-    private final UserQueryService userQueryService;
 
-    public AuthenticationController(UserCommandService userCommandService, BearerTokenService tokenService, UserQueryService userQueryService) {
+    public AuthenticationController(UserCommandService userCommandService) {
         this.userCommandService = userCommandService;
-        this.tokenService = tokenService;
-        this.userQueryService = userQueryService;
     }
 
     /**
@@ -68,7 +64,7 @@ public class AuthenticationController {
             return ResponseEntity.badRequest().build();
         }
 
-        var signInCommand = new SignInCommand(signUpResource.username(), signUpResource.password());
+        var signInCommand = new SignInCommand(signUpResource.email(), signUpResource.password());
         var authenticatedUser = userCommandService.handle(signInCommand);
 
         if (authenticatedUser.isEmpty()) {
@@ -78,20 +74,5 @@ public class AuthenticationController {
         var authenticatedUserResource = AuthenticatedUserResourceFromEntityAssembler.toResourceFromEntity(
                 authenticatedUser.get().getLeft(), authenticatedUser.get().getRight());
         return new ResponseEntity<>(authenticatedUserResource, HttpStatus.CREATED);
-    }
-
-    @GetMapping("/me")
-    public ResponseEntity<UserResource> getCurrentUser(@RequestHeader("Authorization") String authHeader) {
-        String token = authHeader.replace("Bearer ", "");
-
-        String username = tokenService.getUsernameFromToken(token);
-        var user = userQueryService.handle(new GetUserByUsernameQuery(username));
-        return user.map(value -> ResponseEntity.ok(UserResourceFromEntityAssembler.toResourceFromEntity(value))).orElseGet(() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
-    }
-
-    @PostMapping("/validateToken")
-    public ResponseEntity<Boolean> validateToken(@RequestHeader("Authorization") String token) {
-        boolean isValid = tokenService.validateToken(token);
-        return ResponseEntity.ok(isValid);
     }
 }
