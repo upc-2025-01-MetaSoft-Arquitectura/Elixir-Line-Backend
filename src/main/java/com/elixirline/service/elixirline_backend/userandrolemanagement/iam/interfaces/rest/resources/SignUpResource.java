@@ -2,5 +2,5 @@ package com.elixirline.service.elixirline_backend.userandrolemanagement.iam.inte
 
 import java.util.List;
 
-public record SignUpResource(String username, String password , List<String> roles) {
+public record SignUpResource(String email, String password , List<String> roles) {
 }

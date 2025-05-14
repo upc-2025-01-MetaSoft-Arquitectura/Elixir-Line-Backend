@@ -2,5 +2,5 @@ package com.elixirline.service.elixirline_backend.userandrolemanagement.iam.inte
 
 import java.util.List;
 
-public record UserResource(Long id, String username, List<String> roles) {
+public record UserResource(Long id, String email, List<String> roles) {
 }
