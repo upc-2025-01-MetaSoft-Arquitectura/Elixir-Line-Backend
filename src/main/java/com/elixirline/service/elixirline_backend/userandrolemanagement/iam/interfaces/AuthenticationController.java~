@@ -1,0 +1,4 @@
+package com.elixirline.service.elixirline_backend.userandrolemanagement.iam.interfaces;
+
+public class AuthenticationController {
+}

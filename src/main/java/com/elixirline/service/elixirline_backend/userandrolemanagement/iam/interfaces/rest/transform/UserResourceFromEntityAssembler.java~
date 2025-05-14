@@ -1,0 +1,8 @@
+package com.elixirline.service.elixirline_backend.userandrolemanagement.iam.interfaces.rest.transform;
+
+public class UserResourceFromEntityAssembler {
+    public static UserResource toResourceFromEntity(User user) {
+        var roles = user.getRoles().stream().map(Role::getStringName).toList();
+        return new UserResource(user.getId(), user.getUsername(), roles);
+    }
+}

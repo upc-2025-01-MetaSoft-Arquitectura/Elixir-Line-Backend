@@ -1,0 +1,13 @@
+package com.elixirline.service.elixirline_backend;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class ElixirlineBackendApplicationTests {
+
+    @Test
+    void contextLoads() {
+    }
+
+}
