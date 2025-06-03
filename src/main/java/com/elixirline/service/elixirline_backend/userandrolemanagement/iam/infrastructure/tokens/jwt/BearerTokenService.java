@@ -3,6 +3,8 @@ package com.elixirline.service.elixirline_backend.userandrolemanagement.iam.infr
 import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.application.internal.outboundservices.tokens.TokenService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  * This interface is a marker interface for the JWT token service.
