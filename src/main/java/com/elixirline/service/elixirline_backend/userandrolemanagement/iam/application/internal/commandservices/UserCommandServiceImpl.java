@@ -5,12 +5,15 @@ import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.appli
 import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.domain.model.aggregates.User;
 import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.domain.model.commands.SignInCommand;
 import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.domain.model.commands.SignUpCommand;
+import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.domain.model.entities.Role;
+import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.domain.model.valueobjects.Roles;
 import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.domain.services.UserCommandService;
 import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.infrastructure.persistence.jpa.repositories.RoleRepository;
 import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.infrastructure.persistence.jpa.repositories.UserRepository;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -77,14 +80,21 @@ public class UserCommandServiceImpl implements UserCommandService {
         if(userRepository.existsByEmail(command.email())) {
             throw new RuntimeException("Username already exists");
         }
-        var roles = command.roles().stream().
-                map(role -> roleRepository.findByName(role.getName()).orElseThrow(() -> new RuntimeException("Role not found"))).
-                toList();
+
+        List<Role> roles;
+        if (command.roles() == null || command.roles().isEmpty()) {
+            roles = List.of(roleRepository.findByName(Roles.VINEGROWER)
+                    .orElseThrow(() -> new RuntimeException("Default role not found")));
+        } else {
+            roles = command.roles().stream()
+                    .map(role -> roleRepository.findByName(role.getName())
+                            .orElseThrow(() -> new RuntimeException("Role not found")))
+                    .toList();
+        }
+
         var user = new User(command.email(), hashingService.encode(command.password()), roles);
         userRepository.save(user);
 
         return userRepository.findByEmail(command.email());
     }
-
-
 }

@@ -5,6 +5,9 @@
  _| |__/ || | | | > '  < | | | |  _| |__/ || | | | | || \__.,
 |________[___|___|__]`\_|___|___]|________[___|___||__]'.__.'
 
-Team Developer: Claudio Moreno, Gonzalo Saldaña, Miguel Carpio, Juan Cueto, Scott Huachaca & Francisco Hurtado
-
+Team Developer: Claudio Moreno, Juan Cueto & Scott Huachaca
+Startup: MetaSoft
+Project: Elixirline
+Course: Software Architecture
+Year: 2025-1
 

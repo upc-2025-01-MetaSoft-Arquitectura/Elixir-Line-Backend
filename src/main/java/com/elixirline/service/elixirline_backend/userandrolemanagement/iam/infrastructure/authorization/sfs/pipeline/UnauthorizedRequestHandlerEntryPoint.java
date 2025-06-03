@@ -23,7 +23,6 @@ import java.io.IOException;
 
 @Component
 public class UnauthorizedRequestHandlerEntryPoint implements AuthenticationEntryPoint {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(UnauthorizedRequestHandlerEntryPoint.class);
 
     /**
