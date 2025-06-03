@@ -18,13 +18,9 @@ import java.util.Optional;
 @Service
 public class UserQueryServiceImpl implements UserQueryService {
     private final UserRepository userRepository;
-
-
     public UserQueryServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-
-
 
     /**
      * This method is used to handle {@link GetAllUsersQuery} query.
@@ -36,8 +32,6 @@ public class UserQueryServiceImpl implements UserQueryService {
         return userRepository.findAll();
     }
 
-
-
     /**
      * This method is used to handle {@link GetUserByIdQuery} query.
      * @param query {@link GetUserByIdQuery} instance.
@@ -48,8 +42,6 @@ public class UserQueryServiceImpl implements UserQueryService {
         return userRepository.findById(query.userId());
     }
 
-
-
     /**
      * This method is used to handle {@link GetUserByEmailQuery} query.
      * @param query {@link GetUserByEmailQuery} instance.
@@ -59,5 +51,4 @@ public class UserQueryServiceImpl implements UserQueryService {
     public Optional<User> handle(GetUserByEmailQuery query) {
         return userRepository.findByEmail(query.email());
     }
-
 }
