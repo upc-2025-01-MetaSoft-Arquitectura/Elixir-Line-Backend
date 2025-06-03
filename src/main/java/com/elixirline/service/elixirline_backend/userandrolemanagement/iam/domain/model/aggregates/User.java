@@ -1,9 +1,8 @@
 package com.elixirline.service.elixirline_backend.userandrolemanagement.iam.domain.model.aggregates;
 
 import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.domain.model.entities.Role;
-import com.elixirline.service.elixirline_backend.userandrolemanagement.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
+import com.elixirline.service.elixirline_backend.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -21,7 +20,7 @@ import java.util.Set;
  */
 @Getter
 @Setter
-@Entity
+@Entity(name = "user")
 public class User extends AuditableAbstractAggregateRoot<User> {
 
     @NotBlank

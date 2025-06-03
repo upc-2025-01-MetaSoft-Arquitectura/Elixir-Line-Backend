@@ -2,6 +2,8 @@ package com.elixirline.service.elixirline_backend.userandrolemanagement.iam.infr
 
 import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.application.internal.outboundservices.hashing.HashingService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  * This interface is a marker interface for the BCrypt hashing service.

@@ -16,7 +16,7 @@ import java.util.List;
  *     It is used to define the permissions of a user.
  * </p>
  */
-@Entity
+@Entity(name = "role")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

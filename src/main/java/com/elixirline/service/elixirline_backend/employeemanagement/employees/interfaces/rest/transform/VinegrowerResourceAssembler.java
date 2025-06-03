@@ -1,0 +1,15 @@
+package com.elixirline.service.elixirline_backend.employeemanagement.employees.interfaces.rest.transform;
+
+import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.aggregates.Vinegrower;
+import com.elixirline.service.elixirline_backend.employeemanagement.employees.interfaces.rest.resources.VinegrowerResource;
+
+public class VinegrowerResourceAssembler {
+    public static VinegrowerResource toResource(Vinegrower vinegrower) {
+        return new VinegrowerResource(
+                vinegrower.getId(),
+                vinegrower.getFullName().fullname(),
+                vinegrower.getCountry().country(),
+                vinegrower.getUserId()
+        );
+    }
+}
