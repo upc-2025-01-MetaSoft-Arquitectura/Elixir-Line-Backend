@@ -16,7 +16,14 @@ public class VinegrowerCommandServiceImpl  implements VinegrowerCommandService{
 
     @Override
     public Vinegrower handle(CreateVinegrowerCommand command) {
-        Vinegrower vinegrower = new Vinegrower(command.userId(), command.fullName(), command.country());
+        Vinegrower vinegrower = new Vinegrower(
+                command.userId(),
+                command.name(),
+                command.lastname(),
+                command.country(),
+                command.phoneNumber(),
+                command.profilePicture()
+        );
         return vinegrowerRepository.save(vinegrower);
     }
 }
