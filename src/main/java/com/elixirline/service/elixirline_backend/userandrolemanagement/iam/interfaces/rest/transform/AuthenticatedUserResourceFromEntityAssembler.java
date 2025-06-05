@@ -5,6 +5,6 @@ import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.inter
 
 public class AuthenticatedUserResourceFromEntityAssembler {
     public static AuthenticatedUserResource toResourceFromEntity(User user, String token) {
-        return new AuthenticatedUserResource(user.getId(), user.getEmail(), token);
+        return new AuthenticatedUserResource(user.getUserId(), user.getEmail(), token);
     }
 }

@@ -16,7 +16,14 @@ public class FieldWorkerCommandServiceImpl implements FieldWorkerCommandService 
 
     @Override
     public FieldWorker handle(CreateFieldWorkerCommand command) {
-        FieldWorker fieldWorker = new FieldWorker(command.userId(), command.fullName(), command.vinegrowerId());
+        FieldWorker fieldWorker = new FieldWorker(
+                command.userId(),
+                command.name(),
+                command.lastname(),
+                command.phoneNumber(),
+                command.profilePicture(),
+                command.vinegrowerId()
+        );
         return fieldWorkerRepository.save(fieldWorker);
     }
 }
