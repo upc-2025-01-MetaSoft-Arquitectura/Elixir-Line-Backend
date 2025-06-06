@@ -2,7 +2,7 @@ package com.elixirline.service.elixirline_backend.employeemanagement.employees.d
 
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.valueobjects.*;
 import com.elixirline.service.elixirline_backend.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
-import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,18 +22,22 @@ public class FieldWorker extends AuditableAbstractAggregateRoot<FieldWorker> {
     private Long userId;
 
     @Embedded
+    @NotNull(message = "Name is required")
     private Name name;
 
     @Embedded
+    @NotNull(message = "Lastname is required")
     private Lastname lastname;
 
     @Embedded
+    @NotNull(message = "Phone number is required")
     private PhoneNumber phoneNumber;
 
     @Embedded
     private ProfilePicture profilePicture;
 
     @Column(name = "vinegrower_id")
+    @NotNull(message = "Vinegrower Id is required")
     private Long vinegrowerId;
 
 
@@ -42,12 +46,12 @@ public class FieldWorker extends AuditableAbstractAggregateRoot<FieldWorker> {
     @Column(name = "status", nullable = false)
     private EmployeeStatus status = EmployeeStatus.ACTIVE;
 
-    public FieldWorker(Long userId, Name name, Lastname lastname, PhoneNumber phoneNumber, ProfilePicture profilePicture, Long vinegrowerId) {
+    public FieldWorker(Long userId, Name name, Lastname lastname, PhoneNumber phoneNumber, Long vinegrowerId) {
         this.userId = userId;
         this.name = name;
         this.lastname = lastname;
         this.phoneNumber = phoneNumber;
-        this.profilePicture = profilePicture;
         this.vinegrowerId = vinegrowerId;
+        this.profilePicture = new ProfilePicture();
     }
 }

@@ -1,7 +1,6 @@
 package com.elixirline.service.elixirline_backend.employeemanagement.employees.application.internal.queryservices;
 
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.aggregates.FieldWorker;
-import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.queries.GetAllFieldWorkersByVinegrowerIdQuery;
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.queries.GetAllFieldWorkersQuery;
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.queries.GetFieldWorkerByIdQuery;
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.services.fieldworker.FieldWorkerQueryService;
@@ -24,10 +23,5 @@ public class FieldWorkerQueryServiceImpl implements FieldWorkerQueryService {
     @Override
     public Optional<FieldWorker> handle(GetFieldWorkerByIdQuery query) {
         return fieldWorkerRepository.findById(query.fieldWorkerId());
-    }
-
-    @Override
-    public List<FieldWorker> handle(GetAllFieldWorkersByVinegrowerIdQuery query) {
-        return fieldWorkerRepository.findByVinegrowerId(query.vinegrowerId());
     }
 }

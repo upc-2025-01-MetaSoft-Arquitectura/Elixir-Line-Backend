@@ -11,8 +11,7 @@ public class CreateVinegrowerCommandFromResourceAssembler {
                 resource.name(),
                 resource.lastname(),
                 resource.country(),
-                resource.phoneNumber(),
-                resource.profilePicture()
+                resource.phoneNumber()
         );
     }
 }
