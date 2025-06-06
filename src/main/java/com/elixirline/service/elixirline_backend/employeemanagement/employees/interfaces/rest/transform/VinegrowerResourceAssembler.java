@@ -6,10 +6,14 @@ import com.elixirline.service.elixirline_backend.employeemanagement.employees.in
 public class VinegrowerResourceAssembler {
     public static VinegrowerResource toResource(Vinegrower vinegrower) {
         return new VinegrowerResource(
-                vinegrower.getId(),
-                vinegrower.getFullName().fullname(),
-                vinegrower.getCountry().country(),
-                vinegrower.getUserId()
+                vinegrower.getVinegrowerId(),
+                vinegrower.getUserId(),
+                vinegrower.getName(),
+                vinegrower.getLastname(),
+                vinegrower.getCountry(),
+                vinegrower.getPhoneNumber(),
+                vinegrower.getProfilePicture(),
+                vinegrower.getStatus()
         );
     }
 }

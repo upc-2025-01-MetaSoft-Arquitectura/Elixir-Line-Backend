@@ -1,3 +1,14 @@
 package com.elixirline.service.elixirline_backend.employeemanagement.employees.interfaces.rest.resources;
 
-public record VinegrowerResource(Long id, String fullName, String country, Long userId) { }
+import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.valueobjects.*;
+
+public record VinegrowerResource(
+        Long vinegrowerId,
+        Long userId,
+        Name name,
+        Lastname lastname,
+        Country country,
+        PhoneNumber phoneNumber,
+        ProfilePicture profilePicture,
+        EmployeeStatus status
+) { }

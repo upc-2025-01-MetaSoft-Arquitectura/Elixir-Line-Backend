@@ -6,10 +6,14 @@ import com.elixirline.service.elixirline_backend.employeemanagement.employees.in
 public class FieldWorkerResourceAssembler {
     public static FieldWorkerResource toResource(FieldWorker fieldWorker) {
         return new FieldWorkerResource(
-                fieldWorker.getId(),
-                fieldWorker.getFullName().fullname(),
+                fieldWorker.getFieldWorkerId(),
                 fieldWorker.getUserId(),
-                fieldWorker.getVinegrowerId()
+                fieldWorker.getName(),
+                fieldWorker.getLastname(),
+                fieldWorker.getPhoneNumber(),
+                fieldWorker.getProfilePicture(),
+                fieldWorker.getVinegrowerId(),
+                fieldWorker.getStatus()
         );
     }
 }

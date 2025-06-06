@@ -2,9 +2,12 @@ package com.elixirline.service.elixirline_backend.employeemanagement.employees.a
 
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.aggregates.FieldWorker;
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.aggregates.Vinegrower;
+import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.queries.GetAllFieldWorkersByVinegrowerIdByEmployeeStatusQuery;
+import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.queries.GetAllFieldWorkersByVinegrowerIdQuery;
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.queries.GetAllVinegrowersQuery;
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.queries.GetVinegrowerByIdQuery;
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.services.vinegrower.VinegrowerQueryService;
+import com.elixirline.service.elixirline_backend.employeemanagement.employees.infrastructure.persistance.jpa.repositories.FieldWorkerRepository;
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.infrastructure.persistance.jpa.repositories.VinegrowerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +18,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class VinegrowerQueryServiceImpl implements VinegrowerQueryService {
     private final VinegrowerRepository vinegrowerRepository;
+    private final FieldWorkerRepository fieldWorkerRepository;
 
     @Override
     public List<Vinegrower> handle(GetAllVinegrowersQuery query) {
@@ -24,5 +28,18 @@ public class VinegrowerQueryServiceImpl implements VinegrowerQueryService {
     @Override
     public Optional<Vinegrower> handle(GetVinegrowerByIdQuery query) {
         return vinegrowerRepository.findById(query.vinegrowerId());
+    }
+
+    @Override
+    public List<FieldWorker> handle(GetAllFieldWorkersByVinegrowerIdQuery query) {
+        return fieldWorkerRepository.findByVinegrowerId(query.vinegrowerId());
+    }
+
+    @Override
+    public List<FieldWorker> handle(GetAllFieldWorkersByVinegrowerIdByEmployeeStatusQuery query) {
+        return fieldWorkerRepository.findByVinegrowerIdAndStatus(
+                query.vinegrowerId(),
+                query.employeeStatus()
+        );
     }
 }

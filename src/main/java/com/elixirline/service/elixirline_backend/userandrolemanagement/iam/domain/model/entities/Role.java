@@ -76,5 +76,4 @@ public class Role {
         }
         return roles;
     }
-
 }
