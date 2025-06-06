@@ -7,6 +7,5 @@ public record CreateVinegrowerCommand (
         Name name,
         Lastname lastname,
         Country country,
-        PhoneNumber phoneNumber,
-        ProfilePicture profilePicture
+        PhoneNumber phoneNumber
 ) { }

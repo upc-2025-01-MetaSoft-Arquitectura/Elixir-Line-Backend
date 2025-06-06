@@ -9,5 +9,6 @@ public record VinegrowerResource(
         Lastname lastname,
         Country country,
         PhoneNumber phoneNumber,
-        ProfilePicture profilePicture
+        ProfilePicture profilePicture,
+        EmployeeStatus status
 ) { }

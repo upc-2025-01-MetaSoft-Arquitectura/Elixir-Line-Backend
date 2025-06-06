@@ -12,7 +12,8 @@ public class VinegrowerResourceAssembler {
                 vinegrower.getLastname(),
                 vinegrower.getCountry(),
                 vinegrower.getPhoneNumber(),
-                vinegrower.getProfilePicture()
+                vinegrower.getProfilePicture(),
+                vinegrower.getStatus()
         );
     }
 }
