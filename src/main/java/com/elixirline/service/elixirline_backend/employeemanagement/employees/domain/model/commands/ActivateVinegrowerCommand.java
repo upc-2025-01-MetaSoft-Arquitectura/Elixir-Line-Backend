@@ -1,4 +1,4 @@
 package com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.commands;
 
-public class CreateVinegrowerCommand {
+public record ActivateVinegrowerCommand(Long vinegrowerId) {
 }

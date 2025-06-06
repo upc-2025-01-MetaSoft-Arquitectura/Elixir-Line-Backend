@@ -22,6 +22,10 @@ import java.util.Set;
 @Setter
 @Entity(name = "user")
 public class User extends AuditableAbstractAggregateRoot<User> {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id", unique = true)
+    private Long userId;
 
     @NotBlank
     @Size(max = 50)
@@ -75,4 +79,14 @@ public class User extends AuditableAbstractAggregateRoot<User> {
         return this;
     }
 
+    public User updateUser(String email, String password) {
+        this.email = email;
+        this.password = password;
+        return this;
+    }
+
+    public User updateUserPassword(String password) {
+        this.password = password;
+        return this;
+    }
 }
