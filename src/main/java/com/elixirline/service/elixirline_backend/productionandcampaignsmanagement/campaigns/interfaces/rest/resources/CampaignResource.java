@@ -5,9 +5,9 @@ import java.time.LocalDate;
 public record CampaignResource(
         Long id,
         String name,
-        String age,
-        Long driverUserId,
-        Long lots,
+        String year,
+        Long winegrowerId,
+        Long batches,
         String status,
         LocalDate startDate,
         LocalDate endDate

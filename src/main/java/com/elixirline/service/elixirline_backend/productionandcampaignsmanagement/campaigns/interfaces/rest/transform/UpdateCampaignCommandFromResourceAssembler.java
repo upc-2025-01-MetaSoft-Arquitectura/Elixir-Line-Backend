@@ -8,7 +8,7 @@ public class UpdateCampaignCommandFromResourceAssembler {
         return new UpdateCampaignCommand(
                 campaignId,
                 resource.name(),
-                resource.age(),
+                resource.year(),
                 resource.startDate(),
                 resource.endDate()
         );

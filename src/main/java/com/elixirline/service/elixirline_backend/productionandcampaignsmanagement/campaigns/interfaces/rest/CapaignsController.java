@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 import static com.elixirline.service.elixirline_backend.productionandcampaignsmanagement.campaigns.interfaces.rest.examples.CreateCampaignExampleValues.EXAMPLE_COMPLETE;
 import static com.elixirline.service.elixirline_backend.productionandcampaignsmanagement.campaigns.interfaces.rest.examples.CreateCampaignExampleValues.EXAMPLE_MINIMAL;
@@ -60,7 +61,7 @@ public class CapaignsController {
         var command = CreateCampaignCommandFromResourceAssembler.toCommandFromResource(resource);
         var campaign = campaignCommandService.handle(command);
 
-        if (campaign.isEmpty()) return ResponseEntity.badRequest().build();
+//        if (campaign.isEmpty()) return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("message","Ya existe"));
 
         var campaignResource = CampaignResourceFromEntityAssembler.toResourceFromEntity(campaign.get());
         return new ResponseEntity<>(campaignResource, HttpStatus.CREATED);
