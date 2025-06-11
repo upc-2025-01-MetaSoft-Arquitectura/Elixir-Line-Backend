@@ -143,6 +143,23 @@ public class WebSecurityConfiguration {
         http.addFilterBefore(authorizationRequestFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
+//    @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        http
+//                .cors(Customizer.withDefaults())
+//                .csrf(AbstractHttpConfigurer::disable)
+//                .exceptionHandling(exceptionHandling ->
+//                        exceptionHandling.authenticationEntryPoint(unauthorizedRequestHandler))
+//                .sessionManagement(customizer ->
+//                        customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//                .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+//                        .requestMatchers("/**").permitAll()  // 👈 PERMITIR TODO
+//                );
+//
+//        http.authenticationProvider(authenticationProvider());
+//        http.addFilterBefore(authorizationRequestFilter(), UsernamePasswordAuthenticationFilter.class);
+//        return http.build();
+//    }
 
     /**
      * This is the constructor of the class.
