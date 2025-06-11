@@ -37,8 +37,10 @@ public class Campaign extends AuditableAbstractAggregateRoot<Campaign> {
         this.name = command.name();
         this.age = command.age();
         this.driverUserId = command.driverUserId();
-        this.lots = command.lots();
-        this.status = CampaignStatus.valueOf(command.status().toUpperCase());
+        this.lots = command.lots() != null ? command.lots() : 0L;
+        this.status = command.status() != null
+                ? CampaignStatus.valueOf(command.status().toUpperCase())
+                : CampaignStatus.NO_INICIADO;
         this.startDate = command.startDate();
         this.endDate = command.endDate();
     }
