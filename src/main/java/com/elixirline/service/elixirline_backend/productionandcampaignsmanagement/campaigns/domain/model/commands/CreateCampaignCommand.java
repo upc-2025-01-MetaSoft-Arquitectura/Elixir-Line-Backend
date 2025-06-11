@@ -4,9 +4,9 @@ import java.time.LocalDate;
 
 public record CreateCampaignCommand(
         String name,
-        String age,
-        Long driverUserId,
-        Long lots,
+        String year,
+        Long winegrowerId,
+        Long batches,
         String status,
         LocalDate startDate,
         LocalDate endDate

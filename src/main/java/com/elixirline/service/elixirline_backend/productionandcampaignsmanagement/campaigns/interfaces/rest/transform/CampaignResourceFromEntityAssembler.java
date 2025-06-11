@@ -8,9 +8,9 @@ public class CampaignResourceFromEntityAssembler {
         return new CampaignResource(
                 entity.getId(),
                 entity.getName(),
-                entity.getAge(),
-                entity.getDriverUserId(),
-                entity.getLots(),
+                entity.getYear(),
+                entity.getWinegrowerId(),
+                entity.getBatches(),
                 entity.getStatus().name(),
                 entity.getStartDate(),
                 entity.getEndDate()

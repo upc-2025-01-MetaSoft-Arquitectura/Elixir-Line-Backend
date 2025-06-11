@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public record UpdateCampaignResource(
         String name,
-        String age,
+        String year,
         LocalDate startDate,
         LocalDate endDate
 ) {
