@@ -7,9 +7,9 @@ public class CreateCampaignCommandFromResourceAssembler {
     public static CreateCampaignCommand toCommandFromResource(CreateCampaignResource resource) {
         return new CreateCampaignCommand(
                 resource.name(),
-                resource.age(),
-                resource.driverUserId(),
-                resource.lots(),
+                resource.year(),
+                resource.winegrowerId(),
+                resource.batches(),
                 resource.status(),
                 resource.startDate(),
                 resource.endDate()
