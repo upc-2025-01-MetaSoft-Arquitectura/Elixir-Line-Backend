@@ -14,6 +14,7 @@ import com.elixirline.service.elixirline_backend.productionandcampaignsmanagemen
 import com.elixirline.service.elixirline_backend.productionandcampaignsmanagement.campaigns.interfaces.rest.transform.UpdateCampaignCommandFromResourceAssembler;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,8 @@ import static com.elixirline.service.elixirline_backend.productionandcampaignsma
 import static com.elixirline.service.elixirline_backend.productionandcampaignsmanagement.campaigns.interfaces.rest.examples.CreateCampaignExampleValues.EXAMPLE_MINIMAL;
 
 @RestController
-@RequestMapping(value = "/api/v1/campaign", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/v1/campaigns", produces = MediaType.APPLICATION_JSON_VALUE)
+@Tag(name = "Campaigns", description = "Campaigns Management Endpoints")
 public class CapaignsController {
     private final CampaignQueryService campaignQueryService;
     private final CampaignCommandService campaignCommandService;
