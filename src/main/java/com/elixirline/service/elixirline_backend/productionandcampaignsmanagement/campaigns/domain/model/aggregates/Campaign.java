@@ -20,11 +20,11 @@ public class Campaign extends AuditableAbstractAggregateRoot<Campaign> {
     //editable
     private String name;
     //editable
-    private String age;
+    private String year;
 
-    private Long driverUserId;
+    private Long winegrowerId;
 
-    private Long lots;
+    private Long batches;
 
     @Enumerated(EnumType.STRING)
     private CampaignStatus status;
@@ -35,17 +35,19 @@ public class Campaign extends AuditableAbstractAggregateRoot<Campaign> {
 
     public Campaign(CreateCampaignCommand command) {
         this.name = command.name();
-        this.age = command.age();
-        this.driverUserId = command.driverUserId();
-        this.lots = command.lots();
-        this.status = CampaignStatus.valueOf(command.status().toUpperCase());
+        this.year = command.year();
+        this.winegrowerId = command.winegrowerId();
+        this.batches = command.batches() != null ? command.batches() : 0L;
+        this.status = command.status() != null
+                ? CampaignStatus.valueOf(command.status().toUpperCase())
+                : CampaignStatus.NO_INICIADO;
         this.startDate = command.startDate();
         this.endDate = command.endDate();
     }
 
-    public Campaign updateInformation(String name, String age, LocalDate startDate, LocalDate endDate) {
+    public Campaign updateInformation(String name, String year, LocalDate startDate, LocalDate endDate) {
         this.name = name;
-        this.age = age;
+        this.year = year;
         this.startDate = startDate;
         this.endDate = endDate;
         return this;

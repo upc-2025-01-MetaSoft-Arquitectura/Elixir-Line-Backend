@@ -5,7 +5,7 @@ import java.time.LocalDate;
 public record UpdateCampaignCommand(
         Long campaignId,
         String name,
-        String age,
+        String year,
         LocalDate startDate,
         LocalDate endDate
 ) {

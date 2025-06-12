@@ -4,6 +4,7 @@ import com.elixirline.service.elixirline_backend.productionandcampaignsmanagemen
 import com.elixirline.service.elixirline_backend.productionandcampaignsmanagement.campaigns.domain.model.commands.CreateCampaignCommand;
 import com.elixirline.service.elixirline_backend.productionandcampaignsmanagement.campaigns.domain.model.commands.DeleteCampaignCommand;
 import com.elixirline.service.elixirline_backend.productionandcampaignsmanagement.campaigns.domain.model.commands.UpdateCampaignCommand;
+import com.elixirline.service.elixirline_backend.productionandcampaignsmanagement.campaigns.domain.model.exceptions.DuplicateCampaignNameException;
 import com.elixirline.service.elixirline_backend.productionandcampaignsmanagement.campaigns.domain.services.CampaignCommandService;
 import com.elixirline.service.elixirline_backend.productionandcampaignsmanagement.campaigns.infrastructure.persistence.jpa.repositories.CampaignRepository;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,10 @@ public class CampaignCommandServiceImpl implements CampaignCommandService {
 
     @Override
     public Optional<Campaign> handle(CreateCampaignCommand command) {
+        var existingCampaign = campaignRepository.findByName(command.name());
+        if (existingCampaign.isPresent()) {
+            throw new DuplicateCampaignNameException("Ya existe una campaña con el nombre: " + command.name());
+        }
         var campaign = new Campaign(command);
         campaignRepository.save(campaign);
         return Optional.of(campaign);
@@ -41,7 +46,7 @@ public class CampaignCommandServiceImpl implements CampaignCommandService {
         if (campaign.isEmpty()) return Optional.empty();
 
         var updated = campaign.get()
-                .updateInformation(command.name(), command.age(), command.startDate(), command.endDate());
+                .updateInformation(command.name(), command.year(), command.startDate(), command.endDate());
         campaignRepository.save(updated);
         return Optional.of(updated);
     }
