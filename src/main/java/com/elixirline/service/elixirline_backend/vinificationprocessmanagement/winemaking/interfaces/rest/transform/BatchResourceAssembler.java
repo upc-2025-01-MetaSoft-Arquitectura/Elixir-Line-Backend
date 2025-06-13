@@ -1,12 +1,14 @@
 package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform;
 
-import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.aggregates.BatchVineyard;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.aggregates.Batch;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.BatchResource;
 
 public class BatchResourceAssembler {
-    public static BatchResource toResource(BatchVineyard batch) {
+    public static BatchResource toResource(Batch batch) {
         return new BatchResource(
                 batch.getBatchId(),
+                batch.getWinegrowerId(),
+                batch.getCampaignId(),
                 batch.getVineyardCode(),
                 batch.getReceptionDate(),
                 batch.getHarvestCampaign(),

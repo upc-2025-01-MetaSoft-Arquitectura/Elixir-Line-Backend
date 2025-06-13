@@ -8,6 +8,7 @@ public class UpdateBatchCommandFromResourceAssembler {
     public static UpdateBatchCommand toCommandFromResource(Long batchId, UpdateBatchResource resource) {
         return new UpdateBatchCommand(
                 batchId,
+                resource.campaignId(),
                 resource.vineyardCode(),
                 new VineyardOrigin(resource.vineyardOrigin()),
                 new GrapeVariety(resource.grapeVariety()),

@@ -2,11 +2,10 @@ package com.elixirline.service.elixirline_backend.employeemanagement.employees.d
 
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.valueobjects.*;
 
-public record UpdateVinegrowerCommand(
-        Long vinegrowerId,
+public record CreateWinegrowerCommand(
+        Long userId,
         Name name,
         Lastname lastname,
         Country country,
-        PhoneNumber phoneNumber,
-        ProfilePicture profilePicture
+        PhoneNumber phoneNumber
 ) { }

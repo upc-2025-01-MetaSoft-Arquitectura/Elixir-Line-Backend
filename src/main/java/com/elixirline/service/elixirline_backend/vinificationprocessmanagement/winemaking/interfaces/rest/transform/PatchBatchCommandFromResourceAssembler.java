@@ -6,12 +6,14 @@ import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.w
 
 public class PatchBatchCommandFromResourceAssembler {
     public static PatchBatchCommand toCommandFromResource(Long batchId, PatchBatchResource resource) {
+        Progress progress = resource.progress() != null ? new Progress(resource.progress()) : null;
         return new PatchBatchCommand(
                 batchId,
-                new Progress(resource.progress()),
+                progress,
                 resource.status(),
                 resource.currentStage()
         );
     }
+
 }
 

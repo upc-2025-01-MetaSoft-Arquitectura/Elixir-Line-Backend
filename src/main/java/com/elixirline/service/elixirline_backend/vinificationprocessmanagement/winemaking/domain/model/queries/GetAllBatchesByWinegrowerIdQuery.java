@@ -1,0 +1,4 @@
+package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.queries;
+
+public record GetAllBatchesByWinegrowerIdQuery(Long winegrowerId) {
+}

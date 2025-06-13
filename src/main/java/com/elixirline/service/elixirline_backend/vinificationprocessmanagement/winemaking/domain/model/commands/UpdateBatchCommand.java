@@ -4,6 +4,7 @@ import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.w
 
 public record UpdateBatchCommand(
         Long batchId,
+        Long campaignId,
         String vineyardCode,
         VineyardOrigin vineyardOrigin,
         GrapeVariety grapeVariety,
