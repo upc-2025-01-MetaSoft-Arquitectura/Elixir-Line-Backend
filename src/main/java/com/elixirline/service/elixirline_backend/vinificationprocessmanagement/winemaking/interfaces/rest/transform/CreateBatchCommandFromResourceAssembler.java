@@ -6,6 +6,8 @@ import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.w
 public class CreateBatchCommandFromResourceAssembler {
     public static CreateBatchCommand toCommandFromResource(CreateBatchResource resource) {
         return new CreateBatchCommand(
+                resource.winegrowerId(),
+                resource.campaignId(),
                 resource.vineyardCode(),
                 resource.vineyardOrigin(),
                 resource.grapeVariety(),

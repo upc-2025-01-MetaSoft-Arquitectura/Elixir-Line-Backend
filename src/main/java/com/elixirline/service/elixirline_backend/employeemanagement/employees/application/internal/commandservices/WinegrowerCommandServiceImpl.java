@@ -1,12 +1,11 @@
 package com.elixirline.service.elixirline_backend.employeemanagement.employees.application.internal.commandservices;
 
-import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.exceptions.VinegrowerNotBeCreated;
-import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.aggregates.FieldWorker;
-import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.aggregates.Vinegrower;
+import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.exceptions.WinegrowerNotBeCreated;
+import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.aggregates.Winegrower;
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.commands.*;
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.valueobjects.EmployeeStatus;
-import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.services.vinegrower.VinegrowerCommandService;
-import com.elixirline.service.elixirline_backend.employeemanagement.employees.infrastructure.persistance.jpa.repositories.VinegrowerRepository;
+import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.services.winegrower.WinegrowerCommandService;
+import com.elixirline.service.elixirline_backend.employeemanagement.employees.infrastructure.persistance.jpa.repositories.WinegrowerRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,13 +14,13 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class VinegrowerCommandServiceImpl  implements VinegrowerCommandService{
-    private final VinegrowerRepository vinegrowerRepository;
+public class WinegrowerCommandServiceImpl implements WinegrowerCommandService {
+    private final WinegrowerRepository vinegrowerRepository;
 
     @Transactional
     @Override
-    public Optional<Vinegrower> handle(CreateVinegrowerCommand command) {
-        Vinegrower vinegrower = new Vinegrower(
+    public Optional<Winegrower> handle(CreateWinegrowerCommand command) {
+        Winegrower vinegrower = new Winegrower(
                 command.userId(),
                 command.name(),
                 command.lastname(),
@@ -32,13 +31,13 @@ public class VinegrowerCommandServiceImpl  implements VinegrowerCommandService{
         try {
             return Optional.of(vinegrowerRepository.save(vinegrower));
         } catch (Exception e) {
-            throw new VinegrowerNotBeCreated(e.getMessage());
+            throw new WinegrowerNotBeCreated(e.getMessage());
         }
     }
 
     @Transactional
     @Override
-    public Optional<Vinegrower> update(UpdateVinegrowerCommand command) {
+    public Optional<Winegrower> update(UpdateWinegrowerCommand command) {
         return vinegrowerRepository.findById(command.vinegrowerId()).map(vinegrower -> {
             vinegrower.setName(command.name());
             vinegrower.setLastname(command.lastname());
@@ -51,7 +50,7 @@ public class VinegrowerCommandServiceImpl  implements VinegrowerCommandService{
 
     @Transactional
     @Override
-    public Optional<Vinegrower> updatePartial(UpdateVinegrowerCommand command) {
+    public Optional<Winegrower> updatePartial(UpdateWinegrowerCommand command) {
         return vinegrowerRepository.findById(command.vinegrowerId()).map(vinegrower -> {
             if (command.name() != null) {
                 vinegrower.setName(command.name());
@@ -74,7 +73,7 @@ public class VinegrowerCommandServiceImpl  implements VinegrowerCommandService{
 
     @Transactional
     @Override
-    public void logicallyDelete(DeleteVinegrowerCommand command) {
+    public void logicallyDelete(DeleteWinegrowerCommand command) {
         vinegrowerRepository.findById(command.vinegrowerId()).ifPresent(vinegrower -> {
             vinegrower.setStatus(EmployeeStatus.INACTIVE);
             vinegrowerRepository.save(vinegrower);
@@ -83,13 +82,13 @@ public class VinegrowerCommandServiceImpl  implements VinegrowerCommandService{
 
     @Transactional
     @Override
-    public void physicallyDelete(DeleteVinegrowerCommand command) {
+    public void physicallyDelete(DeleteWinegrowerCommand command) {
         vinegrowerRepository.deleteById(command.vinegrowerId());
     }
 
     @Transactional
     @Override
-    public Optional<Vinegrower> activate(ActivateVinegrowerCommand command) {
+    public Optional<Winegrower> activate(ActivateWinegrowerCommand command) {
         return vinegrowerRepository.findById(command.vinegrowerId()).map(vinegrower -> {
             vinegrower.setStatus(EmployeeStatus.ACTIVE);
             return vinegrowerRepository.save(vinegrower);

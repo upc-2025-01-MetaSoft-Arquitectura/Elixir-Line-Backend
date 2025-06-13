@@ -4,16 +4,16 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.Embeddable;
 
 @Embeddable
-public record VineyardOrigin(String name) {
+public record VineyardOrigin(String vineyardOrigin) {
     public VineyardOrigin {
-        if (name == null || name.isBlank()) {
+        if (vineyardOrigin == null || vineyardOrigin.isBlank()) {
             throw new IllegalArgumentException("Vineyard origin cannot be null or empty");
         }
     }
 
     @JsonValue
     public String getVineyardOrigin() {
-        return name;
+        return vineyardOrigin;
     }
 }
 

@@ -2,7 +2,7 @@ package com.elixirline.service.elixirline_backend.employeemanagement.employees.i
 
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.valueobjects.*;
 
-public record VinegrowerResource(
+public record WinegrowerResource(
         Long vinegrowerId,
         Long userId,
         Name name,

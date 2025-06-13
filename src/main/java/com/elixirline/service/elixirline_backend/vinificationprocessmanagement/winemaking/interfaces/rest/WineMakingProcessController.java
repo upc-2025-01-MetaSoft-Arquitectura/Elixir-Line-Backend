@@ -1,7 +1,7 @@
 package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest;
 
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.exceptions.BatchNotBeCreated;
-import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.aggregates.BatchVineyard;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.aggregates.Batch;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.CreateBatchCommand;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.DeleteBatchCommand;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.queries.GetAllBatchesQuery;
@@ -36,7 +36,6 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping(value = "/api/v1/batches", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Batches", description = "Batch Management Endpoints")
-
 public class WineMakingProcessController {
     private final BatchCommandService commandService;
     private final BatchQueryService queryService;
@@ -70,7 +69,81 @@ public class WineMakingProcessController {
     )
     @GetMapping
     public ResponseEntity<List<BatchResource>> getAll() {
-        List<BatchVineyard> batches = queryService.handle(new GetAllBatchesQuery());
+        List<Batch> batches = queryService.handle(new GetAllBatchesQuery());
+        List<BatchResource> resources = batches.stream()
+                .map(BatchResourceAssembler::toResource)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(resources);
+    }
+
+    @Operation(
+            summary = "Get all batches by campaign ID",
+            description = "Retrieve a list of all batches belonging to a specific campaign in the system. This endpoint returns an array of batch resources."
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful operation",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = BatchResource.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "500", description = "Internal server error",
+                            content = @Content(
+                                    schema = @Schema(implementation = ErrorHandler.class)
+                            )
+                    )
+            }
+    )
+    @GetMapping("/campaign/{campaignId}")
+    public ResponseEntity<List<BatchResource>> getAllByCampaignId(
+            @Parameter(
+                    description = "The ID of the campaign.",
+                    required = true
+            )
+            @PathVariable Long campaignId
+    ) {
+        List<Batch> batches = queryService.getAllByCampaignId(campaignId);
+        List<BatchResource> resources = batches.stream()
+                .map(BatchResourceAssembler::toResource)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(resources);
+    }
+
+    @Operation(
+            summary = "Get all batches by winegrower ID",
+            description = "Retrieve a list of all batches belonging to a specific winegrower in the system. This endpoint returns an array of batch resources."
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful operation",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = BatchResource.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "500", description = "Internal server error",
+                            content = @Content(
+                                    schema = @Schema(implementation = ErrorHandler.class)
+                            )
+                    )
+            }
+    )
+    @GetMapping("/winegrower/{winegrowerId}")
+    public ResponseEntity<List<BatchResource>> getAllByWinegrowerId(
+            @Parameter(
+                    description = "The ID of the winegrower.",
+                    required = true
+            )
+            @PathVariable Long winegrowerId
+    ) {
+        List<Batch> batches = queryService.getAllByWinegrowerId(winegrowerId);
         List<BatchResource> resources = batches.stream()
                 .map(BatchResourceAssembler::toResource)
                 .collect(Collectors.toList());
@@ -108,8 +181,13 @@ public class WineMakingProcessController {
             }
     )
     @GetMapping("/{batchId}")
-    public ResponseEntity<BatchResource> getById(@Parameter(description = "ID of the batch to retrieve", required = true)
-                                                 @PathVariable Long batchId) {
+    public ResponseEntity<BatchResource> getById(
+            @Parameter(
+                    description = "ID of the batch to retrieve",
+                    required = true
+            )
+            @PathVariable Long batchId
+    ) {
         return queryService.handle(new GetBatchByIdQuery(batchId))
                 .map(BatchResourceAssembler::toResource)
                 .map(ResponseEntity::ok)
@@ -145,7 +223,7 @@ public class WineMakingProcessController {
     @PostMapping
     public ResponseEntity<BatchResource> createBatch(@RequestBody @Valid CreateBatchResource resource) {
         CreateBatchCommand command = CreateBatchCommandFromResourceAssembler.toCommandFromResource(resource);
-        BatchVineyard batch = commandService.handle(command)
+        Batch batch = commandService.handle(command)
                 .orElseThrow(() -> new BatchNotBeCreated("Batch Command Service Error"));
         BatchResource batchResource = BatchResourceAssembler.toResource(batch);
         return ResponseEntity.status(HttpStatus.CREATED).body(batchResource);

@@ -4,6 +4,8 @@ import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.w
 
 public record BatchResource(
         Long batchId,
+        Long campaignId,
+        Long winegrowerId,
         String vineyardCode,
         ReceptionDate receptionDate,
         HarvestCampaign harvestCampaign,

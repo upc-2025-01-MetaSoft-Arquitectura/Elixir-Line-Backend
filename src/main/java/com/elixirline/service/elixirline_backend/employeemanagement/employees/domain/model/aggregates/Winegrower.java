@@ -12,11 +12,11 @@ import lombok.Setter;
 @Setter
 @Entity(name = "vinegrower")
 @NoArgsConstructor
-public class Vinegrower extends AuditableAbstractAggregateRoot<Vinegrower> {
+public class Winegrower extends AuditableAbstractAggregateRoot<Winegrower> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "vinegrower_id", unique = true)
-    private Long vinegrowerId;
+    @Column(name = "winegrower_id", unique = true)
+    private Long winegrowerId;
 
     @Column(name = "user_id", unique = true)
     private Long userId;
@@ -44,7 +44,7 @@ public class Vinegrower extends AuditableAbstractAggregateRoot<Vinegrower> {
     @Column(name = "status", nullable = false)
     private EmployeeStatus status = EmployeeStatus.ACTIVE;
 
-    public Vinegrower(Long userId, Name name, Lastname lastname, Country country, PhoneNumber phoneNumber) {
+    public Winegrower(Long userId, Name name, Lastname lastname, Country country, PhoneNumber phoneNumber) {
         this.userId = userId;
         this.name = name;
         this.lastname = lastname;

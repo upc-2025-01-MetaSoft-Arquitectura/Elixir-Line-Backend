@@ -2,7 +2,7 @@ package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.
 
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.exceptions.BatchNotBeCreated;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.exceptions.BatchNotFoundException;
-import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.aggregates.BatchVineyard;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.aggregates.Batch;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.CreateBatchCommand;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.DeleteBatchCommand;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.PatchBatchCommand;
@@ -21,8 +21,10 @@ public class BatchCommandServiceImpl implements BatchCommandService {
 
     @Transactional
     @Override
-    public Optional<BatchVineyard> handle(CreateBatchCommand command) {
-        BatchVineyard batch = new BatchVineyard(
+    public Optional<Batch> handle(CreateBatchCommand command) {
+        Batch batch = new Batch(
+                command.winegrowerId(),
+                command.campaignId(),
                 command.vineyardCode(),
                 command.vineyardOrigin(),
                 command.grapeVariety(),
@@ -41,8 +43,9 @@ public class BatchCommandServiceImpl implements BatchCommandService {
 
     @Transactional
     @Override
-    public Optional<BatchVineyard> update(UpdateBatchCommand command) {
+    public Optional<Batch> update(UpdateBatchCommand command) {
         return Optional.ofNullable(batchRepository.findById(command.batchId()).map(batch -> {
+            batch.setCampaignId(command.campaignId());
             batch.setVineyardCode(command.vineyardCode());
             batch.setVineyardOrigin(command.vineyardOrigin());
             batch.setGrapeVariety(command.grapeVariety());

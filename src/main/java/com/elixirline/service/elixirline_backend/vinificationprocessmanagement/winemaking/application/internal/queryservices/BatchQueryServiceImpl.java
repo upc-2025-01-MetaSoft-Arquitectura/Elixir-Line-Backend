@@ -1,7 +1,7 @@
 package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.application.internal.queryservices;
 
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.exceptions.BatchNotFoundException;
-import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.aggregates.BatchVineyard;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.aggregates.Batch;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.queries.GetAllBatchesQuery;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.queries.GetBatchByIdQuery;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.queries.GetBatchesByVineyardCodeQuery;
@@ -19,17 +19,27 @@ public class BatchQueryServiceImpl implements BatchQueryService {
     private final BatchRepository batchRepository;
 
     @Override
-    public Optional<BatchVineyard> handle(GetBatchByIdQuery query) {
+    public Optional<Batch> handle(GetBatchByIdQuery query) {
         return Optional.ofNullable(batchRepository.findById(query.batchId()).orElseThrow(() -> new BatchNotFoundException(query.batchId())));
     }
 
     @Override
-    public List<BatchVineyard> handle(GetBatchesByVineyardCodeQuery query) {
+    public List<Batch> handle(GetBatchesByVineyardCodeQuery query) {
         return batchRepository.findByVineyardCode(query.vineyardCode());
     }
 
     @Override
-    public List<BatchVineyard> handle(GetAllBatchesQuery query) {
+    public List<Batch> handle(GetAllBatchesQuery query) {
         return batchRepository.findAll();
+    }
+
+    @Override
+    public List<Batch> getAllByCampaignId(Long campaignId) {
+        return batchRepository.findByCampaignId(campaignId);
+    }
+
+    @Override
+    public List<Batch> getAllByWinegrowerId(Long winegrowerId) {
+        return batchRepository.findByWinegrowerId(winegrowerId);
     }
 }

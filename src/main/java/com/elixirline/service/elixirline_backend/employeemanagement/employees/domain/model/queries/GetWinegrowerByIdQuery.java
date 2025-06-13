@@ -1,4 +1,4 @@
 package com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.queries;
 
-public class GetAllVinegrowersQuery {
+public record GetWinegrowerByIdQuery(Long vinegrowerId) {
 }

@@ -10,9 +10,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Entity(name = "batch_vineyard")
+@Entity(name = "batch")
 @NoArgsConstructor
-public class BatchVineyard extends AuditableAbstractAggregateRoot<BatchVineyard> {
+public class Batch extends AuditableAbstractAggregateRoot<Batch> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "batch_id", unique = true)
@@ -20,6 +20,12 @@ public class BatchVineyard extends AuditableAbstractAggregateRoot<BatchVineyard>
 
     @Column(name = "vineyard_id", unique = true)
     private String vineyardCode;
+
+    @Column(name = "campaign_id", unique = true)
+    private Long campaignId;
+
+    @Column(name = "winegrower_id", unique = true)
+    private Long winegrowerId;
 
     @Embedded
     @NotNull(message = "Reception date is required")
@@ -46,7 +52,6 @@ public class BatchVineyard extends AuditableAbstractAggregateRoot<BatchVineyard>
     private CreatedBy createdBy;
 
     @Embedded
-    @NotNull(message = "Progress is required")
     private Progress progress = Progress.ZERO;
 
     @Enumerated(EnumType.STRING)
@@ -57,9 +62,11 @@ public class BatchVineyard extends AuditableAbstractAggregateRoot<BatchVineyard>
     @Column(name = "current_stage", nullable = false)
     private CurrentStage currentStage = CurrentStage.RECEPTION;
 
-    public BatchVineyard(String vineyardCode, VineyardOrigin vineyardOrigin, GrapeVariety grapeVariety,
-                         HarvestCampaign harvestCampaign, ReceptionDate receptionDate,
-                         InitialGrapeQuantityKg initialGrapeQuantityKg, CreatedBy createdBy) {
+    public Batch(Long winegrowerId, Long campaignId, String vineyardCode, VineyardOrigin vineyardOrigin, GrapeVariety grapeVariety,
+                 HarvestCampaign harvestCampaign, ReceptionDate receptionDate,
+                 InitialGrapeQuantityKg initialGrapeQuantityKg, CreatedBy createdBy) {
+        this.winegrowerId = winegrowerId;
+        this.campaignId = campaignId;
         this.vineyardCode = vineyardCode;
         this.vineyardOrigin = vineyardOrigin;
         this.grapeVariety = grapeVariety;

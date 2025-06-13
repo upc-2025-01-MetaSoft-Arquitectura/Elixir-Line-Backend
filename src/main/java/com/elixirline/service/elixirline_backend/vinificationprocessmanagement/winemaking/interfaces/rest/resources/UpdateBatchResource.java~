@@ -3,7 +3,6 @@ package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.
 import java.time.LocalDate;
 
 public record UpdateBatchResource(
-        Long campaignId,
         String vineyardCode,
         String vineyardOrigin,
         String grapeVariety,
