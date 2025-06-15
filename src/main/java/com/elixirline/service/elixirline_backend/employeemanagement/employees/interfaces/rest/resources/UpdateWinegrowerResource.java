@@ -8,6 +8,5 @@ public record UpdateWinegrowerResource(
         @Nullable String lastname,
         @Nullable String country,
         @Nullable String phoneNumber,
-        @Nullable String profilePicture,
-        MultipartFile image
+        @Nullable MultipartFile image
 ) { }

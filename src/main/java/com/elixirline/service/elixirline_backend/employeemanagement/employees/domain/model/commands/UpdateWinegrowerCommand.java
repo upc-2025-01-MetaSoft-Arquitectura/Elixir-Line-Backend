@@ -9,6 +9,5 @@ public record UpdateWinegrowerCommand(
         Lastname lastname,
         Country country,
         PhoneNumber phoneNumber,
-        ProfilePicture profilePicture,
         MultipartFile image
 ) { }

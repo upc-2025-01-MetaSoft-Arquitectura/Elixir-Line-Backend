@@ -1,10 +1,7 @@
 package com.elixirline.service.elixirline_backend.shared.infrastructure.storage;
 
 import com.google.auth.oauth2.GoogleCredentials;
-import com.google.cloud.storage.BlobId;
-import com.google.cloud.storage.BlobInfo;
-import com.google.cloud.storage.Storage;
-import com.google.cloud.storage.StorageOptions;
+import com.google.cloud.storage.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
@@ -18,12 +15,15 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class FirebaseFileService {
     @Value("${firebase.credentials}")
     private String firebaseCredentials;
     private Storage storage;
+    private static final Logger logger = LoggerFactory.getLogger(FirebaseFileService.class);
 
     @EventListener
     public void init(ApplicationReadyEvent event) {
@@ -47,15 +47,13 @@ public class FirebaseFileService {
             String objectName = "images/profileimages/" + imageName;
             BlobId blobId = BlobId.of("pointbar-application.appspot.com", objectName);
             BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
-                    .setMetadata(map)
                     .setContentType(file.getContentType())
                     .build();
-            storage.create(blobInfo, file.getInputStream().readAllBytes( ));
 
-            // Construir y devolver la URL de la imagen subida
-            String DOWNLOAD_URL= "https://console.firebase.google.com/u/0/project/pointbar-application/storage/pointbar-application.appspot.com/files/~2Fimages~2Fprofileimages";
-            return DOWNLOAD_URL + imageName + "?alt=media&token=" + imageName;
+            Blob blob = storage.create(blobInfo, file.getInputStream().readAllBytes( ));
+            return blob.getMediaLink();
         } catch (Exception e) {
+            logger.error("Failed to upload image to Firebase Storage", e);
             throw new IOException("Failed to upload image to Firebase", e);
         }
 

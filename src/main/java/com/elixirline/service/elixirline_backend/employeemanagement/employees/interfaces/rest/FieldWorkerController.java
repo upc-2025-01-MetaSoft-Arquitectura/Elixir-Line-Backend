@@ -494,10 +494,14 @@ public class FieldWorkerController {
     @PutMapping(value = "/{fieldWorkerId}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<FieldWorkerResource> update(
             @PathVariable Long fieldWorkerId,
-            @RequestBody @Valid UpdateFieldWorkerResource resource,
+            @RequestPart(required = false) String name,
+            @RequestPart(required = false) String lastname,
+            @RequestPart(required = false) String phoneNumber,
+            @RequestPart(required = false) Long vinegrowerId,
             @RequestPart(required = false) MultipartFile image
     ) {
-        var command = UpdateFieldWorkerCommandFromResourceAssembler.toCommandFromResource(fieldWorkerId, resource, image);
+        var resource = new UpdateFieldWorkerResource(name, lastname, phoneNumber, vinegrowerId, image);
+        var command = UpdateFieldWorkerCommandFromResourceAssembler.toCommandFromResource(fieldWorkerId, resource);
         var updatedFieldWorker = commandService.update(command);
         return updatedFieldWorker
                 .map(FieldWorkerResourceAssembler::toResource)
