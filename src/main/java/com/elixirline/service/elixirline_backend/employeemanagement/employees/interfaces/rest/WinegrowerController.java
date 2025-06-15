@@ -29,6 +29,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -731,9 +732,13 @@ public class WinegrowerController {
                     )
             )
     })
-    @PutMapping(value = "/{winegrowerId}")
-    public ResponseEntity<WinegrowerResource> update(@PathVariable Long winegrowerId, @RequestBody @Valid UpdateWinegrowerResource resource) {
-        var command = UpdateWinegrowerCommandFromResourceAssembler.toCommandFromResource(winegrowerId, resource);
+    @PutMapping(value = "/{winegrowerId}", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<WinegrowerResource> update(
+            @PathVariable Long winegrowerId,
+            @RequestBody @Valid UpdateWinegrowerResource resource,
+            @RequestPart(required = false) MultipartFile image
+    ) {
+        var command = UpdateWinegrowerCommandFromResourceAssembler.toCommandFromResource(winegrowerId, resource, image);
         var updatedWinegrower = commandService.update(command);
         return updatedWinegrower
                 .map(WinegrowerResourceAssembler::toResource)

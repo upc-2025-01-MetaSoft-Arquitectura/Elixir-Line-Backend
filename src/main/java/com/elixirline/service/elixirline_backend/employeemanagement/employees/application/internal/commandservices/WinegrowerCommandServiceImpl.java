@@ -4,18 +4,22 @@ import com.elixirline.service.elixirline_backend.employeemanagement.employees.do
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.aggregates.Winegrower;
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.commands.*;
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.valueobjects.EmployeeStatus;
+import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.valueobjects.ProfilePicture;
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.services.winegrower.WinegrowerCommandService;
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.infrastructure.persistance.jpa.repositories.WinegrowerRepository;
+import com.elixirline.service.elixirline_backend.shared.infrastructure.storage.FirebaseFileService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class WinegrowerCommandServiceImpl implements WinegrowerCommandService {
     private final WinegrowerRepository vinegrowerRepository;
+    private final FirebaseFileService firebaseFileService;
 
     @Transactional
     @Override
@@ -43,7 +47,18 @@ public class WinegrowerCommandServiceImpl implements WinegrowerCommandService {
             vinegrower.setLastname(command.lastname());
             vinegrower.setCountry(command.country());
             vinegrower.setPhoneNumber(command.phoneNumber());
-            vinegrower.setProfilePicture(command.profilePicture());
+
+            if (command.image() != null && !command.image().isEmpty()) {
+                try {
+                    String imageUrl = firebaseFileService.saveImage(command.image());
+                    vinegrower.setProfilePicture(new ProfilePicture(imageUrl));
+                } catch (IOException e) {
+                    throw new RuntimeException("Error uploading the image", e);
+                }
+            } else if (command.profilePicture() != null) {
+                vinegrower.setProfilePicture(command.profilePicture());
+            }
+
             return vinegrowerRepository.save(vinegrower);
         });
     }
