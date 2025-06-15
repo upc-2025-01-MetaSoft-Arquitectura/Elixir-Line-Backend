@@ -63,12 +63,12 @@ public class UserController {
                                               {
                                                 "id": 1,
                                                 "email": "user1@example.com",
-                                                "roles": ["VINEGROWER", "FIELD_WORKER"]
+                                                "roles": "VINEGROWER"
                                               },
                                               {
                                                 "id": 2,
                                                 "email": "user2@example.com",
-                                                "roles": ["FIELD_WORKER"]
+                                                "roles": "FIELD_WORKER"
                                               }
                                             ]
                                             """
@@ -137,7 +137,7 @@ public class UserController {
                                             {
                                               "id": 1,
                                               "email": "user1@example.com",
-                                              "roles": ["VINEGROWER", "FIELD_WORKER"]
+                                              "roles": "VINEGROWER"
                                             }
                                             """
                                     )
@@ -226,7 +226,7 @@ public class UserController {
                                             {
                                               "id": 1,
                                               "email": "user1@example.com",
-                                              "roles": ["VINEGROWER", "FIELD_WORKER"]
+                                              "roles": "VINEGROWER"
                                             }
                                             """
                                     )
@@ -323,7 +323,7 @@ public class UserController {
                                     {
                                       "id": 1,
                                       "email": "updated_user@example.com",
-                                      "roles": ["VINEGROWER"]
+                                      "roles": "VINEGROWER"
                                     }
                                     """
                             )

@@ -78,18 +78,13 @@ public class UserCommandServiceImpl implements UserCommandService {
             throw new RuntimeException("Username already exists");
         }
 
-        List<Role> roles;
-        if (command.roles() == null || command.roles().isEmpty()) {
-            roles = List.of(roleRepository.findByName(Roles.VINEGROWER)
-                    .orElseThrow(() -> new RuntimeException("Default role not found")));
-        } else {
-            roles = command.roles().stream()
-                    .map(role -> roleRepository.findByName(role.getName())
-                            .orElseThrow(() -> new RuntimeException("Role not found")))
-                    .toList();
-        }
+        Role role = command.role() != null ?
+                roleRepository.findByName(command.role().getName())
+                        .orElseThrow(() -> new RuntimeException("Role not found")) :
+                roleRepository.findByName(Roles.VINEGROWER)
+                        .orElseThrow(() -> new RuntimeException("Default role not found"));
 
-        var user = new User(command.email(), hashingService.encode(command.password()), roles);
+        var user = new User(command.email(), hashingService.encode(command.password()), role);
         userRepository.save(user);
 
         return userRepository.findByEmail(command.email());
