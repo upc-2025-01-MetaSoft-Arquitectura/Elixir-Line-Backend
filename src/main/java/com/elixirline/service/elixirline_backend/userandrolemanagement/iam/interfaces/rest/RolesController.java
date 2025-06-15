@@ -1,15 +1,11 @@
 package com.elixirline.service.elixirline_backend.userandrolemanagement.iam.interfaces.rest;
 
-import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.domain.model.entities.Role;
 import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.domain.model.queries.GetAllRolesQuery;
 import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.domain.model.queries.GetRoleByNameQuery;
-import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.domain.model.queries.GetUserByIdQuery;
 import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.domain.model.valueobjects.Roles;
 import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.domain.services.RoleQueryService;
 import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.interfaces.rest.resources.RoleResource;
-import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.interfaces.rest.resources.UserResource;
 import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.interfaces.rest.transform.RoleResourceFromEntityAssembler;
-import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.interfaces.rest.transform.UserResourceFromEntityAssembler;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
