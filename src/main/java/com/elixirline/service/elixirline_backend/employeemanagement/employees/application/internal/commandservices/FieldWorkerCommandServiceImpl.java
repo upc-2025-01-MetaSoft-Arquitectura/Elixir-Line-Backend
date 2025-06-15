@@ -4,18 +4,22 @@ import com.elixirline.service.elixirline_backend.employeemanagement.employees.do
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.aggregates.FieldWorker;
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.commands.*;
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.valueobjects.EmployeeStatus;
+import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.valueobjects.ProfilePicture;
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.services.fieldworker.FieldWorkerCommandService;
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.infrastructure.persistance.jpa.repositories.FieldWorkerRepository;
+import com.elixirline.service.elixirline_backend.shared.infrastructure.storage.FirebaseFileService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class FieldWorkerCommandServiceImpl implements FieldWorkerCommandService {
     private final FieldWorkerRepository fieldWorkerRepository;
+    private final FirebaseFileService firebaseFileService;
 
     @Transactional
     @Override
@@ -42,8 +46,19 @@ public class FieldWorkerCommandServiceImpl implements FieldWorkerCommandService 
             fieldWorker.setName(command.name());
             fieldWorker.setLastname(command.lastname());
             fieldWorker.setPhoneNumber(command.phoneNumber());
-            fieldWorker.setProfilePicture(command.profilePicture());
             fieldWorker.setVinegrowerId(command.vinegrowerId());
+
+            if (command.image() != null && !command.image().isEmpty()) {
+                try {
+                    String imageUrl = firebaseFileService.saveImage(command.image());
+                    fieldWorker.setProfilePicture(new ProfilePicture(imageUrl));
+                } catch (IOException e) {
+                    throw new RuntimeException("Error uploading the image", e);
+                }
+            } else if (command.profilePicture() != null) {
+                fieldWorker.setProfilePicture(command.profilePicture());
+            }
+
             return fieldWorkerRepository.save(fieldWorker);
         });
     }

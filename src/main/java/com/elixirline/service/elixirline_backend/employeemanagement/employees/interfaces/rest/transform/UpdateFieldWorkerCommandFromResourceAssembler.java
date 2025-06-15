@@ -3,16 +3,18 @@ package com.elixirline.service.elixirline_backend.employeemanagement.employees.i
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.commands.UpdateFieldWorkerCommand;
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.valueobjects.*;
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.interfaces.rest.resources.UpdateFieldWorkerResource;
+import org.springframework.web.multipart.MultipartFile;
 
 public class UpdateFieldWorkerCommandFromResourceAssembler {
-    public static UpdateFieldWorkerCommand toCommandFromResource (Long fieldWorkerId, UpdateFieldWorkerResource resource) {
+    public static UpdateFieldWorkerCommand toCommandFromResource (Long fieldWorkerId, UpdateFieldWorkerResource resource, MultipartFile image) {
         return new UpdateFieldWorkerCommand(
                 fieldWorkerId,
                 new Name(resource.name()),
                 new Lastname(resource.lastname()),
                 new PhoneNumber(resource.phoneNumber()),
                 new ProfilePicture(resource.profilePicture()),
-                resource.vinegrowerId()
+                resource.vinegrowerId(),
+                image
         );
     }
 }

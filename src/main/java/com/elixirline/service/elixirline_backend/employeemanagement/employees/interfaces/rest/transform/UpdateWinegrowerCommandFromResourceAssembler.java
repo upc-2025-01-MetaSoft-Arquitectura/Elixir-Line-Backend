@@ -3,16 +3,18 @@ package com.elixirline.service.elixirline_backend.employeemanagement.employees.i
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.commands.UpdateWinegrowerCommand;
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.valueobjects.*;
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.interfaces.rest.resources.UpdateWinegrowerResource;
+import org.springframework.web.multipart.MultipartFile;
 
 public class UpdateWinegrowerCommandFromResourceAssembler {
-    public static UpdateWinegrowerCommand toCommandFromResource(Long vinegrowerId, UpdateWinegrowerResource vinegrowerResource) {
+    public static UpdateWinegrowerCommand toCommandFromResource(Long vinegrowerId, UpdateWinegrowerResource winegrowerResource, MultipartFile image) {
         return new UpdateWinegrowerCommand(
           vinegrowerId,
-          vinegrowerResource.name() != null ? new Name(vinegrowerResource.name()) : null,
-          vinegrowerResource.lastname() != null ? new Lastname(vinegrowerResource.lastname()) : null,
-          vinegrowerResource.country() != null ? new Country(vinegrowerResource.country()) : null,
-          vinegrowerResource.phoneNumber() != null ? new PhoneNumber(vinegrowerResource.phoneNumber()) : null,
-          vinegrowerResource.profilePicture() != null ? new ProfilePicture(vinegrowerResource.profilePicture()) : null
+          winegrowerResource.name() != null ? new Name(winegrowerResource.name()) : null,
+          winegrowerResource.lastname() != null ? new Lastname(winegrowerResource.lastname()) : null,
+          winegrowerResource.country() != null ? new Country(winegrowerResource.country()) : null,
+          winegrowerResource.phoneNumber() != null ? new PhoneNumber(winegrowerResource.phoneNumber()) : null,
+          winegrowerResource.profilePicture() != null ? new ProfilePicture(winegrowerResource.profilePicture()) : null,
+          image
         );
     }
 }

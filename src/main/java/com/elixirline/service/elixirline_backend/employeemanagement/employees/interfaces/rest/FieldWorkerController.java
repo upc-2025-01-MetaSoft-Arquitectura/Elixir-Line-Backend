@@ -33,6 +33,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -490,9 +491,13 @@ public class FieldWorkerController {
                     )
             )
     })
-    @PutMapping(value = "/{fieldWorkerId}")
-    public ResponseEntity<FieldWorkerResource> update(@PathVariable Long fieldWorkerId, @RequestBody @Valid UpdateFieldWorkerResource resource) {
-        var command = UpdateFieldWorkerCommandFromResourceAssembler.toCommandFromResource(fieldWorkerId, resource);
+    @PutMapping(value = "/{fieldWorkerId}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<FieldWorkerResource> update(
+            @PathVariable Long fieldWorkerId,
+            @RequestBody @Valid UpdateFieldWorkerResource resource,
+            @RequestPart(required = false) MultipartFile image
+    ) {
+        var command = UpdateFieldWorkerCommandFromResourceAssembler.toCommandFromResource(fieldWorkerId, resource, image);
         var updatedFieldWorker = commandService.update(command);
         return updatedFieldWorker
                 .map(FieldWorkerResourceAssembler::toResource)
