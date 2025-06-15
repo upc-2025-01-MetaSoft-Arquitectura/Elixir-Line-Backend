@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface WinegrowerCommandService {
     Optional<Winegrower> handle(CreateWinegrowerCommand command);
     Optional<Winegrower> update(UpdateWinegrowerCommand command);
-    Optional<Winegrower> updatePartial(UpdateWinegrowerCommand command);
+    //Optional<Winegrower> updatePartial(UpdateWinegrowerCommand command);
     void logicallyDelete(DeleteWinegrowerCommand command);
     void physicallyDelete(DeleteWinegrowerCommand command);
     Optional<Winegrower> activate(ActivateWinegrowerCommand command);

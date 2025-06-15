@@ -40,8 +40,6 @@ public class FieldWorker extends AuditableAbstractAggregateRoot<FieldWorker> {
     @NotNull(message = "Vinegrower Id is required")
     private Long vinegrowerId;
 
-
-
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private EmployeeStatus status = EmployeeStatus.ACTIVE;

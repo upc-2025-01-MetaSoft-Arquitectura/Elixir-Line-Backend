@@ -6,15 +6,14 @@ import com.elixirline.service.elixirline_backend.employeemanagement.employees.in
 import org.springframework.web.multipart.MultipartFile;
 
 public class UpdateFieldWorkerCommandFromResourceAssembler {
-    public static UpdateFieldWorkerCommand toCommandFromResource (Long fieldWorkerId, UpdateFieldWorkerResource resource, MultipartFile image) {
+    public static UpdateFieldWorkerCommand toCommandFromResource (Long fieldWorkerId, UpdateFieldWorkerResource resource) {
         return new UpdateFieldWorkerCommand(
                 fieldWorkerId,
-                new Name(resource.name()),
-                new Lastname(resource.lastname()),
-                new PhoneNumber(resource.phoneNumber()),
-                new ProfilePicture(resource.profilePicture()),
-                resource.vinegrowerId(),
-                image
+                resource.name() != null ? new Name(resource.name()) : null,
+                resource.lastname() != null ? new Lastname(resource.lastname()) : null,
+                resource.phoneNumber() != null ? new PhoneNumber(resource.phoneNumber()) : null,
+                resource.vinegrowerId() != null ? resource.vinegrowerId() : null,
+                resource.image()
         );
     }
 }

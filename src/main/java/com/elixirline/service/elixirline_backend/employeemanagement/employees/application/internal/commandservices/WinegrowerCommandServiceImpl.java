@@ -42,27 +42,26 @@ public class WinegrowerCommandServiceImpl implements WinegrowerCommandService {
     @Transactional
     @Override
     public Optional<Winegrower> update(UpdateWinegrowerCommand command) {
-        return vinegrowerRepository.findById(command.vinegrowerId()).map(vinegrower -> {
-            vinegrower.setName(command.name());
-            vinegrower.setLastname(command.lastname());
-            vinegrower.setCountry(command.country());
-            vinegrower.setPhoneNumber(command.phoneNumber());
+        return vinegrowerRepository.findById(command.vinegrowerId()).map(winegrower -> {
+            winegrower.setName(command.name());
+            winegrower.setLastname(command.lastname());
+            winegrower.setCountry(command.country());
+            winegrower.setPhoneNumber(command.phoneNumber());
 
             if (command.image() != null && !command.image().isEmpty()) {
                 try {
                     String imageUrl = firebaseFileService.saveImage(command.image());
-                    vinegrower.setProfilePicture(new ProfilePicture(imageUrl));
+                    winegrower.setProfilePicture(new ProfilePicture(imageUrl));
                 } catch (IOException e) {
                     throw new RuntimeException("Error uploading the image", e);
                 }
-            } else if (command.profilePicture() != null) {
-                vinegrower.setProfilePicture(command.profilePicture());
             }
 
-            return vinegrowerRepository.save(vinegrower);
+            return vinegrowerRepository.save(winegrower);
         });
     }
 
+    /*
     @Transactional
     @Override
     public Optional<Winegrower> updatePartial(UpdateWinegrowerCommand command) {
@@ -84,7 +83,7 @@ public class WinegrowerCommandServiceImpl implements WinegrowerCommandService {
             }
             return vinegrowerRepository.save(vinegrower);
         });
-    }
+    }*/
 
     @Transactional
     @Override

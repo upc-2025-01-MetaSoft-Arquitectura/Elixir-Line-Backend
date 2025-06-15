@@ -8,7 +8,6 @@ public record UpdateFieldWorkerCommand(
         Name name,
         Lastname lastname,
         PhoneNumber phoneNumber,
-        ProfilePicture profilePicture,
         Long vinegrowerId,
         MultipartFile image
 ) { }

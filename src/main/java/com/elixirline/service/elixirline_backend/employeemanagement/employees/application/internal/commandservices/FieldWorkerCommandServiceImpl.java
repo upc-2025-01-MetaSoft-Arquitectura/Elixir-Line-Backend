@@ -55,8 +55,6 @@ public class FieldWorkerCommandServiceImpl implements FieldWorkerCommandService 
                 } catch (IOException e) {
                     throw new RuntimeException("Error uploading the image", e);
                 }
-            } else if (command.profilePicture() != null) {
-                fieldWorker.setProfilePicture(command.profilePicture());
             }
 
             return fieldWorkerRepository.save(fieldWorker);

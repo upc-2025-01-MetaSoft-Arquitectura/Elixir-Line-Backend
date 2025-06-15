@@ -732,13 +732,17 @@ public class WinegrowerController {
                     )
             )
     })
-    @PutMapping(value = "/{winegrowerId}", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(value = "/{winegrowerId}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<WinegrowerResource> update(
             @PathVariable Long winegrowerId,
-            @RequestBody @Valid UpdateWinegrowerResource resource,
+            @RequestPart(required = false) String name,
+            @RequestPart(required = false) String lastname,
+            @RequestPart(required = false) String country,
+            @RequestPart(required = false) String phoneNumber,
             @RequestPart(required = false) MultipartFile image
     ) {
-        var command = UpdateWinegrowerCommandFromResourceAssembler.toCommandFromResource(winegrowerId, resource, image);
+        var resource = new UpdateWinegrowerResource(name, lastname, country, phoneNumber, image);
+        var command = UpdateWinegrowerCommandFromResourceAssembler.toCommandFromResource(winegrowerId, resource);
         var updatedWinegrower = commandService.update(command);
         return updatedWinegrower
                 .map(WinegrowerResourceAssembler::toResource)
