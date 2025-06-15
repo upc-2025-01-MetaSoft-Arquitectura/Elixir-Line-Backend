@@ -284,7 +284,7 @@ public class FieldWorkerController {
                                     {
                                       "fieldWorkerId": 1,
                                       "userId": 3,
-                                      "name": {"Mateo Lucas",
+                                      "name": "Mateo Lucas",
                                       "lastname": "Hernandez Sanchez",
                                       "phoneNumber": "987654321",
                                       "profilePicture": "https://example.com/profile.jpg",
@@ -415,7 +415,7 @@ public class FieldWorkerController {
                                     {
                                       "fieldWorkerId": 1,
                                       "userId": 3,
-                                      "name": {"Mateo Lucas",
+                                      "name": "Mateo Lucas",
                                       "lastname": "Hernandez Sanchez",
                                       "phoneNumber": "987654321",
                                       "profilePicture": "https://example.com/profile.jpg",
@@ -740,7 +740,7 @@ public class FieldWorkerController {
                                             {
                                               "fieldWorkerId": 1,
                                               "userId": 3,
-                                              "name": {"Mateo Lucas",
+                                              "name": "Mateo Lucas",
                                               "lastname": "Hernandez Sanchez",
                                               "phoneNumber": "987654321",
                                               "profilePicture": "https://example.com/profile.jpg",

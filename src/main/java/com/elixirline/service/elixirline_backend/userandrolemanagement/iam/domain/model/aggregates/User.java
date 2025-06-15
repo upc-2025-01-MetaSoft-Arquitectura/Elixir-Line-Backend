@@ -36,47 +36,16 @@ public class User extends AuditableAbstractAggregateRoot<User> {
     @Size(max = 120)
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(	name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="role_id")
+    private Role role;
 
-    public User() {
-        this.roles = new HashSet<>();
-    }
-    public User(String email, String password) {
+    public User() { }
+
+    public User(String email, String password, Role role) {
         this.email = email;
         this.password = password;
-        this.roles = new HashSet<>();
-    }
-
-
-    public User(String email, String password, List<Role> roles) {
-        this(email, password);
-        addRoles(roles);
-    }
-
-
-    /**
-     * Add a role to the user
-     * @param role the role to add
-     * @return the user with the added role
-     */
-    public User addRole(Role role) {
-        this.roles.add(role);
-        return this;
-    }
-
-    /**
-     * Add a list of roles to the user
-     * @param roles the list of roles to add
-     * @return the user with the added roles
-     */
-    public User addRoles(List<Role> roles) {
-        var validatedRoleSet = Role.validateRoleSet(roles);
-        this.roles.addAll(validatedRoleSet);
-        return this;
+        this.role = role;
     }
 
     public User updateUser(String email, String password) {
