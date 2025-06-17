@@ -1,12 +1,14 @@
-package com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.commands;
+package com.elixirline.service.elixirline_backend.employeemanagement.employees.interfaces.rest.resources;
 
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.valueobjects.*;
 
-public record UpdateWinegrowerCommand(
+public record WinegrowerResource(
         Long vinegrowerId,
+        Long userId,
         Name name,
         Lastname lastname,
         Country country,
         PhoneNumber phoneNumber,
-        ProfilePicture profilePicture
+        ProfilePicture profilePicture,
+        EmployeeStatus status
 ) { }

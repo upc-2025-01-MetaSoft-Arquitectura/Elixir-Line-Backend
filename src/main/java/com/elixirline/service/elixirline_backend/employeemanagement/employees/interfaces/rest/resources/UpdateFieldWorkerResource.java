@@ -7,6 +7,6 @@ public record UpdateFieldWorkerResource(
         @Nullable String name,
         @Nullable String lastname,
         @Nullable String phoneNumber,
-        @Nullable Long vinegrowerId,
+        @Nullable Long winegrowerId,
         @Nullable MultipartFile image
 ) { }

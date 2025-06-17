@@ -18,13 +18,13 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class WinegrowerCommandServiceImpl implements WinegrowerCommandService {
-    private final WinegrowerRepository vinegrowerRepository;
+    private final WinegrowerRepository winegrowerRepository;
     private final FirebaseFileService firebaseFileService;
 
     @Transactional
     @Override
     public Optional<Winegrower> handle(CreateWinegrowerCommand command) {
-        Winegrower vinegrower = new Winegrower(
+        Winegrower winegrower = new Winegrower(
                 command.userId(),
                 command.name(),
                 command.lastname(),
@@ -33,7 +33,7 @@ public class WinegrowerCommandServiceImpl implements WinegrowerCommandService {
         );
 
         try {
-            return Optional.of(vinegrowerRepository.save(vinegrower));
+            return Optional.of(winegrowerRepository.save(winegrower));
         } catch (Exception e) {
             throw new WinegrowerNotBeCreated(e.getMessage());
         }
@@ -42,7 +42,7 @@ public class WinegrowerCommandServiceImpl implements WinegrowerCommandService {
     @Transactional
     @Override
     public Optional<Winegrower> update(UpdateWinegrowerCommand command) {
-        return vinegrowerRepository.findById(command.vinegrowerId()).map(winegrower -> {
+        return winegrowerRepository.findById(command.winegrowerId()).map(winegrower -> {
             winegrower.setName(command.name());
             winegrower.setLastname(command.lastname());
             winegrower.setCountry(command.country());
@@ -57,7 +57,7 @@ public class WinegrowerCommandServiceImpl implements WinegrowerCommandService {
                 }
             }
 
-            return vinegrowerRepository.save(winegrower);
+            return winegrowerRepository.save(winegrower);
         });
     }
 
@@ -88,24 +88,24 @@ public class WinegrowerCommandServiceImpl implements WinegrowerCommandService {
     @Transactional
     @Override
     public void logicallyDelete(DeleteWinegrowerCommand command) {
-        vinegrowerRepository.findById(command.vinegrowerId()).ifPresent(vinegrower -> {
-            vinegrower.setStatus(EmployeeStatus.INACTIVE);
-            vinegrowerRepository.save(vinegrower);
+        winegrowerRepository.findById(command.winegrowerId()).ifPresent(winegrower -> {
+            winegrower.setStatus(EmployeeStatus.INACTIVE);
+            winegrowerRepository.save(winegrower);
         });
     }
 
     @Transactional
     @Override
     public void physicallyDelete(DeleteWinegrowerCommand command) {
-        vinegrowerRepository.deleteById(command.vinegrowerId());
+        winegrowerRepository.deleteById(command.winegrowerId());
     }
 
     @Transactional
     @Override
     public Optional<Winegrower> activate(ActivateWinegrowerCommand command) {
-        return vinegrowerRepository.findById(command.vinegrowerId()).map(vinegrower -> {
-            vinegrower.setStatus(EmployeeStatus.ACTIVE);
-            return vinegrowerRepository.save(vinegrower);
+        return winegrowerRepository.findById(command.winegrowerId()).map(winegrower -> {
+            winegrower.setStatus(EmployeeStatus.ACTIVE);
+            return winegrowerRepository.save(winegrower);
         });
     }
 }

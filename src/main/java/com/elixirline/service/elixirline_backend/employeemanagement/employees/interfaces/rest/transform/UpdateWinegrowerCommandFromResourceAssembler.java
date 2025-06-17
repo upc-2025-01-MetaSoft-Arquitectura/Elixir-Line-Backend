@@ -6,9 +6,9 @@ import com.elixirline.service.elixirline_backend.employeemanagement.employees.in
 import org.springframework.web.multipart.MultipartFile;
 
 public class UpdateWinegrowerCommandFromResourceAssembler {
-    public static UpdateWinegrowerCommand toCommandFromResource(Long vinegrowerId, UpdateWinegrowerResource winegrowerResource) {
+    public static UpdateWinegrowerCommand toCommandFromResource(Long winegrowerId, UpdateWinegrowerResource winegrowerResource) {
         return new UpdateWinegrowerCommand(
-          vinegrowerId,
+          winegrowerId,
           winegrowerResource.name() != null ? new Name(winegrowerResource.name()) : null,
           winegrowerResource.lastname() != null ? new Lastname(winegrowerResource.lastname()) : null,
           winegrowerResource.country() != null ? new Country(winegrowerResource.country()) : null,

@@ -66,7 +66,7 @@ public class WinegrowerController {
                                             value = """
                                             [
                                               {
-                                                "winegrowerId": 1,
+                                                "vinegrowerId": 1,
                                                 "userId": 3,
                                                 "name": "Juan Guillermo",
                                                 "lastname": "Pérez Lira",
@@ -168,7 +168,7 @@ public class WinegrowerController {
                                                 "lastname": "Gómez Pérez",
                                                 "phoneNumber": "987654321",
                                                 "profilePicture": "https://example.com/profile.jpg",
-                                                "winegrowerId": 1,
+                                                "vinegrowerId": 1,
                                                 "status": "ACTIVE"
                                               }
                                             ]
@@ -295,7 +295,7 @@ public class WinegrowerController {
                                                 "lastname": "Jimenez Gómez",
                                                 "phoneNumber": "987654321",
                                                 "profilePicture": "https://example.com/profile.jpg",
-                                                "winegrowerId": 1,
+                                                "vinegrowerId": 1,
                                                 "status": "ACTIVE"
                                               }
                                             ]
@@ -409,7 +409,7 @@ public class WinegrowerController {
                                             summary = "Respuesta exitosa con los detalles del vinicultor",
                                             value = """
                                             {
-                                              "winegrowerId": 1,
+                                              "vinegrowerId": 1,
                                               "userId": 5,
                                               "name": "Juan Carlos",
                                               "lastname": "Pérez Gómez",
@@ -524,7 +524,7 @@ public class WinegrowerController {
                                     summary = "Respuesta exitosa de creación",
                                     value = """
                                     {
-                                      "winegrowerId": 1,
+                                      "vinegrowerId": 1,
                                       "userId": 5,
                                       "name": "Juan Carlos",
                                       "lastname": "Pérez Gómez",
@@ -654,7 +654,7 @@ public class WinegrowerController {
                                     summary = "Respuesta exitosa con los detalles del vinicultor actualizado",
                                     value = """
                                     {
-                                      "winegrower Id": 1,
+                                      "vinegrower Id": 1,
                                       "userId": 5,
                                       "name": "Juan Carlos",
                                       "lastname": "Pérez Gomez",
@@ -977,7 +977,7 @@ public class WinegrowerController {
                                             summary = "Respuesta exitosa con los detalles del vinicultor activado",
                                             value = """
                                             {
-                                              "winegrowerId": 1,
+                                              "vinegrowerId": 1,
                                               "userId": 5,
                                               "name": "Juan Arturo",
                                               "lastname": "Lopez Pérez",

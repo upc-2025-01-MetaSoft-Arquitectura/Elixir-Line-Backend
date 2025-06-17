@@ -36,20 +36,20 @@ public class FieldWorker extends AuditableAbstractAggregateRoot<FieldWorker> {
     @Embedded
     private ProfilePicture profilePicture;
 
-    @Column(name = "vinegrower_id")
+    @Column(name = "winegrower_id")
     @NotNull(message = "Vinegrower Id is required")
-    private Long vinegrowerId;
+    private Long winegrowerId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private EmployeeStatus status = EmployeeStatus.ACTIVE;
 
-    public FieldWorker(Long userId, Name name, Lastname lastname, PhoneNumber phoneNumber, Long vinegrowerId) {
+    public FieldWorker(Long userId, Name name, Lastname lastname, PhoneNumber phoneNumber, Long winegrowerId) {
         this.userId = userId;
         this.name = name;
         this.lastname = lastname;
         this.phoneNumber = phoneNumber;
-        this.vinegrowerId = vinegrowerId;
+        this.winegrowerId = winegrowerId;
         this.profilePicture = new ProfilePicture();
     }
 }
