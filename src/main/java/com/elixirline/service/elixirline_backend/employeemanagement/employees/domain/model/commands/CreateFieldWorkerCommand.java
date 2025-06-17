@@ -7,5 +7,5 @@ public record CreateFieldWorkerCommand (
         Name name,
         Lastname lastname,
         PhoneNumber phoneNumber,
-        Long vinegrowerId
+        Long winegrowerId
 ) { }

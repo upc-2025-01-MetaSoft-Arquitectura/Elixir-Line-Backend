@@ -29,7 +29,7 @@ public class FieldWorkerCommandServiceImpl implements FieldWorkerCommandService 
                 command.name(),
                 command.lastname(),
                 command.phoneNumber(),
-                command.winegrowerId()
+                command.vinegrowerId()
         );
 
         try {
@@ -46,7 +46,7 @@ public class FieldWorkerCommandServiceImpl implements FieldWorkerCommandService 
             fieldWorker.setName(command.name());
             fieldWorker.setLastname(command.lastname());
             fieldWorker.setPhoneNumber(command.phoneNumber());
-            fieldWorker.setWinegrowerId(command.winegrowerId());
+            fieldWorker.setVinegrowerId(command.vinegrowerId());
 
             if (command.image() != null && !command.image().isEmpty()) {
                 try {

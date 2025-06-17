@@ -12,7 +12,7 @@ public class FieldWorkerResourceAssembler {
                 fieldWorker.getLastname(),
                 fieldWorker.getPhoneNumber(),
                 fieldWorker.getProfilePicture(),
-                fieldWorker.getVinegrowerId(),
+                fieldWorker.getWinegrowerId(),
                 fieldWorker.getStatus()
         );
     }

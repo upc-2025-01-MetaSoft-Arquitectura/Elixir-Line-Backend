@@ -4,16 +4,16 @@ import com.elixirline.service.elixirline_backend.employeemanagement.employees.do
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.interfaces.rest.resources.WinegrowerResource;
 
 public class WinegrowerResourceAssembler {
-    public static WinegrowerResource toResource(Winegrower vinegrower) {
+    public static WinegrowerResource toResource(Winegrower winegrower) {
         return new WinegrowerResource(
-                vinegrower.getWinegrowerId(),
-                vinegrower.getUserId(),
-                vinegrower.getName(),
-                vinegrower.getLastname(),
-                vinegrower.getCountry(),
-                vinegrower.getPhoneNumber(),
-                vinegrower.getProfilePicture(),
-                vinegrower.getStatus()
+                winegrower.getWinegrowerId(),
+                winegrower.getUserId(),
+                winegrower.getName(),
+                winegrower.getLastname(),
+                winegrower.getCountry(),
+                winegrower.getPhoneNumber(),
+                winegrower.getProfilePicture(),
+                winegrower.getStatus()
         );
     }
 }

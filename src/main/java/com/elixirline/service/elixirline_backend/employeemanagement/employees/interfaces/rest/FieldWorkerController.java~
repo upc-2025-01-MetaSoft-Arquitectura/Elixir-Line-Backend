@@ -76,7 +76,7 @@ public class FieldWorkerController {
                                                 "lastname": "Hernandez Sanchez",
                                                 "phoneNumber": "987654321",
                                                 "profilePicture":"https://example.com/profile.jpg",
-                                                "winegrowerId": 1,
+                                                "vinegrowerId": 1,
                                                 "status": "ACTIVE"
                                               }
                                             ]
@@ -172,7 +172,7 @@ public class FieldWorkerController {
                                                 "lastname": "Hernandez Sanchez",
                                                 "phoneNumber": "987654321",
                                                 "profilePicture":"https://example.com/profile.jpg",
-                                                "winegrowerId": 1,
+                                                "vinegrowerId": 1,
                                                 "status": "ACTIVE"
                                               }
                                             ]
@@ -288,7 +288,7 @@ public class FieldWorkerController {
                                       "lastname": "Hernandez Sanchez",
                                       "phoneNumber": "987654321",
                                       "profilePicture": "https://example.com/profile.jpg",
-                                      "winegrowerId": 1,
+                                      "vinegrowerId": 1,
                                       "status": "ACTIVE"
                                     }
                                     """
@@ -419,7 +419,7 @@ public class FieldWorkerController {
                                       "lastname": "Hernandez Sanchez",
                                       "phoneNumber": "987654321",
                                       "profilePicture": "https://example.com/profile.jpg",
-                                      "winegrowerId": 1,
+                                      "vinegrowerId": 1,
                                       "status": "ACTIVE"
                                     }
                                     """
@@ -500,8 +500,8 @@ public class FieldWorkerController {
             @RequestPart(required = false) String winegrowerId,
             @RequestPart(required = false) MultipartFile image
     ) {
-        Long winegrowerIdLong = (winegrowerId != null && !winegrowerId.isEmpty()) ? Long.parseLong(winegrowerId) : null;
-        var resource = new UpdateFieldWorkerResource(name, lastname, phoneNumber, winegrowerIdLong, image);
+        Long winegrowerIdLong 
+        var resource = new UpdateFieldWorkerResource(name, lastname, phoneNumber, vinegrowerId, image);
         var command = UpdateFieldWorkerCommandFromResourceAssembler.toCommandFromResource(fieldWorkerId, resource);
         var updatedFieldWorker = commandService.update(command);
         return updatedFieldWorker
@@ -749,7 +749,7 @@ public class FieldWorkerController {
                                               "lastname": "Hernandez Sanchez",
                                               "phoneNumber": "987654321",
                                               "profilePicture": "https://example.com/profile.jpg",
-                                              "winegrowerId": 1,
+                                              "vinegrowerId": 1,
                                               "status": "ACTIVE"
                                             }
                                             """

@@ -4,7 +4,7 @@ import com.elixirline.service.elixirline_backend.employeemanagement.employees.do
 import org.springframework.web.multipart.MultipartFile;
 
 public record UpdateWinegrowerCommand(
-        Long vinegrowerId,
+        Long winegrowerId,
         Name name,
         Lastname lastname,
         Country country,
