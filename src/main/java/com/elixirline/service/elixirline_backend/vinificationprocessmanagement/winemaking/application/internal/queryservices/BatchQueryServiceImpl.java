@@ -1,12 +1,14 @@
 package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.application.internal.queryservices;
 
-import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.exceptions.BatchNotFoundException;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.exceptions.batch.BatchNotFoundException;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.aggregates.Batch;
-import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.queries.GetAllBatchesQuery;
-import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.queries.GetBatchByIdQuery;
-import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.queries.GetBatchesByVineyardCodeQuery;
-import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.services.BatchQueryService;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.entities.ProcessStage;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.queries.batch.GetAllBatchesQuery;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.queries.batch.GetBatchByIdQuery;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.queries.batch.GetBatchesByVineyardCodeQuery;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.services.batch.BatchQueryService;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.infrastructure.persistance.jpa.repositories.BatchRepository;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.infrastructure.persistance.jpa.repositories.stagerepository.BatchStageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class BatchQueryServiceImpl implements BatchQueryService {
     private final BatchRepository batchRepository;
+    private final BatchStageRepository batchStageRepository;
 
     @Override
     public Optional<Batch> handle(GetBatchByIdQuery query) {
@@ -34,12 +37,17 @@ public class BatchQueryServiceImpl implements BatchQueryService {
     }
 
     @Override
-    public List<Batch> getAllByCampaignId(Long campaignId) {
-        return batchRepository.findByCampaignId(campaignId);
+    public List<Batch> getAllByCampaignIdByWinegrowerId(Long winegrowerId , Long campaignId) {
+        return batchRepository.findByCampaignIdAndWinegrowerId(winegrowerId, campaignId);
     }
 
     @Override
     public List<Batch> getAllByWinegrowerId(Long winegrowerId) {
         return batchRepository.findByWinegrowerId(winegrowerId);
+    }
+
+    @Override
+    public List<ProcessStage> getStagesByBatchId(Long batchId) {
+        return batchStageRepository.findStagesByBatchId(batchId);
     }
 }

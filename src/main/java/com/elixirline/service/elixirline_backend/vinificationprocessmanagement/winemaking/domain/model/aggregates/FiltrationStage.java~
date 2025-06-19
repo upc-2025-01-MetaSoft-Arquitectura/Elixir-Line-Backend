@@ -1,0 +1,69 @@
+package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.aggregates;
+
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.entities.ProcessStage;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.batch.CurrentStage;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.common.Employee;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.common.EndDate;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.common.StartDate;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.filtrationstage.*;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@Entity
+@Table(name = "filtration_stage")
+public class FiltrationStage extends ProcessStage {
+    @Embedded
+    private FilterType filterType; // Tipo de filtración
+
+    @Embedded
+    private FilterMedium filterMedium; // Medio filtrante
+
+    @Embedded
+    private Porosity porosity; // Porosidad (micrones)
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "filtrationTurbidity", column = @Column(name = "initial_turbidity"))
+    })
+    private FiltrationTurbidity initialTurbidity; // Nivel de turbidez antes
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "filtrationTurbidity", column = @Column(name = "final_turbidity"))
+    })
+    private FiltrationTurbidity finalTurbidity; // Nivel de turbidez después
+
+    @Embedded
+    private FiltrationTemperature temperature; // Temperatura
+
+    @Embedded
+    private Pressure pressure; // Presión (Bares)
+
+    @Embedded
+    private FiltrationVolume filteredVolume; // Volumen Filtrado (litros)
+
+    private Boolean sterileFiltration; // Filtración estéril
+
+    private Boolean changedFiltration; // Filtración cambiado
+
+    @Embedded
+    private ChangeReason changeReason; // Motivo del cambio
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "current_stage", nullable = false)
+    private CurrentStage currentStage = CurrentStage.FILTRATION;
+
+    public FiltrationStage(Long batchId, Employee employee, StartDate startDate, EndDate endDate) {
+        this.setBatchId(batchId);
+        this.setEmployee(employee);
+        this.setStartDate(startDate);
+        this.setEndDate(endDate);
+    }
+}
+
