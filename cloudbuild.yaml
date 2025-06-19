@@ -1,5 +1,6 @@
 steps:
-  - name: 'gcr.io/cloud-builders/mvn'
+  - name: 'maven:3.9.6-eclipse-temurin-24'
+    entrypoint: 'mvn'
     args: ['clean', 'package', '-DskipTests']
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'gcr.io/$PROJECT_ID/elixirline-backend', '.']
