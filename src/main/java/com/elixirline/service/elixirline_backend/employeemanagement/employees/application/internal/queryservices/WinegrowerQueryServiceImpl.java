@@ -17,28 +17,49 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class WinegrowerQueryServiceImpl implements WinegrowerQueryService {
+<<<<<<< HEAD
     private final WinegrowerRepository vinegrowerRepository;
+=======
+    private final WinegrowerRepository winegrowerRepository;
+>>>>>>> develop
     private final FieldWorkerRepository fieldWorkerRepository;
 
     @Override
     public List<Winegrower> handle(GetAllWinegrowersQuery query) {
+<<<<<<< HEAD
         return vinegrowerRepository.findAll();
+=======
+        return winegrowerRepository.findAll();
+>>>>>>> develop
     }
 
     @Override
     public Optional<Winegrower> handle(GetWinegrowerByIdQuery query) {
+<<<<<<< HEAD
         return vinegrowerRepository.findById(query.vinegrowerId());
+=======
+        return winegrowerRepository.findById(query.winegrowerId());
+>>>>>>> develop
     }
 
     @Override
     public List<FieldWorker> handle(GetAllFieldWorkersByWinegrowerIdQuery query) {
+<<<<<<< HEAD
         return fieldWorkerRepository.findByVinegrowerId(query.vinegrowerId());
+=======
+        return fieldWorkerRepository.findByWinegrowerId(query.winegrowerId());
+>>>>>>> develop
     }
 
     @Override
     public List<FieldWorker> handle(GetAllFieldWorkersByWinegrowerIdByEmployeeStatusQuery query) {
+<<<<<<< HEAD
         return fieldWorkerRepository.findByVinegrowerIdAndStatus(
                 query.vinegrowerId(),
+=======
+        return fieldWorkerRepository.findByWinegrowerIdAndStatus(
+                query.winegrowerId(),
+>>>>>>> develop
                 query.employeeStatus()
         );
     }

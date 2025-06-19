@@ -87,7 +87,11 @@ public class WebSecurityConfiguration {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
+<<<<<<< HEAD
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200", "http://localhost:8082", "http://localhost:5173"));
+=======
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200", "http://localhost:8082", "http://localhost:5173", "http://127.0.0.1:8080", "http://169.254.238.70:8080"));
+>>>>>>> develop
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList(
                 "Origin",
@@ -117,6 +121,7 @@ public class WebSecurityConfiguration {
      * @param http The http security
      * @return The security filter chain
      */
+<<<<<<< HEAD
 //    @Bean
 //    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 //        http
@@ -145,6 +150,8 @@ public class WebSecurityConfiguration {
 //        http.addFilterBefore(authorizationRequestFilter(), UsernamePasswordAuthenticationFilter.class);
 //        return http.build();
 //    }
+=======
+>>>>>>> develop
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -155,8 +162,23 @@ public class WebSecurityConfiguration {
                 .sessionManagement(customizer ->
                         customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+<<<<<<< HEAD
                         .requestMatchers("/**").permitAll()  // 👈 PERMITIR TODO
                 );
+=======
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers(
+                                "/api/v1/authentication/**",
+                                "/api/v1/roles/**",
+                                "/api/v1/users/**",
+                                "api/v1/batches/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui.html",
+                                "/swagger-ui/**",
+                                "/swagger-resources/**",
+                                "/webjars/**").permitAll()
+                        .anyRequest().authenticated());
+>>>>>>> develop
 
         http.authenticationProvider(authenticationProvider());
         http.addFilterBefore(authorizationRequestFilter(), UsernamePasswordAuthenticationFilter.class);

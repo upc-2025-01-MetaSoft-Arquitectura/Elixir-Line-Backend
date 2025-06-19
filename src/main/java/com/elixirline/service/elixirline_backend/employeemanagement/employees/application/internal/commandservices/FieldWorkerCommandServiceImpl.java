@@ -4,18 +4,33 @@ import com.elixirline.service.elixirline_backend.employeemanagement.employees.do
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.aggregates.FieldWorker;
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.commands.*;
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.valueobjects.EmployeeStatus;
+<<<<<<< HEAD
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.services.fieldworker.FieldWorkerCommandService;
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.infrastructure.persistance.jpa.repositories.FieldWorkerRepository;
+=======
+import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.valueobjects.ProfilePicture;
+import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.services.fieldworker.FieldWorkerCommandService;
+import com.elixirline.service.elixirline_backend.employeemanagement.employees.infrastructure.persistance.jpa.repositories.FieldWorkerRepository;
+import com.elixirline.service.elixirline_backend.shared.infrastructure.storage.FirebaseFileService;
+>>>>>>> develop
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+<<<<<<< HEAD
+=======
+import java.io.IOException;
+>>>>>>> develop
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class FieldWorkerCommandServiceImpl implements FieldWorkerCommandService {
     private final FieldWorkerRepository fieldWorkerRepository;
+<<<<<<< HEAD
+=======
+    private final FirebaseFileService firebaseFileService;
+>>>>>>> develop
 
     @Transactional
     @Override
@@ -25,7 +40,11 @@ public class FieldWorkerCommandServiceImpl implements FieldWorkerCommandService 
                 command.name(),
                 command.lastname(),
                 command.phoneNumber(),
+<<<<<<< HEAD
                 command.vinegrowerId()
+=======
+                command.winegrowerId()
+>>>>>>> develop
         );
 
         try {
@@ -42,8 +61,22 @@ public class FieldWorkerCommandServiceImpl implements FieldWorkerCommandService 
             fieldWorker.setName(command.name());
             fieldWorker.setLastname(command.lastname());
             fieldWorker.setPhoneNumber(command.phoneNumber());
+<<<<<<< HEAD
             fieldWorker.setProfilePicture(command.profilePicture());
             fieldWorker.setVinegrowerId(command.vinegrowerId());
+=======
+            fieldWorker.setWinegrowerId(command.winegrowerId());
+
+            if (command.image() != null && !command.image().isEmpty()) {
+                try {
+                    String imageUrl = firebaseFileService.saveImage(command.image());
+                    fieldWorker.setProfilePicture(new ProfilePicture(imageUrl));
+                } catch (IOException e) {
+                    throw new RuntimeException("Error uploading the image", e);
+                }
+            }
+
+>>>>>>> develop
             return fieldWorkerRepository.save(fieldWorker);
         });
     }

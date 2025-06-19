@@ -10,7 +10,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
+<<<<<<< HEAD
 @Entity(name = "vinegrower")
+=======
+@Entity(name = "winegrower")
+>>>>>>> develop
 @NoArgsConstructor
 public class Winegrower extends AuditableAbstractAggregateRoot<Winegrower> {
     @Id

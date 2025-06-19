@@ -4,23 +4,43 @@ import com.elixirline.service.elixirline_backend.employeemanagement.employees.do
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.aggregates.Winegrower;
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.commands.*;
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.valueobjects.EmployeeStatus;
+<<<<<<< HEAD
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.services.winegrower.WinegrowerCommandService;
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.infrastructure.persistance.jpa.repositories.WinegrowerRepository;
+=======
+import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.valueobjects.ProfilePicture;
+import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.services.winegrower.WinegrowerCommandService;
+import com.elixirline.service.elixirline_backend.employeemanagement.employees.infrastructure.persistance.jpa.repositories.WinegrowerRepository;
+import com.elixirline.service.elixirline_backend.shared.infrastructure.storage.FirebaseFileService;
+>>>>>>> develop
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+<<<<<<< HEAD
+=======
+import java.io.IOException;
+>>>>>>> develop
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class WinegrowerCommandServiceImpl implements WinegrowerCommandService {
+<<<<<<< HEAD
     private final WinegrowerRepository vinegrowerRepository;
+=======
+    private final WinegrowerRepository winegrowerRepository;
+    private final FirebaseFileService firebaseFileService;
+>>>>>>> develop
 
     @Transactional
     @Override
     public Optional<Winegrower> handle(CreateWinegrowerCommand command) {
+<<<<<<< HEAD
         Winegrower vinegrower = new Winegrower(
+=======
+        Winegrower winegrower = new Winegrower(
+>>>>>>> develop
                 command.userId(),
                 command.name(),
                 command.lastname(),
@@ -29,7 +49,11 @@ public class WinegrowerCommandServiceImpl implements WinegrowerCommandService {
         );
 
         try {
+<<<<<<< HEAD
             return Optional.of(vinegrowerRepository.save(vinegrower));
+=======
+            return Optional.of(winegrowerRepository.save(winegrower));
+>>>>>>> develop
         } catch (Exception e) {
             throw new WinegrowerNotBeCreated(e.getMessage());
         }
@@ -38,6 +62,7 @@ public class WinegrowerCommandServiceImpl implements WinegrowerCommandService {
     @Transactional
     @Override
     public Optional<Winegrower> update(UpdateWinegrowerCommand command) {
+<<<<<<< HEAD
         return vinegrowerRepository.findById(command.vinegrowerId()).map(vinegrower -> {
             vinegrower.setName(command.name());
             vinegrower.setLastname(command.lastname());
@@ -48,6 +73,28 @@ public class WinegrowerCommandServiceImpl implements WinegrowerCommandService {
         });
     }
 
+=======
+        return winegrowerRepository.findById(command.winegrowerId()).map(winegrower -> {
+            winegrower.setName(command.name());
+            winegrower.setLastname(command.lastname());
+            winegrower.setCountry(command.country());
+            winegrower.setPhoneNumber(command.phoneNumber());
+
+            if (command.image() != null && !command.image().isEmpty()) {
+                try {
+                    String imageUrl = firebaseFileService.saveImage(command.image());
+                    winegrower.setProfilePicture(new ProfilePicture(imageUrl));
+                } catch (IOException e) {
+                    throw new RuntimeException("Error uploading the image", e);
+                }
+            }
+
+            return winegrowerRepository.save(winegrower);
+        });
+    }
+
+    /*
+>>>>>>> develop
     @Transactional
     @Override
     public Optional<Winegrower> updatePartial(UpdateWinegrowerCommand command) {
@@ -69,29 +116,49 @@ public class WinegrowerCommandServiceImpl implements WinegrowerCommandService {
             }
             return vinegrowerRepository.save(vinegrower);
         });
+<<<<<<< HEAD
     }
+=======
+    }*/
+>>>>>>> develop
 
     @Transactional
     @Override
     public void logicallyDelete(DeleteWinegrowerCommand command) {
+<<<<<<< HEAD
         vinegrowerRepository.findById(command.vinegrowerId()).ifPresent(vinegrower -> {
             vinegrower.setStatus(EmployeeStatus.INACTIVE);
             vinegrowerRepository.save(vinegrower);
+=======
+        winegrowerRepository.findById(command.winegrowerId()).ifPresent(winegrower -> {
+            winegrower.setStatus(EmployeeStatus.INACTIVE);
+            winegrowerRepository.save(winegrower);
+>>>>>>> develop
         });
     }
 
     @Transactional
     @Override
     public void physicallyDelete(DeleteWinegrowerCommand command) {
+<<<<<<< HEAD
         vinegrowerRepository.deleteById(command.vinegrowerId());
+=======
+        winegrowerRepository.deleteById(command.winegrowerId());
+>>>>>>> develop
     }
 
     @Transactional
     @Override
     public Optional<Winegrower> activate(ActivateWinegrowerCommand command) {
+<<<<<<< HEAD
         return vinegrowerRepository.findById(command.vinegrowerId()).map(vinegrower -> {
             vinegrower.setStatus(EmployeeStatus.ACTIVE);
             return vinegrowerRepository.save(vinegrower);
+=======
+        return winegrowerRepository.findById(command.winegrowerId()).map(winegrower -> {
+            winegrower.setStatus(EmployeeStatus.ACTIVE);
+            return winegrowerRepository.save(winegrower);
+>>>>>>> develop
         });
     }
 }

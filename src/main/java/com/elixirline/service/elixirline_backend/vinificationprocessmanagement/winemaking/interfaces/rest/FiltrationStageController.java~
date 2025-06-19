@@ -1,0 +1,22 @@
+package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
+@RestController
+@RequestMapping(value = "/api/v1/batches/{batchId}/filtration-stage", produces = MediaType.APPLICATION_JSON_VALUE)
+@Tag(name = "Filtration Stage", description = "Filtration Stage Management Endpoints")
+public class FiltrationStageController {
+}

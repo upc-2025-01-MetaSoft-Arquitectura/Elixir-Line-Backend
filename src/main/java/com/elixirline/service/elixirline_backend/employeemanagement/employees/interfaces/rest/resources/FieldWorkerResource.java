@@ -9,6 +9,10 @@ public record FieldWorkerResource(
         Lastname lastname,
         PhoneNumber phoneNumber,
         ProfilePicture profilePicture,
+<<<<<<< HEAD
         Long vinegrowerId,
+=======
+        Long winegrowerId,
+>>>>>>> develop
         EmployeeStatus status
 ) { }

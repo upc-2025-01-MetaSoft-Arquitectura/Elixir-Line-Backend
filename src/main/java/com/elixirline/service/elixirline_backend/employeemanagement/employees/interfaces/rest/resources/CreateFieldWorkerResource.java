@@ -7,5 +7,9 @@ public record CreateFieldWorkerResource(
         Name name,
         Lastname lastname,
         PhoneNumber phoneNumber,
+<<<<<<< HEAD
         Long vinegrowerId
+=======
+        Long winegrowerId
+>>>>>>> develop
 ) { }

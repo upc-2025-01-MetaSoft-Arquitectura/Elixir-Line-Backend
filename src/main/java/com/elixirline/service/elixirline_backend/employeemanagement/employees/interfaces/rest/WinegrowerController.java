@@ -29,6 +29,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
+<<<<<<< HEAD
+=======
+import org.springframework.web.multipart.MultipartFile;
+>>>>>>> develop
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -65,7 +69,11 @@ public class WinegrowerController {
                                             value = """
                                             [
                                               {
+<<<<<<< HEAD
                                                 "vinegrowerId": 1,
+=======
+                                                "winegrowerId": 1,
+>>>>>>> develop
                                                 "userId": 3,
                                                 "name": "Juan Guillermo",
                                                 "lastname": "Pérez Lira",
@@ -167,7 +175,11 @@ public class WinegrowerController {
                                                 "lastname": "Gómez Pérez",
                                                 "phoneNumber": "987654321",
                                                 "profilePicture": "https://example.com/profile.jpg",
+<<<<<<< HEAD
                                                 "vinegrowerId": 1,
+=======
+                                                "winegrowerId": 1,
+>>>>>>> develop
                                                 "status": "ACTIVE"
                                               }
                                             ]
@@ -294,7 +306,11 @@ public class WinegrowerController {
                                                 "lastname": "Jimenez Gómez",
                                                 "phoneNumber": "987654321",
                                                 "profilePicture": "https://example.com/profile.jpg",
+<<<<<<< HEAD
                                                 "vinegrowerId": 1,
+=======
+                                                "winegrowerId": 1,
+>>>>>>> develop
                                                 "status": "ACTIVE"
                                               }
                                             ]
@@ -408,7 +424,11 @@ public class WinegrowerController {
                                             summary = "Respuesta exitosa con los detalles del vinicultor",
                                             value = """
                                             {
+<<<<<<< HEAD
                                               "vinegrowerId": 1,
+=======
+                                              "winegrowerId": 1,
+>>>>>>> develop
                                               "userId": 5,
                                               "name": "Juan Carlos",
                                               "lastname": "Pérez Gómez",
@@ -523,7 +543,11 @@ public class WinegrowerController {
                                     summary = "Respuesta exitosa de creación",
                                     value = """
                                     {
+<<<<<<< HEAD
                                       "vinegrowerId": 1,
+=======
+                                      "winegrowerId": 1,
+>>>>>>> develop
                                       "userId": 5,
                                       "name": "Juan Carlos",
                                       "lastname": "Pérez Gómez",
@@ -653,7 +677,11 @@ public class WinegrowerController {
                                     summary = "Respuesta exitosa con los detalles del vinicultor actualizado",
                                     value = """
                                     {
+<<<<<<< HEAD
                                       "vinegrower Id": 1,
+=======
+                                      "winegrower Id": 1,
+>>>>>>> develop
                                       "userId": 5,
                                       "name": "Juan Carlos",
                                       "lastname": "Pérez Gomez",
@@ -731,8 +759,21 @@ public class WinegrowerController {
                     )
             )
     })
+<<<<<<< HEAD
     @PutMapping(value = "/{winegrowerId}")
     public ResponseEntity<WinegrowerResource> update(@PathVariable Long winegrowerId, @RequestBody @Valid UpdateWinegrowerResource resource) {
+=======
+    @PutMapping(value = "/{winegrowerId}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<WinegrowerResource> update(
+            @PathVariable Long winegrowerId,
+            @RequestPart(required = false) String name,
+            @RequestPart(required = false) String lastname,
+            @RequestPart(required = false) String country,
+            @RequestPart(required = false) String phoneNumber,
+            @RequestPart(required = false) MultipartFile image
+    ) {
+        var resource = new UpdateWinegrowerResource(name, lastname, country, phoneNumber, image);
+>>>>>>> develop
         var command = UpdateWinegrowerCommandFromResourceAssembler.toCommandFromResource(winegrowerId, resource);
         var updatedWinegrower = commandService.update(command);
         return updatedWinegrower
@@ -968,7 +1009,11 @@ public class WinegrowerController {
                                             summary = "Respuesta exitosa con los detalles del vinicultor activado",
                                             value = """
                                             {
+<<<<<<< HEAD
                                               "vinegrowerId": 1,
+=======
+                                              "winegrowerId": 1,
+>>>>>>> develop
                                               "userId": 5,
                                               "name": "Juan Arturo",
                                               "lastname": "Lopez Pérez",

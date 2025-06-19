@@ -2,5 +2,9 @@ package com.elixirline.service.elixirline_backend.employeemanagement.employees.d
 
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.valueobjects.EmployeeStatus;
 
+<<<<<<< HEAD
 public record GetAllFieldWorkersByWinegrowerIdByEmployeeStatusQuery(Long vinegrowerId, EmployeeStatus employeeStatus) {
+=======
+public record GetAllFieldWorkersByWinegrowerIdByEmployeeStatusQuery(Long winegrowerId, EmployeeStatus employeeStatus) {
+>>>>>>> develop
 }
