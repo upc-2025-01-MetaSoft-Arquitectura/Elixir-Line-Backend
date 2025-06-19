@@ -2,8 +2,7 @@ server:
   port: ${SERVER_PORT}
 spring:
   config:
-    import:
-      - env.properties
+    import: optional:env.properties
   application:
     name: elixirline_backend
   datasource:
