@@ -1,8 +1,6 @@
 server:
   port: ${PORT:8080}
 spring:
-  config:
-    import: optional:env.properties
   application:
     name: elixirline_backend
   datasource:
