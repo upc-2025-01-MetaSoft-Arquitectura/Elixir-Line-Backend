@@ -117,6 +117,34 @@ public class WebSecurityConfiguration {
      * @param http The http security
      * @return The security filter chain
      */
+//    @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        http
+//                .cors(Customizer.withDefaults())
+//                .csrf(AbstractHttpConfigurer::disable)
+//                .exceptionHandling(exceptionHandling ->
+//                        exceptionHandling.authenticationEntryPoint(unauthorizedRequestHandler))
+//                .sessionManagement(customizer ->
+//                        customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//                .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+//                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+//                        .requestMatchers(
+//                                "/api/v1/authentication/**",
+//                                "/api/v1/roles/**",
+//                                "/api/v1/users/**",
+//                                "api/v1/batches/**",
+//                                "/api/v1/inputs/**",
+//                                "/v3/api-docs/**",
+//                                "/swagger-ui.html",
+//                                "/swagger-ui/**",
+//                                "/swagger-resources/**",
+//                                "/webjars/**").permitAll()
+//                        .anyRequest().authenticated());
+//
+//        http.authenticationProvider(authenticationProvider());
+//        http.addFilterBefore(authorizationRequestFilter(), UsernamePasswordAuthenticationFilter.class);
+//        return http.build();
+//    }
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -127,18 +155,8 @@ public class WebSecurityConfiguration {
                 .sessionManagement(customizer ->
                         customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers(
-                                "/api/v1/authentication/**",
-                                "/api/v1/roles/**",
-                                "/api/v1/users/**",
-                                "api/v1/batches/**",
-                                "/v3/api-docs/**",
-                                "/swagger-ui.html",
-                                "/swagger-ui/**",
-                                "/swagger-resources/**",
-                                "/webjars/**").permitAll()
-                        .anyRequest().authenticated());
+                        .requestMatchers("/**").permitAll()  // 👈 PERMITIR TODO
+                );
 
         http.authenticationProvider(authenticationProvider());
         http.addFilterBefore(authorizationRequestFilter(), UsernamePasswordAuthenticationFilter.class);
