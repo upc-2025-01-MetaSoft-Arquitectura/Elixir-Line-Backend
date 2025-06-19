@@ -1,0 +1,4 @@
+package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.reception;
+
+public record RecordKeeper {
+}

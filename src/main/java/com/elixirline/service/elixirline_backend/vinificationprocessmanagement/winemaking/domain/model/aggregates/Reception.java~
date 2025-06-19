@@ -1,0 +1,62 @@
+package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.aggregates;
+
+import com.elixirline.service.elixirline_backend.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.common.*;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.receptionstage.QuantityKg;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.receptionstage.*;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class Reception extends AuditableAbstractAggregateRoot<Reception> {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long receptionId;
+
+    @Embedded
+    @NotNull(message = "Employee is required")
+    private Employee employee; // Es el encargado
+
+    @Embedded
+    private StartDate startDate;
+
+    @Embedded
+    private EndDate endDate;
+
+    @Embedded
+    private SugarLevel sugarLevel; // Nivel de azucar Brix
+
+    @Embedded
+    private PHLevel pHLevel;
+
+    @Embedded
+    private Temperature temperature;
+
+    @Embedded
+    private QuantityKg quantityKg; // Cantidad de kg de uva
+
+    @Embedded
+    private Comment comment;
+
+    @Enumerated(EnumType.STRING)
+    private CompletionStatus completionStatus = CompletionStatus.NOT_COMPLETED; // Estado por defecto no completado
+
+    public void completePhase() {
+        this.completionStatus = CompletionStatus.COMPLETED;
+    }
+
+    public void validateDates() {
+        if (startDate != null && endDate != null) {
+            if (startDate.getStartDate().after(endDate.getEndDate())) {
+                throw new IllegalArgumentException("Start date cannot be after end date.");
+            }
+        }
+    }
+}
