@@ -1,22 +1,22 @@
 package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest;
 
 import com.elixirline.service.elixirline_backend.shared.domain.model.entities.ApiErrorResponse;
-import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.exceptions.BatchNotBeCreated;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.exceptions.batch.BatchNotBeCreated;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.aggregates.Batch;
-import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.CreateBatchCommand;
-import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.DeleteBatchCommand;
-import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.queries.GetAllBatchesQuery;
-import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.queries.GetBatchByIdQuery;
-import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.services.BatchCommandService;
-import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.services.BatchQueryService;
-import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.BatchResource;
-import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.CreateBatchResource;
-import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.PatchBatchResource;
-import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.UpdateBatchResource;
-import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform.BatchResourceAssembler;
-import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform.CreateBatchCommandFromResourceAssembler;
-import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform.PatchBatchCommandFromResourceAssembler;
-import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform.UpdateBatchCommandFromResourceAssembler;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.batch.CreateBatchCommand;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.batch.DeleteBatchCommand;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.queries.batch.GetAllBatchesQuery;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.queries.batch.GetBatchByIdQuery;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.services.batch.BatchCommandService;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.services.batch.BatchQueryService;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.batch.BatchResource;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.batch.CreateBatchResource;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.batch.PatchBatchResource;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.batch.UpdateBatchResource;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform.batch.BatchResourceAssembler;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform.batch.CreateBatchCommandFromResourceAssembler;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform.batch.PatchBatchCommandFromResourceAssembler;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform.batch.UpdateBatchCommandFromResourceAssembler;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -371,15 +371,16 @@ public class WineMakingProcessController {
                     )
             )
     })
-    @GetMapping("/campaign/{campaignId}")
+    @GetMapping("/winegrower/{winegrowerId}/campaign/{campaignId}")
     public ResponseEntity<List<BatchResource>> getAllByCampaignId(
             @Parameter(
                     description = "The ID of the campaign.",
                     required = true
             )
+            @PathVariable Long winegrowerId,
             @PathVariable Long campaignId
     ) {
-        List<Batch> batches = queryService.getAllByCampaignId(campaignId);
+        List<Batch> batches = queryService.getAllByCampaignIdByWinegrowerId(winegrowerId, campaignId);
         List<BatchResource> resources = batches.stream()
                 .map(BatchResourceAssembler::toResource)
                 .collect(Collectors.toList());
