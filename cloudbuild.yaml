@@ -16,16 +16,5 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'gcr.io/$PROJECT_ID/elixirline-backend', '.']
 
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: 'gcloud'
-    args:
-      [
-        'run', 'deploy', 'elixirline-service',
-        '--image', 'gcr.io/$PROJECT_ID/elixirline-backend',
-        '--region', 'us-west1',
-        '--platform', 'managed',
-        '--allow-unauthenticated'
-      ]
-
 images:
   - 'gcr.io/$PROJECT_ID/elixirline-backend'

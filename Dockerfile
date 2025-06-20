@@ -4,6 +4,6 @@ WORKDIR /app
 
 COPY app.jar app.jar
 
-EXPOSE 8082
+EXPOSE 8080
 
 ENTRYPOINT ["sh", "-c", "exec java --enable-preview -jar app.jar --server.port=${PORT}"]
