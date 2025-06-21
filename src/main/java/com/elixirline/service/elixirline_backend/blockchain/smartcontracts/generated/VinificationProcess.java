@@ -1,4 +1,4 @@
-package com.elixirline.service.elixirline_backend.blockchain.smartcontracts.generated.com.elixirline.service.elixirline_backend.blockchain.smartcontracts.generated;
+package com.elixirline.service.elixirline_backend.blockchain.smartcontracts.generated;
 
 import io.reactivex.Flowable;
 import java.math.BigInteger;

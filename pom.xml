@@ -213,7 +213,7 @@
                     </soliditySourceFiles>
 
                     <!-- Carpeta destino para las clases Java generadas -->
-                    <sourceDestination>src/main/java/com/elixirline/service/elixirline_backend/blockchain/smartcontracts/generated</sourceDestination>
+                    <sourceDestination>src/main/java</sourceDestination>
 
                     <!-- Paquete base para las clases generadas -->
                     <packageName>com.elixirline.service.elixirline_backend.blockchain.smartcontracts.generated</packageName>

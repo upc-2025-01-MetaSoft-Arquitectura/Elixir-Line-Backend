@@ -1,6 +1,6 @@
 package com.elixirline.service.elixirline_backend.blockchain.smartcontracts.application.internal.commandservices;
 
-import com.elixirline.service.elixirline_backend.blockchain.smartcontracts.generated.com.elixirline.service.elixirline_backend.blockchain.smartcontracts.generated.VinificationProcess;
+import com.elixirline.service.elixirline_backend.blockchain.smartcontracts.generated.VinificationProcess;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.web3j.protocol.Web3j;
