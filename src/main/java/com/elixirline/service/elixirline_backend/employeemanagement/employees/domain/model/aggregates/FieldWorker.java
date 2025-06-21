@@ -37,6 +37,7 @@ public class FieldWorker extends AuditableAbstractAggregateRoot<FieldWorker> {
     private ProfilePicture profilePicture;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     @Column(name = "vinegrower_id")
     @NotNull(message = "Vinegrower Id is required")
     private Long vinegrowerId;
@@ -47,25 +48,38 @@ public class FieldWorker extends AuditableAbstractAggregateRoot<FieldWorker> {
     @NotNull(message = "Vinegrower Id is required")
     private Long winegrowerId;
 >>>>>>> develop
+=======
+    @Column(name = "winegrower_id")
+    @NotNull(message = "Vinegrower Id is required")
+    private Long winegrowerId;
+>>>>>>> feature/winemakingprocess
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private EmployeeStatus status = EmployeeStatus.ACTIVE;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     public FieldWorker(Long userId, Name name, Lastname lastname, PhoneNumber phoneNumber, Long vinegrowerId) {
 =======
     public FieldWorker(Long userId, Name name, Lastname lastname, PhoneNumber phoneNumber, Long winegrowerId) {
 >>>>>>> develop
+=======
+    public FieldWorker(Long userId, Name name, Lastname lastname, PhoneNumber phoneNumber, Long winegrowerId) {
+>>>>>>> feature/winemakingprocess
         this.userId = userId;
         this.name = name;
         this.lastname = lastname;
         this.phoneNumber = phoneNumber;
 <<<<<<< HEAD
+<<<<<<< HEAD
         this.vinegrowerId = vinegrowerId;
 =======
         this.winegrowerId = winegrowerId;
 >>>>>>> develop
+=======
+        this.winegrowerId = winegrowerId;
+>>>>>>> feature/winemakingprocess
         this.profilePicture = new ProfilePicture();
     }
 }

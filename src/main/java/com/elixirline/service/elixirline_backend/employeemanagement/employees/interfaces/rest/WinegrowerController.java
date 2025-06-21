@@ -30,9 +30,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import org.springframework.web.multipart.MultipartFile;
 >>>>>>> develop
+=======
+import org.springframework.web.multipart.MultipartFile;
+>>>>>>> feature/winemakingprocess
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -70,10 +74,14 @@ public class WinegrowerController {
                                             [
                                               {
 <<<<<<< HEAD
+<<<<<<< HEAD
                                                 "vinegrowerId": 1,
 =======
                                                 "winegrowerId": 1,
 >>>>>>> develop
+=======
+                                                "winegrowerId": 1,
+>>>>>>> feature/winemakingprocess
                                                 "userId": 3,
                                                 "name": "Juan Guillermo",
                                                 "lastname": "Pérez Lira",
@@ -176,10 +184,14 @@ public class WinegrowerController {
                                                 "phoneNumber": "987654321",
                                                 "profilePicture": "https://example.com/profile.jpg",
 <<<<<<< HEAD
+<<<<<<< HEAD
                                                 "vinegrowerId": 1,
 =======
                                                 "winegrowerId": 1,
 >>>>>>> develop
+=======
+                                                "winegrowerId": 1,
+>>>>>>> feature/winemakingprocess
                                                 "status": "ACTIVE"
                                               }
                                             ]
@@ -307,10 +319,14 @@ public class WinegrowerController {
                                                 "phoneNumber": "987654321",
                                                 "profilePicture": "https://example.com/profile.jpg",
 <<<<<<< HEAD
+<<<<<<< HEAD
                                                 "vinegrowerId": 1,
 =======
                                                 "winegrowerId": 1,
 >>>>>>> develop
+=======
+                                                "winegrowerId": 1,
+>>>>>>> feature/winemakingprocess
                                                 "status": "ACTIVE"
                                               }
                                             ]
@@ -425,10 +441,14 @@ public class WinegrowerController {
                                             value = """
                                             {
 <<<<<<< HEAD
+<<<<<<< HEAD
                                               "vinegrowerId": 1,
 =======
                                               "winegrowerId": 1,
 >>>>>>> develop
+=======
+                                              "winegrowerId": 1,
+>>>>>>> feature/winemakingprocess
                                               "userId": 5,
                                               "name": "Juan Carlos",
                                               "lastname": "Pérez Gómez",
@@ -544,10 +564,14 @@ public class WinegrowerController {
                                     value = """
                                     {
 <<<<<<< HEAD
+<<<<<<< HEAD
                                       "vinegrowerId": 1,
 =======
                                       "winegrowerId": 1,
 >>>>>>> develop
+=======
+                                      "winegrowerId": 1,
+>>>>>>> feature/winemakingprocess
                                       "userId": 5,
                                       "name": "Juan Carlos",
                                       "lastname": "Pérez Gómez",
@@ -678,10 +702,14 @@ public class WinegrowerController {
                                     value = """
                                     {
 <<<<<<< HEAD
+<<<<<<< HEAD
                                       "vinegrower Id": 1,
 =======
                                       "winegrower Id": 1,
 >>>>>>> develop
+=======
+                                      "winegrower Id": 1,
+>>>>>>> feature/winemakingprocess
                                       "userId": 5,
                                       "name": "Juan Carlos",
                                       "lastname": "Pérez Gomez",
@@ -760,9 +788,12 @@ public class WinegrowerController {
             )
     })
 <<<<<<< HEAD
+<<<<<<< HEAD
     @PutMapping(value = "/{winegrowerId}")
     public ResponseEntity<WinegrowerResource> update(@PathVariable Long winegrowerId, @RequestBody @Valid UpdateWinegrowerResource resource) {
 =======
+=======
+>>>>>>> feature/winemakingprocess
     @PutMapping(value = "/{winegrowerId}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<WinegrowerResource> update(
             @PathVariable Long winegrowerId,
@@ -773,7 +804,10 @@ public class WinegrowerController {
             @RequestPart(required = false) MultipartFile image
     ) {
         var resource = new UpdateWinegrowerResource(name, lastname, country, phoneNumber, image);
+<<<<<<< HEAD
 >>>>>>> develop
+=======
+>>>>>>> feature/winemakingprocess
         var command = UpdateWinegrowerCommandFromResourceAssembler.toCommandFromResource(winegrowerId, resource);
         var updatedWinegrower = commandService.update(command);
         return updatedWinegrower
@@ -1010,10 +1044,14 @@ public class WinegrowerController {
                                             value = """
                                             {
 <<<<<<< HEAD
+<<<<<<< HEAD
                                               "vinegrowerId": 1,
 =======
                                               "winegrowerId": 1,
 >>>>>>> develop
+=======
+                                              "winegrowerId": 1,
+>>>>>>> feature/winemakingprocess
                                               "userId": 5,
                                               "name": "Juan Arturo",
                                               "lastname": "Lopez Pérez",

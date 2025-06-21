@@ -1,9 +1,9 @@
 server:
-  port: ${SERVER_PORT}
+  port: ${PORT:8080}
+  forward-headers-strategy: native
 spring:
   config:
-    import:
-      - env.properties
+    import: "optional:env.properties"
   application:
     name: elixirline_backend
   datasource:
@@ -18,6 +18,18 @@ spring:
     properties:
       hibernate:
         show_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
+#  cloud:
+#    azure:
+#      storage:
+#        account-name: ${AZURE_STORAGE_ACCOUNT_NAME}
+#        account-key: ${AZURE_STORAGE_ACCOUNT_KEY}
+#
+#  servlet:
+#    multipart:
+#      max-file-size: 2MB
+#      max-request-size: 20MB
 
 #  cloud:
 #    azure:
@@ -42,4 +54,10 @@ firebase:
 azure:
   storage:
     connection-string: ${AZURE_STORAGE_CONNECTION_STRING}
+<<<<<<< HEAD
     container-name: ${AZURE_STORAGE_CONTAINER_NAME}
+=======
+    container-name: ${AZURE_STORAGE_CONTAINER_NAME}
+
+
+>>>>>>> feature/winemakingprocess

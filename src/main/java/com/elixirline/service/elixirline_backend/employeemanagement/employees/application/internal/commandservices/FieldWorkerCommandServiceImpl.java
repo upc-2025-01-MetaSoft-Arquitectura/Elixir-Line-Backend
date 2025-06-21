@@ -5,22 +5,32 @@ import com.elixirline.service.elixirline_backend.employeemanagement.employees.do
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.commands.*;
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.valueobjects.EmployeeStatus;
 <<<<<<< HEAD
+<<<<<<< HEAD
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.services.fieldworker.FieldWorkerCommandService;
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.infrastructure.persistance.jpa.repositories.FieldWorkerRepository;
 =======
+=======
+>>>>>>> feature/winemakingprocess
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.valueobjects.ProfilePicture;
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.services.fieldworker.FieldWorkerCommandService;
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.infrastructure.persistance.jpa.repositories.FieldWorkerRepository;
 import com.elixirline.service.elixirline_backend.shared.infrastructure.storage.FirebaseFileService;
+<<<<<<< HEAD
 >>>>>>> develop
+=======
+>>>>>>> feature/winemakingprocess
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import java.io.IOException;
 >>>>>>> develop
+=======
+import java.io.IOException;
+>>>>>>> feature/winemakingprocess
 import java.util.Optional;
 
 @Service
@@ -28,9 +38,13 @@ import java.util.Optional;
 public class FieldWorkerCommandServiceImpl implements FieldWorkerCommandService {
     private final FieldWorkerRepository fieldWorkerRepository;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     private final FirebaseFileService firebaseFileService;
 >>>>>>> develop
+=======
+    private final FirebaseFileService firebaseFileService;
+>>>>>>> feature/winemakingprocess
 
     @Transactional
     @Override
@@ -41,10 +55,14 @@ public class FieldWorkerCommandServiceImpl implements FieldWorkerCommandService 
                 command.lastname(),
                 command.phoneNumber(),
 <<<<<<< HEAD
+<<<<<<< HEAD
                 command.vinegrowerId()
 =======
                 command.winegrowerId()
 >>>>>>> develop
+=======
+                command.winegrowerId()
+>>>>>>> feature/winemakingprocess
         );
 
         try {
@@ -62,9 +80,12 @@ public class FieldWorkerCommandServiceImpl implements FieldWorkerCommandService 
             fieldWorker.setLastname(command.lastname());
             fieldWorker.setPhoneNumber(command.phoneNumber());
 <<<<<<< HEAD
+<<<<<<< HEAD
             fieldWorker.setProfilePicture(command.profilePicture());
             fieldWorker.setVinegrowerId(command.vinegrowerId());
 =======
+=======
+>>>>>>> feature/winemakingprocess
             fieldWorker.setWinegrowerId(command.winegrowerId());
 
             if (command.image() != null && !command.image().isEmpty()) {
@@ -76,7 +97,10 @@ public class FieldWorkerCommandServiceImpl implements FieldWorkerCommandService 
                 }
             }
 
+<<<<<<< HEAD
 >>>>>>> develop
+=======
+>>>>>>> feature/winemakingprocess
             return fieldWorkerRepository.save(fieldWorker);
         });
     }

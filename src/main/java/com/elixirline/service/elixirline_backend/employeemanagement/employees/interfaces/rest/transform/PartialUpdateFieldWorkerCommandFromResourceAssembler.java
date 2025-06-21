@@ -6,6 +6,7 @@ import com.elixirline.service.elixirline_backend.employeemanagement.employees.in
 
 public class PartialUpdateFieldWorkerCommandFromResourceAssembler {
 <<<<<<< HEAD
+<<<<<<< HEAD
     public static UpdateFieldWorkerPartialCommand toCommandFromResource(Long fieldWorkerId, PartialUpdateFieldWorkerResource resource) {
         return new UpdateFieldWorkerPartialCommand(
                 fieldWorkerId,
@@ -14,6 +15,8 @@ public class PartialUpdateFieldWorkerCommandFromResourceAssembler {
                 new PhoneNumber(resource.phoneNumber()),
                 new ProfilePicture(resource.profilePicture())
 =======
+=======
+>>>>>>> feature/winemakingprocess
     public static UpdateFieldWorkerPartialCommand toCommandFromResource(Long fieldWorkerId, PartialUpdateFieldWorkerResource partialUpdateFieldWorkerResource) {
         return new UpdateFieldWorkerPartialCommand(
                 fieldWorkerId,
@@ -21,7 +24,10 @@ public class PartialUpdateFieldWorkerCommandFromResourceAssembler {
                 new Lastname(partialUpdateFieldWorkerResource.lastname()),
                 new PhoneNumber(partialUpdateFieldWorkerResource.phoneNumber()),
                 new ProfilePicture(partialUpdateFieldWorkerResource.profilePicture())
+<<<<<<< HEAD
 >>>>>>> develop
+=======
+>>>>>>> feature/winemakingprocess
         );
     }
 }

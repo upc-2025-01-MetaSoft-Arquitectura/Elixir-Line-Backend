@@ -34,9 +34,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import org.springframework.web.multipart.MultipartFile;
 >>>>>>> develop
+=======
+import org.springframework.web.multipart.MultipartFile;
+>>>>>>> feature/winemakingprocess
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -80,10 +84,14 @@ public class FieldWorkerController {
                                                 "phoneNumber": "987654321",
                                                 "profilePicture":"https://example.com/profile.jpg",
 <<<<<<< HEAD
+<<<<<<< HEAD
                                                 "vinegrowerId": 1,
 =======
                                                 "winegrowerId": 1,
 >>>>>>> develop
+=======
+                                                "winegrowerId": 1,
+>>>>>>> feature/winemakingprocess
                                                 "status": "ACTIVE"
                                               }
                                             ]
@@ -180,10 +188,14 @@ public class FieldWorkerController {
                                                 "phoneNumber": "987654321",
                                                 "profilePicture":"https://example.com/profile.jpg",
 <<<<<<< HEAD
+<<<<<<< HEAD
                                                 "vinegrowerId": 1,
 =======
                                                 "winegrowerId": 1,
 >>>>>>> develop
+=======
+                                                "winegrowerId": 1,
+>>>>>>> feature/winemakingprocess
                                                 "status": "ACTIVE"
                                               }
                                             ]
@@ -300,10 +312,14 @@ public class FieldWorkerController {
                                       "phoneNumber": "987654321",
                                       "profilePicture": "https://example.com/profile.jpg",
 <<<<<<< HEAD
+<<<<<<< HEAD
                                       "vinegrowerId": 1,
 =======
                                       "winegrowerId": 1,
 >>>>>>> develop
+=======
+                                      "winegrowerId": 1,
+>>>>>>> feature/winemakingprocess
                                       "status": "ACTIVE"
                                     }
                                     """
@@ -435,10 +451,14 @@ public class FieldWorkerController {
                                       "phoneNumber": "987654321",
                                       "profilePicture": "https://example.com/profile.jpg",
 <<<<<<< HEAD
+<<<<<<< HEAD
                                       "vinegrowerId": 1,
 =======
                                       "winegrowerId": 1,
 >>>>>>> develop
+=======
+                                      "winegrowerId": 1,
+>>>>>>> feature/winemakingprocess
                                       "status": "ACTIVE"
                                     }
                                     """
@@ -511,9 +531,12 @@ public class FieldWorkerController {
             )
     })
 <<<<<<< HEAD
+<<<<<<< HEAD
     @PutMapping(value = "/{fieldWorkerId}")
     public ResponseEntity<FieldWorkerResource> update(@PathVariable Long fieldWorkerId, @RequestBody @Valid UpdateFieldWorkerResource resource) {
 =======
+=======
+>>>>>>> feature/winemakingprocess
     @PutMapping(value = "/{fieldWorkerId}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<FieldWorkerResource> update(
             @PathVariable Long fieldWorkerId,
@@ -525,7 +548,10 @@ public class FieldWorkerController {
     ) {
         Long winegrowerIdLong = (winegrowerId != null && !winegrowerId.isEmpty()) ? Long.parseLong(winegrowerId) : null;
         var resource = new UpdateFieldWorkerResource(name, lastname, phoneNumber, winegrowerIdLong, image);
+<<<<<<< HEAD
 >>>>>>> develop
+=======
+>>>>>>> feature/winemakingprocess
         var command = UpdateFieldWorkerCommandFromResourceAssembler.toCommandFromResource(fieldWorkerId, resource);
         var updatedFieldWorker = commandService.update(command);
         return updatedFieldWorker
@@ -774,10 +800,14 @@ public class FieldWorkerController {
                                               "phoneNumber": "987654321",
                                               "profilePicture": "https://example.com/profile.jpg",
 <<<<<<< HEAD
+<<<<<<< HEAD
                                               "vinegrowerId": 1,
 =======
                                               "winegrowerId": 1,
 >>>>>>> develop
+=======
+                                              "winegrowerId": 1,
+>>>>>>> feature/winemakingprocess
                                               "status": "ACTIVE"
                                             }
                                             """

@@ -5,6 +5,7 @@ import com.elixirline.service.elixirline_backend.employeemanagement.employees.in
 
 public class WinegrowerResourceAssembler {
 <<<<<<< HEAD
+<<<<<<< HEAD
     public static WinegrowerResource toResource(Winegrower vinegrower) {
         return new WinegrowerResource(
                 vinegrower.getWinegrowerId(),
@@ -16,6 +17,8 @@ public class WinegrowerResourceAssembler {
                 vinegrower.getProfilePicture(),
                 vinegrower.getStatus()
 =======
+=======
+>>>>>>> feature/winemakingprocess
     public static WinegrowerResource toResource(Winegrower winegrower) {
         return new WinegrowerResource(
                 winegrower.getWinegrowerId(),
@@ -26,7 +29,10 @@ public class WinegrowerResourceAssembler {
                 winegrower.getPhoneNumber(),
                 winegrower.getProfilePicture(),
                 winegrower.getStatus()
+<<<<<<< HEAD
 >>>>>>> develop
+=======
+>>>>>>> feature/winemakingprocess
         );
     }
 }

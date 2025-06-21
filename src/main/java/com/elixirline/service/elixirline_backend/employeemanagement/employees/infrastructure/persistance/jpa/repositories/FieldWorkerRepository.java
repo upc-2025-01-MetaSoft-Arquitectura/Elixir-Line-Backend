@@ -17,10 +17,15 @@ public interface FieldWorkerRepository extends JpaRepository<FieldWorker, Long> 
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     List<FieldWorker> findByVinegrowerId(Long vinegrowerId);
     List<FieldWorker> findByVinegrowerIdAndStatus(Long vinegrowerId, EmployeeStatus status);
 =======
     List<FieldWorker> findByWinegrowerId(Long vinegrowerId);
     List<FieldWorker> findByWinegrowerIdAndStatus(Long vinegrowerId, EmployeeStatus status);
 >>>>>>> develop
+=======
+    List<FieldWorker> findByWinegrowerId(Long vinegrowerId);
+    List<FieldWorker> findByWinegrowerIdAndStatus(Long vinegrowerId, EmployeeStatus status);
+>>>>>>> feature/winemakingprocess
 }

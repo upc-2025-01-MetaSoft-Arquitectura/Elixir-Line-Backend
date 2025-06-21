@@ -11,7 +11,11 @@ public interface BatchRepository extends JpaRepository<Batch, Long> {
     List<Batch> findByCampaignId(Long campaignId);
     List<Batch> findByWinegrowerId(Long winegrowerId);
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     List<Batch> findByCampaignIdAndWinegrowerId(Long winegrowerId, Long campaignId);
 >>>>>>> develop
+=======
+    List<Batch> findByWinegrowerIdAndCampaignId(Long winegrowerId, Long campaignId);
+>>>>>>> feature/winemakingprocess
 }

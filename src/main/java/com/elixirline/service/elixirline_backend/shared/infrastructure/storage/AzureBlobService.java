@@ -52,4 +52,8 @@ public class AzureBlobService {
             throw new RuntimeException("Error al subir imagen a Azure Blob Storage", e);
         }
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> feature/winemakingprocess

@@ -11,10 +11,14 @@ public class CreateFieldWorkerCommandFromResourceAssembler {
                 resource.lastname(),
                 resource.phoneNumber(),
 <<<<<<< HEAD
+<<<<<<< HEAD
                 resource.vinegrowerId()
 =======
                 resource.winegrowerId()
 >>>>>>> develop
+=======
+                resource.winegrowerId()
+>>>>>>> feature/winemakingprocess
         );
     }
 }

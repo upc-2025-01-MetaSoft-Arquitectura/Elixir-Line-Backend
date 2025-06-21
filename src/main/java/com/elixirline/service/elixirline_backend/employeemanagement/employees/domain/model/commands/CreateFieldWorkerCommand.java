@@ -8,8 +8,12 @@ public record CreateFieldWorkerCommand (
         Lastname lastname,
         PhoneNumber phoneNumber,
 <<<<<<< HEAD
+<<<<<<< HEAD
         Long vinegrowerId
 =======
         Long winegrowerId
 >>>>>>> develop
+=======
+        Long winegrowerId
+>>>>>>> feature/winemakingprocess
 ) { }

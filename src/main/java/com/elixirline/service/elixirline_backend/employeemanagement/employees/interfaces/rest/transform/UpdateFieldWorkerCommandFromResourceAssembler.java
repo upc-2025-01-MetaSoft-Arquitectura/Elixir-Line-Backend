@@ -4,6 +4,7 @@ import com.elixirline.service.elixirline_backend.employeemanagement.employees.do
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.valueobjects.*;
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.interfaces.rest.resources.UpdateFieldWorkerResource;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 public class UpdateFieldWorkerCommandFromResourceAssembler {
     public static UpdateFieldWorkerCommand toCommandFromResource (Long fieldWorkerId, UpdateFieldWorkerResource resource) {
@@ -15,6 +16,8 @@ public class UpdateFieldWorkerCommandFromResourceAssembler {
                 new ProfilePicture(resource.profilePicture()),
                 resource.vinegrowerId()
 =======
+=======
+>>>>>>> feature/winemakingprocess
 import org.springframework.web.multipart.MultipartFile;
 
 public class UpdateFieldWorkerCommandFromResourceAssembler {
@@ -26,7 +29,10 @@ public class UpdateFieldWorkerCommandFromResourceAssembler {
                 fieldWorkerResource.phoneNumber() != null ? new PhoneNumber(fieldWorkerResource.phoneNumber()) : null,
                 fieldWorkerResource.winegrowerId() != null ? fieldWorkerResource.winegrowerId() : null,
                 fieldWorkerResource.image() != null ? fieldWorkerResource.image() : null
+<<<<<<< HEAD
 >>>>>>> develop
+=======
+>>>>>>> feature/winemakingprocess
         );
     }
 }

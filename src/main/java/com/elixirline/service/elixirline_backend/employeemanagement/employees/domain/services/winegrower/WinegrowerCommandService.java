@@ -9,10 +9,14 @@ public interface WinegrowerCommandService {
     Optional<Winegrower> handle(CreateWinegrowerCommand command);
     Optional<Winegrower> update(UpdateWinegrowerCommand command);
 <<<<<<< HEAD
+<<<<<<< HEAD
     Optional<Winegrower> updatePartial(UpdateWinegrowerCommand command);
 =======
     //Optional<Winegrower> updatePartial(UpdateWinegrowerCommand command);
 >>>>>>> develop
+=======
+    //Optional<Winegrower> updatePartial(UpdateWinegrowerCommand command);
+>>>>>>> feature/winemakingprocess
     void logicallyDelete(DeleteWinegrowerCommand command);
     void physicallyDelete(DeleteWinegrowerCommand command);
     Optional<Winegrower> activate(ActivateWinegrowerCommand command);

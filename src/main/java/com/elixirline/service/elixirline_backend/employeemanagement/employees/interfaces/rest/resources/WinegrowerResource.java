@@ -4,10 +4,14 @@ import com.elixirline.service.elixirline_backend.employeemanagement.employees.do
 
 public record WinegrowerResource(
 <<<<<<< HEAD
+<<<<<<< HEAD
         Long vinegrowerId,
 =======
         Long winegrowerId,
 >>>>>>> develop
+=======
+        Long winegrowerId,
+>>>>>>> feature/winemakingprocess
         Long userId,
         Name name,
         Lastname lastname,

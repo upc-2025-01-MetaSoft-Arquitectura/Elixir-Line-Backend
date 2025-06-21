@@ -11,10 +11,14 @@ import lombok.Setter;
 @Getter
 @Setter
 <<<<<<< HEAD
+<<<<<<< HEAD
 @Entity(name = "vinegrower")
 =======
 @Entity(name = "winegrower")
 >>>>>>> develop
+=======
+@Entity(name = "winegrower")
+>>>>>>> feature/winemakingprocess
 @NoArgsConstructor
 public class Winegrower extends AuditableAbstractAggregateRoot<Winegrower> {
     @Id

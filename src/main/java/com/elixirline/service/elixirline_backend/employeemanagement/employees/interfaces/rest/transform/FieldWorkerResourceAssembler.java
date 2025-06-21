@@ -13,10 +13,14 @@ public class FieldWorkerResourceAssembler {
                 fieldWorker.getPhoneNumber(),
                 fieldWorker.getProfilePicture(),
 <<<<<<< HEAD
+<<<<<<< HEAD
                 fieldWorker.getVinegrowerId(),
 =======
                 fieldWorker.getWinegrowerId(),
 >>>>>>> develop
+=======
+                fieldWorker.getWinegrowerId(),
+>>>>>>> feature/winemakingprocess
                 fieldWorker.getStatus()
         );
     }

@@ -1,6 +1,7 @@
 package com.elixirline.service.elixirline_backend.employeemanagement.employees.interfaces.rest.resources;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 public record UpdateFieldWorkerResource(
         String name,
         String lastname,
@@ -8,6 +9,8 @@ public record UpdateFieldWorkerResource(
         String profilePicture,
         Long vinegrowerId
 =======
+=======
+>>>>>>> feature/winemakingprocess
 import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Nullable;
 
@@ -17,5 +20,8 @@ public record UpdateFieldWorkerResource(
         @Nullable String phoneNumber,
         @Nullable Long winegrowerId,
         @Nullable MultipartFile image
+<<<<<<< HEAD
 >>>>>>> develop
+=======
+>>>>>>> feature/winemakingprocess
 ) { }
