@@ -14,7 +14,6 @@ import java.util.Map;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @Entity
 @Table(name = "clarification_stage")
 public class ClarificationStage extends ProcessStage {
@@ -55,6 +54,8 @@ public class ClarificationStage extends ProcessStage {
     @Enumerated(EnumType.STRING)
     @Column(name = "current_stage", nullable = false)
     private CurrentStage currentStage = CurrentStage.CLARIFICATION;
+
+    public ClarificationStage () { }
 
     public ClarificationStage(Long batchId, Employee employee, StartDate startDate, EndDate endDate) {
         this.setBatchId(batchId);

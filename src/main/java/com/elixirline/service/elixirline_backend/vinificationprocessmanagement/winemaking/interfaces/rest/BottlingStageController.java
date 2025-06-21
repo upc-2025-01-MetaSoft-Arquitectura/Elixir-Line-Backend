@@ -6,9 +6,11 @@ import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.w
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.services.bottlingstage.BottlingStageQueryService;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.bottlingstage.BottlingStageResource;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.bottlingstage.CreateBottlingStageResource;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.bottlingstage.CreateEmptyBottlingStageResource;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.bottlingstage.UpdateBottlingStageResource;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform.bottlingstage.BottlingStageResourceAssembler;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform.bottlingstage.CreateBottlingStageCommandFromResourceAssembler;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform.bottlingstage.CreateEmptyBottlingStageCommandFromResourceAssembler;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform.bottlingstage.UpdateBottlingStageCommandFromResourceAssembler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -26,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequestMapping(value = "/api/v1/batches/{batchId}/bottling-stage", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/v1/batches/{batchId}", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Bottling Stage", description = "Bottling Stage Management Endpoints")
 public class BottlingStageController {
     private final BottlingStageCommandService commandService;
@@ -109,7 +111,7 @@ public class BottlingStageController {
                     description = "El lote de vino o la etapa de embotellado no fue encontrada."
             )
     })
-    @GetMapping
+    @GetMapping("/bottling-stage")
     public ResponseEntity<BottlingStageResource> getBottlingStageByWineBatchId(@PathVariable Long batchId) {
         var query = new GetBottlingStageByBatchIdQuery(batchId);
         var bottlingStage = queryService.getBottlingStageByBatchId(query)
@@ -187,9 +189,83 @@ public class BottlingStageController {
                     description = "La etapa de embotellado no fue creada. Datos inválidos o faltantes."
             )
     })
-    @PostMapping
+    @PostMapping("/bottling-stage")
     public ResponseEntity<BottlingStageResource> addBottlingStageByBatch(@RequestBody @Valid CreateBottlingStageResource resource, @PathVariable Long batchId) {
         var command = CreateBottlingStageCommandFromResourceAssembler.toCommandFromResource(resource, batchId);
+        var bottlingStage = commandService.handle(command)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "No se pudo agregar la etapa de embotellado."));
+
+        var bottlingStageResource = BottlingStageResourceAssembler.toResource(bottlingStage);
+        return ResponseEntity.status(HttpStatus.CREATED).body(bottlingStageResource);
+    }
+
+
+
+    /* POST: /api/v1/batches/{batchId}/empty/bottling-stage */
+    @Operation(
+            summary = "Create an empty Bottling Stage for a Wine Batch ID",
+            description = "Crea una nueva etapa de embotellado con todos los campos vacíos. Este endpoint no requiere ninguno de los campos para registrar correctamente la etapa de embotellado...\n\n" +
+                    "### Significado de los Atributos:\n" +
+                    "- **batchId** (Long): es el ID que representa que esta fase está relacionada con un lote específico.\n" +
+                    "- **Employee** (String): es el encargado del registro de los datos.\n" +
+                    "- **Start Date** (LocalDate): es la fecha de inicio del embotellado.\n" +
+                    "- **End Date** (LocalDate): es la fecha de finalización del embotellado.\n" +
+                    "- **Bottling Line** (String): es la línea de embotellado utilizada.\n" +
+                    "- **Filled Bottles** (Integer): es la cantidad de botellas llenadas.\n" +
+                    "- **Bottle Volume** (Double): es el volumen de cada botella en ml.\n" +
+                    "- **Total Volume** (Double): es el volumen total embotellado en litros.\n" +
+                    "- **Sealing Type** (String): es el tipo de sellado utilizado.\n" +
+                    "- **Vineyard Code** (String): es el código de viñedo asociado al lote.\n" +
+                    "- **Temperature** (Double): es la temperatura durante el embotellado.\n" +
+                    "- **Filtered Before Bottling** (Boolean): indica si el vino fue filtrado antes del embotellado.\n" +
+                    "- **Labels At This Stage** (Boolean): indica si se aplicaron etiquetas en esta etapa.\n" +
+                    "- **Capsule or Seal Application** (Boolean): indica si se aplicaron cápsulas o precintos.\n" +
+                    "- **Comment** (String): son los comentarios adicionales sobre el embotellado.",
+            parameters = {
+                    @Parameter(name = "batchId", description = "ID del lote de vino para el cual se crea la etapa de embotellado", required = true)
+            }
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "La etapa de embotellado fue creada exitosamente.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = BottlingStageResource.class),
+                            examples = @ExampleObject(
+                                    name = "Ejemplo de etapa de embotellado creada",
+                                    summary = "Respuesta exitosa de creación",
+                                    value = """
+                                    {
+                                      "bottlingStageId": 2,
+                                      "batchId": 10,
+                                      "employee": null,
+                                      "startDate": null,
+                                      "endDate": null,
+                                      "bottlingLine": null,
+                                      "filledBottles": null,
+                                      "bottleVolume": null,
+                                      "totalVolume": null,
+                                      "sealingType": null,
+                                      "vineyardCode": null,
+                                      "temperature": null,
+                                      "filteredBeforeBottling": null,
+                                      "labelsAtThisStage": null,
+                                      "capsuleOrSealApplication": null,
+                                      "comment": null,
+                                      "completionStatus": "NOT_COMPLETED",
+                                      "currentStage": "BOTTLING",
+                                      "completedAt": null
+                                    }
+                                    """
+                            )
+                    )
+            )
+
+    })
+    @PostMapping("empty/bottling-stage")
+    public ResponseEntity<BottlingStageResource> addEmptyBottlingStageByBatch(@RequestBody @Valid CreateEmptyBottlingStageResource resource, @PathVariable Long batchId) {
+        var command = CreateEmptyBottlingStageCommandFromResourceAssembler.toCommandFromResource(resource, batchId);
         var bottlingStage = commandService.handle(command)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "No se pudo agregar la etapa de embotellado."));
 
@@ -266,7 +342,7 @@ public class BottlingStageController {
                     description = "La etapa de embotellado no fue encontrada."
             )
     })
-    @PatchMapping
+    @PatchMapping("/bottling-stage")
     public ResponseEntity<BottlingStageResource> updateBottlingStage(@PathVariable Long batchId, @RequestBody @Valid UpdateBottlingStageResource resource) {
         var command = UpdateBottlingStageCommandFromResourceAssembler.toCommandFromResource(batchId, resource);
         var updatedBottlingStage = commandService.update(command)
@@ -297,7 +373,7 @@ public class BottlingStageController {
                     description = "La etapa de embotellado no fue encontrada."
             )
     })
-    @DeleteMapping
+    @DeleteMapping("/bottling-stage")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteBottlingStage(@PathVariable Long batchId) {
         commandService.delete(new DeleteBottlingStageByBatchCommand(batchId));

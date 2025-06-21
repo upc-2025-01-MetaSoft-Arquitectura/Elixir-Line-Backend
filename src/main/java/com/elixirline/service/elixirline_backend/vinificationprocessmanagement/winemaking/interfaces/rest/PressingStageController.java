@@ -4,9 +4,11 @@ import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.w
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.queries.stages.GetPressingStageByBatchIdQuery;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.services.pressingstage.PressingStageCommandService;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.services.pressingstage.PressingStageQueryService;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.pressingstage.CreateEmptyPressingStageResource;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.pressingstage.CreatePressingStageResource;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.pressingstage.PressingStageResource;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.pressingstage.UpdatePressingStageResource;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform.pressingstage.CreateEmptyPressingStageCommandFromResourceAssembler;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform.pressingstage.CreatePressingStageCommandFromResourceAssembler;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform.pressingstage.PressingStageResourceAssembler;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform.pressingstage.UpdatePressingStageCommandFromResourceAssembler;
@@ -26,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequestMapping(value = "/api/v1/batches/{batchId}/pressing-stage", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/v1/batches/{batchId}", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Pressing Stage", description = "Pressing Stage Management Endpoints")
 public class PressingStageController {
     private final PressingStageCommandService commandService;
@@ -101,7 +103,7 @@ public class PressingStageController {
                     description = "El lote de vino o la etapa de prensado no fue encontrada."
             )
     })
-    @GetMapping
+    @GetMapping("/pressing-stage")
     public ResponseEntity<PressingStageResource> getPressingStageByWineBatchId(@PathVariable Long batchId) {
         var query = new GetPressingStageByBatchIdQuery(batchId);
         var pressingStage = queryService.getPressingStageByBatchId(query)
@@ -175,9 +177,79 @@ public class PressingStageController {
                     description = "La etapa de prensado no fue creada. Datos inválidos o faltantes."
             )
     })
-    @PostMapping
+    @PostMapping("/pressing-stage")
     public ResponseEntity<PressingStageResource> addPressingStageByBatch(@RequestBody @Valid CreatePressingStageResource resource, @PathVariable Long batchId) {
         var command = CreatePressingStageCommandFromResourceAssembler.toCommandFromResource(resource, batchId);
+        var pressingStage = commandService.handle(command)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "No se pudo agregar la etapa de prensado."));
+
+        var pressingStageResource = PressingStageResourceAssembler.toResource(pressingStage);
+        return ResponseEntity.status(HttpStatus.CREATED).body(pressingStageResource);
+    }
+
+
+
+
+    /* POST: /api/v1/batches/{batchId}/empty/pressing-stage */
+    @Operation(
+            summary = "Create an empty Pressing Stage for a Wine Batch ID",
+            description = "Crea una nueva etapa de prensado con todos los campos vacíos. Este endpoint no requiere ninguno de los campos para registrar correctamente la etapa de prensado.\n\n" +
+                    "### Significado de los Atributos:\n" +
+                    "- **pressingStageId** (Long): es el ID de la etapa de prensado.\n" +
+                    "- **batchId** (Long): es el ID que representa que esta fase está relacionada con un lote específico.\n" +
+                    "- **Employee** (String): es el encargado del registro de los datos.\n" +
+                    "- **Start Date** (LocalDate): es la fecha de inicio del prensado.\n" +
+                    "- **End Date** (LocalDate): es la fecha de finalización del prensado.\n" +
+                    "- **Press Type** (String): es el tipo de prensa utilizada.\n" +
+                    "- **Press Pressure** (Double): es la presión de la prensa en bares.\n" +
+                    "- **Pressing Duration** (Integer): es la duración del prensado en minutos.\n" +
+                    "- **Pomade Weight** (Double): es el peso del orujo en kilogramos.\n" +
+                    "- **Yield** (Double): es el rendimiento en litros del mosto.\n" +
+                    "- **Must Usage** (String): es el uso del mosto en el proceso.\n" +
+                    "- **Comment** (String): son los comentarios adicionales sobre el prensado.\n" +
+                    "- **Completion Status** (ENUM): indica si la fase ha sido completada o no, tiene 2 valores (COMPLETED y NOT_COMPLETED).\n" +
+                    "- **Current Stage** (ENUM): es la etapa actual en la que nos encontramos, en este caso es PRESSING.\n" +
+                    "- **Completed At** (LocalDateTime): es la fecha y hora en la que se ha completado la etapa, es decir, cuando el estado es COMPLETED.",
+            parameters = {
+                    @Parameter(name = "batchId", description = "ID del lote de vino para el cual se crea la etapa de prensado", required = true)
+            }
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "La etapa de prensado fue creada exitosamente.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = PressingStageResource.class),
+                            examples = @ExampleObject(
+                                    name = "Ejemplo de etapa de prensado creada",
+                                    summary = "Respuesta exitosa de creación",
+                                    value = """
+                                    {
+                                      "pressingStageId": 2,
+                                      "batchId": 10,
+                                      "employee": null,
+                                      "startDate": null,
+                                      "endDate": null
+                                      "pressType": null,
+                                      "pressure": null,
+                                      "duration": null,
+                                      "pomadeWeight": null,
+                                      "yield": null,
+                                      "mustUsage": null,
+                                      "comment": null,
+                                      "completionStatus": "NOT_COMPLETED",
+                                      "currentStage": "PRESSING",
+                                      "completedAt": null
+                                    }
+                                    """
+                            )
+                    )
+            )
+    })
+    @PostMapping("/empty/pressing-stage")
+    public ResponseEntity<PressingStageResource> addEmptyPressingStageByBatch(@RequestBody @Valid CreateEmptyPressingStageResource resource, @PathVariable Long batchId) {
+        var command = CreateEmptyPressingStageCommandFromResourceAssembler.toCommandFromResource(resource, batchId);
         var pressingStage = commandService.handle(command)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "No se pudo agregar la etapa de prensado."));
 
@@ -249,7 +321,7 @@ public class PressingStageController {
                     description = "La etapa de prensado no fue encontrada."
             )
     })
-    @PatchMapping
+    @PatchMapping("/pressing-stage")
     public ResponseEntity<PressingStageResource> updatePressingStage(@PathVariable Long batchId, @RequestBody @Valid UpdatePressingStageResource resource) {
         var command = UpdatePressingStageCommandFromResourceAssembler.toCommandFromResource(batchId, resource);
         var updatedPressingStage = commandService.update(command)
@@ -280,7 +352,7 @@ public class PressingStageController {
                     description = "La etapa de prensado no fue encontrada."
             )
     })
-    @DeleteMapping
+    @DeleteMapping("/pressing-stage")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePressingStage(@PathVariable Long batchId) {
         commandService.delete(new DeletePressingStageByBatchCommand(batchId));

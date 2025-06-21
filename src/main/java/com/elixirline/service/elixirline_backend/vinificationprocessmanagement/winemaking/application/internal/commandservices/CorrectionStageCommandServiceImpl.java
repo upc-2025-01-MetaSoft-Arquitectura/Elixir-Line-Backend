@@ -2,6 +2,7 @@ package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.
 
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.aggregates.CorrectionStage;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.correctionstage.CreateCorrectionStageCommand;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.correctionstage.CreateEmptyCorrectionStageCommand;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.correctionstage.DeleteCorrectionStageByBatchCommand;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.correctionstage.UpdateCorrectionStageCommand;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.common.CompletionStatus;
@@ -47,6 +48,13 @@ public class CorrectionStageCommandServiceImpl implements CorrectionStageCommand
 
         return Optional.of(correctionStageRepository.save(correctionState));
 
+    }
+
+    @Override
+    public Optional<CorrectionStage> handle(CreateEmptyCorrectionStageCommand command) {
+        CorrectionStage correctionStage = new CorrectionStage();
+        correctionStage.setBatchId(command.batchId());
+        return Optional.of(correctionStageRepository.save(correctionStage));
     }
 
     @Override

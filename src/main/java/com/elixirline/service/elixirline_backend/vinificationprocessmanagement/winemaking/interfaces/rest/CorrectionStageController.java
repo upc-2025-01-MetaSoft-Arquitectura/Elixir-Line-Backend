@@ -6,9 +6,11 @@ import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.w
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.services.correctionstage.CorrectionStageQueryService;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.correctionstage.CorrectionStageResource;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.correctionstage.CreateCorrectionStageResource;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.correctionstage.CreateEmptyCorrectionStageResource;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.correctionstage.UpdateCorrectionStageResource;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform.correctionstage.CorrectionStageResourceAssembler;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform.correctionstage.CreateCorrectionStageCommandFromResourceAssembler;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform.correctionstage.CreateEmptyCorrectionStageCommandFromResourceAssembler;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform.correctionstage.UpdateCorrectionStageCommandFromResourceAssembler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -27,7 +29,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 
 @RestController
-@RequestMapping(value = "/api/v1/batches/{batchId}/correction-stage", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/v1/batches/{batchId}", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Correction Stage", description = "Correction Stage Management Endpoints")
 public class CorrectionStageController {
     private final CorrectionStageCommandService commandService;
@@ -110,7 +112,7 @@ public class CorrectionStageController {
                     description = "El lote de vino o la etapa de corrección no fue encontrada."
             )
     })
-    @GetMapping
+    @GetMapping("/correction-stage")
     public ResponseEntity<CorrectionStageResource> getCorrectionStageByWineBatchId(@PathVariable Long batchId) {
         var query = new GetCorrectionStageByBatchIdQuery(batchId);
         var correctionStage = queryService.getCorrectionStageByBatchId(query)
@@ -188,9 +190,83 @@ public class CorrectionStageController {
                     description = "La etapa de corrección no fue creada. Datos inválidos o faltantes."
             )
     })
-    @PostMapping
+    @PostMapping("/correction-stage")
     public ResponseEntity<CorrectionStageResource> addCorrectionStageByBatch(@RequestBody @Valid CreateCorrectionStageResource resource, @PathVariable Long batchId) {
         var command = CreateCorrectionStageCommandFromResourceAssembler.toCommandFromResource(resource, batchId);
+        var correctionStage = commandService.handle(command)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "No se pudo agregar la etapa de corrección."));
+
+        var correctionStageResource = CorrectionStageResourceAssembler.toResource(correctionStage);
+        return ResponseEntity.status(HttpStatus.CREATED).body(correctionStageResource);
+    }
+
+
+
+
+    /* POST: /api/v1/batches/{batchId}/empty/correction-stage */
+    @Operation(
+            summary = "Create an empty Correction Stage for a Wine Batch ID",
+            description = "Crea una nueva etapa de correción con todos los campos vacíos. Este endpoint no requiere ninguno de los campos para registrar correctamente la etapa de correción.\n\n" +
+                    "### Significado de los Atributos:\n" +
+                    "- **batchId** (Long): es el ID que representa que esta fase está relacionada con un lote específico.\n" +
+                    "- **Employee** (String): es el encargado del registro de los datos.\n" +
+                    "- **Start Date** (LocalDate): es la fecha de inicio de la corrección.\n" +
+                    "- **End Date** (LocalDate): es la fecha de finalización de la corrección.\n" +
+                    "- **Initial Sugar Level** (Double): es el nivel de azúcar inicial en °Brix.\n" +
+                    "- **Final Sugar Level** (Double): es el nivel de azúcar final en °Brix.\n" +
+                    "- **Added Sugar** (Double): es la cantidad de azúcar añadida en kg.\n" +
+                    "- **Initial pH** (Double): es el pH inicial de la corrección.\n" +
+                    "- **Final pH** (Double): es el pH final de la corrección.\n" +
+                    "- **Acid Type** (String): es el tipo de ácido utilizado en la corrección.\n" +
+                    "- **Added Acid** (Double): es la cantidad de ácido añadido en g/L.\n" +
+                    "- **Added Sulphites** (Double): es la cantidad de sulfitos añadidos en mg/L.\n" +
+                    "- **Nutrients** (List<String>): son los nutrientes añadidos durante la corrección.\n" +
+                    "- **Justification** (String): es la justificación para la corrección realizada.\n" +
+                    "- **Comment** (String): son los comentarios adicionales sobre la corrección.",
+            parameters = {
+                    @Parameter(name = "batchId", description = "ID del lote de vino para el cual se crea la etapa de corrección", required = true)
+            }
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "La etapa de corrección fue creada exitosamente.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = CorrectionStageResource.class),
+                            examples = @ExampleObject(
+                                    name = "Ejemplo de etapa de corrección creada",
+                                    summary = "Respuesta exitosa de creación",
+                                    value = """
+                                    {
+                                      "correctionStageId": 2,
+                                      "batchId": 10,
+                                      "employee": null,
+                                      "startDate": null,
+                                      "endDate": null,
+                                      "initialSugarLevel": null,
+                                      "finalSugarLevel": null,
+                                      "addedSugar": null,
+                                      "initialPH": null,
+                                      "finalPH": null,
+                                      "acidType": null,
+                                      "addedAcid": null,
+                                      "addedSulphites": null,
+                                      "nutrients": [ ],
+                                      "justification": null,
+                                      "comment": null,
+                                      "completionStatus": "NOT_COMPLETED",
+                                      "currentStage": "CORRECTION",
+                                      "completedAt": null
+                                    }
+                                    """
+                            )
+                    )
+            )
+    })
+    @PostMapping("empty/correction-stage")
+    public ResponseEntity<CorrectionStageResource> addEmptyCorrectionStageByBatch(@RequestBody @Valid CreateEmptyCorrectionStageResource resource, @PathVariable Long batchId) {
+        var command = CreateEmptyCorrectionStageCommandFromResourceAssembler.toCommandFromResource(resource, batchId);
         var correctionStage = commandService.handle(command)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "No se pudo agregar la etapa de corrección."));
 
@@ -267,7 +343,7 @@ public class CorrectionStageController {
                     description = "La etapa de corrección no fue encontrada."
             )
     })
-    @PatchMapping
+    @PatchMapping("/correction-stage")
     public ResponseEntity<CorrectionStageResource> updateCorrectionStage(@PathVariable Long batchId, @RequestBody @Valid UpdateCorrectionStageResource resource) {
         var command = UpdateCorrectionStageCommandFromResourceAssembler.toCommandFromResource(batchId, resource);
         var updatedCorrectionStage = commandService.update(command)
@@ -298,7 +374,7 @@ public class CorrectionStageController {
                     description = "La etapa de corrección no fue encontrada."
             )
     })
-    @DeleteMapping
+    @DeleteMapping("/correction-stage")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCorrectionStage(@PathVariable Long batchId) {
         commandService.delete(new DeleteCorrectionStageByBatchCommand(batchId));

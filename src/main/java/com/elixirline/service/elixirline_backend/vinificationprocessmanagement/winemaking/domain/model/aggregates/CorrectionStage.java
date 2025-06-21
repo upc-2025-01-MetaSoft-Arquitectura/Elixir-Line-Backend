@@ -12,7 +12,6 @@ import java.util.List;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @Entity
 @Table(name = "correction_stage")
 public class CorrectionStage extends ProcessStage {
@@ -67,6 +66,8 @@ public class CorrectionStage extends ProcessStage {
     @Enumerated(EnumType.STRING)
     @Column(name = "current_stage", nullable = false)
     private CurrentStage currentStage = CurrentStage.CORRECTION;
+
+    public CorrectionStage () { }
 
     public CorrectionStage(Long batchId, Employee employee, StartDate startDate, EndDate endDate) {
         this.setBatchId(batchId);

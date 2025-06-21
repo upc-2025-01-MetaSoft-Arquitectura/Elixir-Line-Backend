@@ -1,6 +1,7 @@
 package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.application.internal.commandservices;
 
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.aggregates.ReceptionStage;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.receptionstage.CreateEmptyReceptionStageCommand;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.receptionstage.CreateReceptionStageCommand;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.receptionstage.DeleteReceptionStageCommand;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.receptionstage.UpdateReceptionStageCommand;
@@ -39,6 +40,13 @@ public class ReceptionStageCommandServiceImpl implements ReceptionStageCommandSe
         receptionStage.setQuantityKg(command.quantityKg());
         receptionStage.setComment(command.comment());
 
+        return Optional.of(receptionStageRepository.save(receptionStage));
+    }
+
+    @Override
+    public Optional<ReceptionStage> handle(CreateEmptyReceptionStageCommand command) {
+        ReceptionStage receptionStage = new ReceptionStage();
+        receptionStage.setBatchId(command.batchId());
         return Optional.of(receptionStageRepository.save(receptionStage));
     }
 

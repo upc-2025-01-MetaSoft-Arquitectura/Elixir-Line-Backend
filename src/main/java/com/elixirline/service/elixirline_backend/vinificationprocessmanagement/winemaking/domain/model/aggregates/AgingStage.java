@@ -15,7 +15,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "aging_stage")
 public class AgingStage extends ProcessStage {
@@ -66,6 +65,8 @@ public class AgingStage extends ProcessStage {
     @Enumerated(EnumType.STRING)
     @Column(name = "current_stage", nullable = false)
     private CurrentStage currentStage = CurrentStage.AGING;
+
+    public AgingStage() { }
 
     public AgingStage(Long batchId, Employee employee, StartDate startDate, EndDate endDate) {
         this.setBatchId(batchId);

@@ -4,9 +4,11 @@ import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.w
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.queries.stages.GetFermentationStageByBatchIdQuery;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.services.fermentationstage.FermentationStageCommandService;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.services.fermentationstage.FermentationStageQueryService;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.fermentationstage.CreateEmptyFermentationStageResource;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.fermentationstage.CreateFermentationStageResource;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.fermentationstage.FermentationStageResource;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.fermentationstage.UpdateFermentationStageResource;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform.fermentationstage.CreateEmptyFermentationStageCommandFromResourceAssembler;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform.fermentationstage.CreateFermentationStageCommandFromResourceAssembler;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform.fermentationstage.FermentationStageResourceAssembler;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform.fermentationstage.UpdateFermentationStageCommandFromResourceAssembler;
@@ -26,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequestMapping(value = "/api/v1/batches/{batchId}/fermentation-stage", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/v1/batches/{batchId}", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Fermentation Stage", description = "Fermentation Stage Management Endpoints")
 public class FermentationStageController {
     private final FermentationStageCommandService commandService;
@@ -107,7 +109,7 @@ public class FermentationStageController {
                     description = "El lote de vino o la etapa de fermentación no fue encontrada."
             )
     })
-    @GetMapping
+    @GetMapping("/fermentation-stage")
     public ResponseEntity<FermentationStageResource> getFermentationStageByWineBatchId(@PathVariable Long batchId) {
         var query = new GetFermentationStageByBatchIdQuery(batchId);
         var fermentationStage = queryService.getFermentationStageByBatchId(query)
@@ -183,9 +185,81 @@ public class FermentationStageController {
                     description = "La etapa de fermentación no fue creada. Datos inválidos o faltantes."
             )
     })
-    @PostMapping
+    @PostMapping("/fermentation-stage")
     public ResponseEntity<FermentationStageResource> addFermentationStageByBatch(@RequestBody @Valid CreateFermentationStageResource resource, @PathVariable Long batchId) {
         var command = CreateFermentationStageCommandFromResourceAssembler.toCommandFromResource(resource, batchId);
+        var fermentationStage = commandService.handle(command)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "No se pudo agregar la etapa de fermentación."));
+
+        var fermentationStageResource = FermentationStageResourceAssembler.toResource(fermentationStage);
+        return ResponseEntity.status(HttpStatus.CREATED).body(fermentationStageResource);
+    }
+
+
+
+
+    /* POST: /api/v1/batches/{batchId}/empty/fermentation-stage */
+    @Operation(
+            summary = "Create an empty Fermentation Stage for a Wine Batch ID",
+            description = "Crea una nueva etapa de fermentación con todos los campos vacíos. Este endpoint no requiere ninguno de los campos para registrar correctamente la etapa de fermentación.\n\n" +
+                    "### Significado de los Atributos:\n" +
+                    "- **batchId** (Long): es el ID que representa que esta fase está relacionada con un lote específico.\n" +
+                    "- **Employee** (String): es el encargado del registro de los datos.\n" +
+                    "- **Start Date** (LocalDate): es la fecha de inicio de la fermentación.\n" +
+                    "- **End Date** (LocalDate): es la fecha de finalización de la fermentación.\n" +
+                    "- **Yeast Used** (Double): es la cantidad de levadura utilizada en mg/L.\n" +
+                    "- **Fermentation Type** (String): es el tipo de fermentación utilizada.\n" +
+                    "- **Initial Sugar Level** (Double): es el nivel de azúcar inicial en °Brix.\n" +
+                    "- **Final Sugar Level** (Double): es el nivel de azúcar final en °Brix.\n" +
+                    "- **Initial pH** (Double): es el pH inicial de la fermentación.\n" +
+                    "- **Final pH** (Double): es el pH final de la fermentación.\n" +
+                    "- **Max Temperature** (Double): es la temperatura máxima durante la fermentación.\n" +
+                    "- **Min Temperature** (Double): es la temperatura mínima durante la fermentación.\n" +
+                    "- **Tank Code** (String): es el código del tanque donde se realiza la fermentación.\n" +
+                    "- **Comment** (String): son los comentarios adicionales sobre la fermentación.",
+            parameters = {
+                    @Parameter(name = "batchId", description = "ID del lote de vino para el cual se crea la etapa de fermentación", required = true)
+            }
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "La etapa de fermentación fue creada exitosamente.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = FermentationStageResource.class),
+                            examples = @ExampleObject(
+                                    name = "Ejemplo de etapa de fermentación creada",
+                                    summary = "Respuesta exitosa de creación",
+                                    value = """
+                                    {
+                                      "fermentationStageId": 2,
+                                      "batchId": 10,
+                                      "employee": null,
+                                      "startDate": null,
+                                      "endDate": null,
+                                      "yeastUsed": null,
+                                      "fermentationType": null,
+                                      "initialSugarLevel": null,
+                                      "finalSugarLevel": null,
+                                      "initialPH": null,
+                                      "finalPH": null,
+                                      "maxTemperature": null,
+                                      "minTemperature": null,
+                                      "tankCode": null,
+                                      "comment": null,
+                                      "completionStatus": "NOT_COMPLETED",
+                                      "currentStage": "FERMENTATION",
+                                      "completedAt": null
+                                    }
+                                    """
+                            )
+                    )
+            ),
+    })
+    @PostMapping("/empty/fermentation-stage")
+    public ResponseEntity<FermentationStageResource> addEmptyFermentationStageByBatch(@RequestBody @Valid CreateEmptyFermentationStageResource resource, @PathVariable Long batchId) {
+        var command = CreateEmptyFermentationStageCommandFromResourceAssembler.toCommandFromResource(resource, batchId);
         var fermentationStage = commandService.handle(command)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "No se pudo agregar la etapa de fermentación."));
 
@@ -260,7 +334,7 @@ public class FermentationStageController {
                     description = "La etapa de fermentación no fue encontrada."
             )
     })
-    @PatchMapping
+    @PatchMapping("/fermentation-stage")
     public ResponseEntity<FermentationStageResource> updateFermentationStage(@PathVariable Long batchId, @RequestBody @Valid UpdateFermentationStageResource resource) {
         var command = UpdateFermentationStageCommandFromResourceAssembler.toCommandFromResource(batchId, resource);
         var updatedFermentationStage = commandService.update(command)
@@ -291,7 +365,7 @@ public class FermentationStageController {
                     description = "La etapa de fermentación no fue encontrada."
             )
     })
-    @DeleteMapping
+    @DeleteMapping("/fermentation-stage")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteFermentationStage(@PathVariable Long batchId) {
         commandService.delete(new DeleteFermentationStageByBatchCommand(batchId));

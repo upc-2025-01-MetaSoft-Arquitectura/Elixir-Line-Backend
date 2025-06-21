@@ -2,6 +2,7 @@ package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.
 
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.aggregates.ClarificationStage;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.clarificationstage.CreateClarificationStageCommand;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.clarificationstage.CreateEmptyClarificationStageCommand;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.clarificationstage.DeleteClarificationStageByBatchCommand;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.clarificationstage.UpdateClarificationStageCommand;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.common.CompletionStatus;
@@ -41,6 +42,13 @@ public class ClarificationStageCommandServiceImpl implements ClarificationStageC
         clarificationStage.setClarifyingAgents(command.clarifyingAgents());
         clarificationStage.setComment(command.comment());
 
+        return Optional.of(clarificationStageRepository.save(clarificationStage));
+    }
+
+    @Override
+    public Optional<ClarificationStage> handle(CreateEmptyClarificationStageCommand command) {
+        ClarificationStage clarificationStage = new ClarificationStage();
+        clarificationStage.setBatchId(command.batchId());
         return Optional.of(clarificationStageRepository.save(clarificationStage));
     }
 

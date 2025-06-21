@@ -517,8 +517,8 @@ public class WineMakingProcessController {
 
     /*GET: /api/v1/batches/{batchId}/stages*/
     @Operation(
-            summary = "Obtener etapas de un batch",
-            description = "Obtiene todas las etapas asociadas a un batch específico"
+            summary = "Get all stages by batch ID",
+            description = "Obtiene todas las etapas (recepcion, corrección, fermentación, etc) asociadas a un batch específico"
     )
     @ApiResponses(value = {
             @ApiResponse(
