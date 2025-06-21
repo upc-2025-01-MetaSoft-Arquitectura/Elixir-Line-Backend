@@ -1,7 +1,0 @@
-package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.bottlingstage;
-
-import com.fasterxml.jackson.annotation.JsonValue;
-import jakarta.persistence.Embeddable;
-
-public record BottleVolume() {
-}

@@ -1,0 +1,20 @@
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'maven24-custom', '-f', 'Dockerfile.maven', '.']
+
+  - name: 'maven24-custom'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        mvn clean package -DskipTests
+        cp target/elixirline_backend-0.0.1-SNAPSHOT.jar /workspace/app.jar
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/elixirline-backend', '.']
+
+images:
+  - 'gcr.io/$PROJECT_ID/elixirline-backend'

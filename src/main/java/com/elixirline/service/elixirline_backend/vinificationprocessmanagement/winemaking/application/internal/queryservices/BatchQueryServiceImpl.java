@@ -38,7 +38,7 @@ public class BatchQueryServiceImpl implements BatchQueryService {
 
     @Override
     public List<Batch> getAllByCampaignIdByWinegrowerId(Long winegrowerId , Long campaignId) {
-        return batchRepository.findByCampaignIdAndWinegrowerId(winegrowerId, campaignId);
+        return batchRepository.findByWinegrowerIdAndCampaignId(winegrowerId, campaignId);
     }
 
     @Override
@@ -48,6 +48,10 @@ public class BatchQueryServiceImpl implements BatchQueryService {
 
     @Override
     public List<ProcessStage> getStagesByBatchId(Long batchId) {
+        if (!batchRepository.existsById(batchId)) {
+            throw new BatchNotFoundException(batchId);
+        }
+
         return batchStageRepository.findStagesByBatchId(batchId);
     }
 }

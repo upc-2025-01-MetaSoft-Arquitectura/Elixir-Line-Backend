@@ -15,16 +15,16 @@ import lombok.Setter;
 public class Batch extends AuditableAbstractAggregateRoot<Batch> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "batch_id", unique = true)
+    @Column(name = "batch_id")
     private Long batchId;
 
-    @Column(name = "vineyard_id", unique = true)
+    @Column(name = "vineyard_id")
     private String vineyardCode;
 
-    @Column(name = "campaign_id", unique = true)
+    @Column(name = "campaign_id")
     private Long campaignId;
 
-    @Column(name = "winegrower_id", unique = true)
+    @Column(name = "winegrower_id")
     private Long winegrowerId;
 
     @Embedded
