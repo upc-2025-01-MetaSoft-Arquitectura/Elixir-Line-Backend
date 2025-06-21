@@ -797,8 +797,8 @@ public class WineMakingProcessController {
 
     /*PATCH: /api/v1/batches/{batchId}*/
     @Operation(
-            summary = "Patch a batch",
-            description = "Actualiza parcialmente un lote existente por su ID. Solo se actualizarán los campos especificados y solo se puede proporcionar un solo campo o varios a actualizar."
+            summary = "Update the progress, status or current lot of Batch by ID",
+            description = "Actualiza parcialmente el progreso, el estado o la etapa actual(recepción, corrección, fermentación, etc.) de un lote existente por su ID. Solo se actualizarán los campos especificados y puedes especificar cualquiera de ellos, ya sea que quieras actualizar solo el progreso, el estado o la etapa, quieras actualizar 2 de ellos o quieras actualizar todos."
     )
     @ApiResponses(value = {
             @ApiResponse(
