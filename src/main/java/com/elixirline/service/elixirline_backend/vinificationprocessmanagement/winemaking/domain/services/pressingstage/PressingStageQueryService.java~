@@ -1,4 +1,0 @@
-package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.services.pressingstage;
-
-public interface PressingStageQueryService {
-}

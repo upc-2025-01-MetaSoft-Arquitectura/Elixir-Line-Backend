@@ -16,6 +16,6 @@ public class CorrectionStageQueryServiceImpl implements CorrectionStageQueryServ
 
     @Override
     public Optional<CorrectionStage> getCorrectionStageByBatchId(GetCorrectionStageByBatchIdQuery query) {
-        return correctionStageRepository.findById(query.batchId());
+        return correctionStageRepository.findByBatchId(query.batchId());
     }
 }

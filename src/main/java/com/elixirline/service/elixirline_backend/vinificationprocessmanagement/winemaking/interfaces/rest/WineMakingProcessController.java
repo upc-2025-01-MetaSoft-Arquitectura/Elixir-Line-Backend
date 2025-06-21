@@ -5,19 +5,31 @@ import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.w
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.aggregates.Batch;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.batch.CreateBatchCommand;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.batch.DeleteBatchCommand;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.entities.ProcessStage;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.queries.batch.GetAllBatchesQuery;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.queries.batch.GetBatchByIdQuery;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.services.batch.BatchCommandService;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.services.batch.BatchQueryService;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.agingstage.AgingStageResource;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.batch.BatchResource;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.batch.CreateBatchResource;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.batch.PatchBatchResource;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.batch.UpdateBatchResource;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.bottlingstage.BottlingStageResource;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.clarificationstage.ClarificationStageResource;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.correctionstage.CorrectionStageResource;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.fermentationstage.FermentationStageResource;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.filtrationstage.FiltrationStageResource;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.pressingstage.PressingStageResource;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.processstage.ProcessStageResource;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.receptionstage.ReceptionStageResource;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform.batch.BatchResourceAssembler;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform.batch.CreateBatchCommandFromResourceAssembler;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform.batch.PatchBatchCommandFromResourceAssembler;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform.batch.UpdateBatchCommandFromResourceAssembler;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform.processstage.ProcessStageResourceAssembler;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -503,6 +515,50 @@ public class WineMakingProcessController {
 
 
 
+    /*GET: /api/v1/batches/{batchId}/stages*/
+    @Operation(
+            summary = "Obtener etapas de un batch",
+            description = "Obtiene todas las etapas asociadas a un batch específico"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Lista de etapas del batch",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(oneOf = {
+                                    ReceptionStageResource.class,
+                                    CorrectionStageResource.class,
+                                    FermentationStageResource.class,
+                                    PressingStageResource.class,
+                                    ClarificationStageResource.class,
+                                    AgingStageResource.class,
+                                    FiltrationStageResource.class,
+                                    BottlingStageResource.class
+
+                            }))
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Batch no encontrado",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorHandler.class)
+                    )
+            )
+    })
+    @GetMapping("/{batchId}/stages")
+    public ResponseEntity<List<ProcessStageResource>> getBatchStages(@PathVariable Long batchId) {
+        List<ProcessStage> stages = queryService.getStagesByBatchId(batchId);
+        List<ProcessStageResource> resources = stages.stream()
+                .map(ProcessStageResourceAssembler::toResource)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(resources);
+    }
+
+
+
 
     /*POST: /api/v1/batches*/
     @Operation(
@@ -954,8 +1010,4 @@ public class WineMakingProcessController {
                             @PathVariable Long batchId) {
         commandService.delete(new DeleteBatchCommand(batchId));
     }
-
-
-
-
 }
