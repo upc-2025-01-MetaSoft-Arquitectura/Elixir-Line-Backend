@@ -2,6 +2,7 @@ package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.
 
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.aggregates.AgingStage;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.agingstage.CreateAgingStageCommand;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.agingstage.CreateEmptyAgingStageCommand;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.agingstage.DeleteAgingStageByBatchCommand;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.agingstage.UpdateAgingStageCommand;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.common.CompletionStatus;
@@ -45,6 +46,13 @@ public class AgingStageCommandServiceImpl implements AgingStageCommandService {
         agingStage.setPurpose(command.purpose());
         agingStage.setComment(command.comment());
 
+        return Optional.of(agingStageRepository.save(agingStage));
+    }
+
+    @Override
+    public Optional<AgingStage> handle(CreateEmptyAgingStageCommand command) {
+        AgingStage agingStage = new AgingStage();
+        agingStage.setBatchId(command.batchId());
         return Optional.of(agingStageRepository.save(agingStage));
     }
 

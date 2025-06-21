@@ -1,6 +1,7 @@
 package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.application.internal.commandservices;
 
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.aggregates.FiltrationStage;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.filtrationstage.CreateEmptyFiltrationStageCommand;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.filtrationstage.CreateFiltrationStageCommand;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.filtrationstage.DeleteFiltrationStageByBatchCommand;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.filtrationstage.UpdateFiltrationStageCommand;
@@ -45,6 +46,13 @@ public class FiltrationStageCommandServiceImpl implements FiltrationStageCommand
         filtrationStage.setChangeReason(command.changeReason());
         filtrationStage.setComment(command.comment());
 
+        return Optional.of(filtrationStageRepository.save(filtrationStage));
+    }
+
+    @Override
+    public Optional<FiltrationStage> handle(CreateEmptyFiltrationStageCommand command) {
+        FiltrationStage filtrationStage = new FiltrationStage();
+        filtrationStage.setBatchId(command.batchId());
         return Optional.of(filtrationStageRepository.save(filtrationStage));
     }
 

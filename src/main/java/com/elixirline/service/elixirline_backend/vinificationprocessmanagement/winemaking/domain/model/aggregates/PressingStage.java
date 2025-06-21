@@ -14,7 +14,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @Entity
 @Table(name = "pressing_stage")
 public class PressingStage extends ProcessStage {
@@ -49,6 +48,8 @@ public class PressingStage extends ProcessStage {
     @Enumerated(EnumType.STRING)
     @Column(name = "current_stage", nullable = false)
     private CurrentStage currentStage = CurrentStage.PRESSING;
+
+    public PressingStage() { }
 
     public PressingStage(Long batchId, Employee employee, StartDate startDate, EndDate endDate) {
         this.setBatchId(batchId);

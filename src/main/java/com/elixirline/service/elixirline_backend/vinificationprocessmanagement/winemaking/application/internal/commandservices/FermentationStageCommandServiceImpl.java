@@ -1,6 +1,7 @@
 package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.application.internal.commandservices;
 
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.aggregates.FermentationStage;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.fermentationstage.CreateEmptyFermentationStageCommand;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.fermentationstage.CreateFermentationStageCommand;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.fermentationstage.DeleteFermentationStageByBatchCommand;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.fermentationstage.UpdateFermentationStageCommand;
@@ -43,6 +44,13 @@ public class FermentationStageCommandServiceImpl implements FermentationStageCom
         fermentationStage.setTankCode(command.tankCode());
         fermentationStage.setComment(command.comment());
 
+        return Optional.of(fermentationStageRepository.save(fermentationStage));
+    }
+
+    @Override
+    public Optional<FermentationStage> handle(CreateEmptyFermentationStageCommand command) {
+        FermentationStage fermentationStage = new FermentationStage();
+        fermentationStage.setBatchId(command.batchId());
         return Optional.of(fermentationStageRepository.save(fermentationStage));
     }
 

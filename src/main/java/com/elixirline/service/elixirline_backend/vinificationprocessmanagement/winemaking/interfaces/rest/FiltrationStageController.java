@@ -4,9 +4,11 @@ import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.w
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.queries.stages.GetFiltrationStageByBatchIdQuery;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.services.filtrationstage.FiltrationStageCommandService;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.services.filtrationstage.FiltrationStageQueryService;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.filtrationstage.CreateEmptyFiltrationStageResource;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.filtrationstage.CreateFiltrationStageResource;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.filtrationstage.FiltrationStageResource;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.filtrationstage.UpdateFiltrationStageResource;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform.filtrationstage.CreateEmptyFiltrationStageCommandFromResourceAssembler;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform.filtrationstage.CreateFiltrationStageCommandFromResourceAssembler;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform.filtrationstage.FiltrationStageResourceAssembler;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform.filtrationstage.UpdateFiltrationStageCommandFromResourceAssembler;
@@ -26,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequestMapping(value = "/api/v1/batches/{batchId}/filtration-stage", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/v1/batches/{batchId}", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Filtration Stage", description = "Filtration Stage Management Endpoints")
 public class FiltrationStageController {
     private final FiltrationStageCommandService commandService;
@@ -36,6 +38,9 @@ public class FiltrationStageController {
         this.commandService = commandService;
         this.queryService = queryService;
     }
+
+
+
 
     /* GET: /api/v1/batches/{batchId}/filtration-stage */
     @Operation(
@@ -108,7 +113,7 @@ public class FiltrationStageController {
                     description = "El lote de vino o la etapa de filtración no fue encontrada."
             )
     })
-    @GetMapping
+    @GetMapping("/filtration-stage")
     public ResponseEntity<FiltrationStageResource> getFiltrationStageByWineBatchId(@PathVariable Long batchId) {
         var query = new GetFiltrationStageByBatchIdQuery(batchId);
         var filtrationStage = queryService.getFiltrationStageByBatchId(query)
@@ -117,6 +122,9 @@ public class FiltrationStageController {
         var filtrationStageResource = FiltrationStageResourceAssembler.toResource(filtrationStage);
         return ResponseEntity.ok(filtrationStageResource);
     }
+
+
+
 
     /* POST: /api/v1/batches/{batchId}/filtration-stage */
     @Operation(
@@ -185,7 +193,7 @@ public class FiltrationStageController {
                     description = "La etapa de filtración no fue creada. Datos inválidos o faltantes."
             )
     })
-    @PostMapping
+    @PostMapping("/filtration-stage")
     public ResponseEntity<FiltrationStageResource> addFiltrationStageByBatch(@RequestBody @Valid CreateFiltrationStageResource resource, @PathVariable Long batchId) {
         var command = CreateFiltrationStageCommandFromResourceAssembler.toCommandFromResource(resource, batchId);
         var filtrationStage = commandService.handle(command)
@@ -194,6 +202,85 @@ public class FiltrationStageController {
         var filtrationStageResource = FiltrationStageResourceAssembler.toResource(filtrationStage);
         return ResponseEntity.status(HttpStatus.CREATED).body(filtrationStageResource);
     }
+
+
+
+
+    /* POST: /api/v1/batches/{batchId}/empty/filtration-stage */
+    @Operation(
+            summary = "Create an empty Filtration Stage for a Wine Batch ID",
+            description = "Crea una nueva etapa de filtración con todos los campos vacíos. Este endpoint no requiere ninguno de los campos para registrar correctamente la etapa de filtración.\n\n" +
+                    "### Significado de los Atributos:\n" +
+                    "- **batchId** (Long): es el ID que representa que esta fase está relacionada con un lote específico.\n" +
+                    "- **Employee** (String): es el encargado del registro de los datos.\n" +
+                    "- **Start Date** (LocalDate): es la fecha de inicio de la filtración.\n" +
+                    "- **End Date** (LocalDate): es la fecha de finalización de la filtración.\n" +
+                    "- **Filter Type** (String): es el tipo de filtración utilizada.\n" +
+                    "- **Filter Medium** (String): es el medio filtrante utilizado.\n" +
+                    "- **Porosity** (Double): es la porosidad del medio filtrante en micrones.\n" +
+                    "- **Initial Turbidity** (Double): es el nivel de turbidez antes de la filtración.\n" +
+                    "- **Final Turbidity** (Double): es el nivel de turbidez después de la filtración.\n" +
+                    "- **Temperature** (Double): es la temperatura durante la filtración.\n" +
+                    "- **Pressure** (Double): es la presión de la filtración en bares.\n" +
+                    "- **Filtered Volume** (Double): es el volumen filtrado en litros.\n" +
+                    "- **Sterile Filtration** (Boolean): indica si se realizó una filtración estéril.\n" +
+                    "- **Changed Filtration** (Boolean): indica si se cambió la filtración, habilitando el motivo de cambio.\n" +
+                    "- **Change Reason** (String): es el motivo del cambio en la filtración, si aplica.\n" +
+                    "- **Comment** (String): son los comentarios adicionales sobre la filtración.",
+            parameters = {
+                    @Parameter(name = "batchId", description = "ID del lote de vino para el cual se crea la etapa de filtración", required = true)
+            }
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "La etapa de filtración fue creada exitosamente.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = FiltrationStageResource.class),
+                            examples = @ExampleObject(
+                                    name = "Ejemplo de etapa de filtración creada",
+                                    summary = "Respuesta exitosa de creación",
+                                    value = """
+                                    {
+                                      "filtrationStageId": 2,
+                                      "batchId": 10,
+                                      "employee": null,
+                                      "startDate": null,
+                                      "endDate": null,
+                                      "filterType": null,
+                                      "filterMedium": null,
+                                      "porosity": null,
+                                      "initialTurbidity": null,
+                                      "finalTurbidity": null,
+                                      "temperature": null,
+                                      "pressure": null,
+                                      "filteredVolume": null,
+                                      "sterileFiltration": null,
+                                      "changedFiltration": null,
+                                      "changeReason": null,
+                                      "comment": null,
+                                      "completionStatus": "NOT_COMPLETED",
+                                      "currentStage": "FILTRATION",
+                                      "completedAt": null
+                                    }
+                                    """
+                            )
+                    )
+            )
+    })
+    @PostMapping("/empty/filtration-stage")
+    public ResponseEntity<FiltrationStageResource> addEmptyFiltrationStageByBatch(@RequestBody @Valid CreateEmptyFiltrationStageResource resource, @PathVariable Long batchId) {
+        var command = CreateEmptyFiltrationStageCommandFromResourceAssembler.toCommandFromResource(resource, batchId);
+        var filtrationStage = commandService.handle(command)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "No se pudo agregar la etapa de filtración."));
+
+        var filtrationStageResource = FiltrationStageResourceAssembler.toResource(filtrationStage);
+        return ResponseEntity.status(HttpStatus.CREATED).body(filtrationStageResource);
+    }
+
+
+
 
     /* PATCH: /api/v1/batches/{batchId}/filtration-stage */
     @Operation(
@@ -263,7 +350,7 @@ public class FiltrationStageController {
                     description = "La etapa de filtración no fue encontrada."
             )
     })
-    @PatchMapping
+    @PatchMapping("/filtration-stage")
     public ResponseEntity<FiltrationStageResource> updateFiltrationStage(@PathVariable Long batchId, @RequestBody @Valid UpdateFiltrationStageResource resource) {
         var command = UpdateFiltrationStageCommandFromResourceAssembler.toCommandFromResource(batchId, resource);
         var updatedFiltrationStage = commandService.update(command)
@@ -272,6 +359,9 @@ public class FiltrationStageController {
         var filtrationStageResource = FiltrationStageResourceAssembler.toResource(updatedFiltrationStage);
         return ResponseEntity.ok(filtrationStageResource);
     }
+
+
+
 
     /* DELETE: /api/v1/batches/{batchId}/filtration-stage */
     @Operation(
@@ -291,7 +381,7 @@ public class FiltrationStageController {
                     description = "La etapa de filtración no fue encontrada."
             )
     })
-    @DeleteMapping
+    @DeleteMapping("/filtration-stage")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteFiltrationStage(@PathVariable Long batchId) {
         commandService.delete(new DeleteFiltrationStageByBatchCommand(batchId));

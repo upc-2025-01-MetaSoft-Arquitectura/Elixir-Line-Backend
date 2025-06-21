@@ -1,6 +1,7 @@
 package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.application.internal.commandservices;
 
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.aggregates.PressingStage;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.pressingstage.CreateEmptyPressingStageCommand;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.pressingstage.CreatePressingStageCommand;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.pressingstage.DeletePressingStageByBatchCommand;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.pressingstage.UpdatePressingStageCommand;
@@ -40,6 +41,13 @@ public class PressingStageCommandServiceImpl implements PressingStageCommandServ
         pressingStage.setMustUsage(command.mustUsage());
         pressingStage.setComment(command.comment());
 
+        return Optional.of(pressingStageRepository.save(pressingStage));
+    }
+
+    @Override
+    public Optional<PressingStage> handle(CreateEmptyPressingStageCommand command) {
+        PressingStage pressingStage = new PressingStage();
+        pressingStage.setBatchId(command.batchId());
         return Optional.of(pressingStageRepository.save(pressingStage));
     }
 

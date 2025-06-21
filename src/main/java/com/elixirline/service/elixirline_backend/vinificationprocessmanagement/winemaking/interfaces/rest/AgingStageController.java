@@ -6,9 +6,11 @@ import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.w
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.services.agingstage.AgingStageQueryService;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.agingstage.AgingStageResource;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.agingstage.CreateAgingStageResource;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.agingstage.CreateEmptyAgingStageResource;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.agingstage.UpdateAgingStageResource;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform.agingstage.AgingStageResourceAssembler;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform.agingstage.CreateAgingStageCommandFromResourceAssembler;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform.agingstage.CreateEmptyAgingStageCommandFromResourceAssembler;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform.agingstage.UpdateAgingStageCommandFromResourceAssembler;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
@@ -28,7 +30,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequestMapping(value = "/api/v1/batches/{batchId}/aging-stage", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/v1/batches/{batchId}", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Aging Stage", description = "Aging Stage Management Endpoints")
 public class AgingStageController {
     private final AgingStageCommandService commandService;
@@ -112,7 +114,7 @@ public class AgingStageController {
                     description = "El lote de vino o la etapa de añejamiento no fue encontrada."
             )
     })
-    @GetMapping
+    @GetMapping("/aging-stage")
     public ResponseEntity<AgingStageResource> getAgingStageByWineBatchId(@PathVariable Long batchId) {
         var query = new GetAgingStageByBatchIdQuery(batchId);
         var agingStage = queryService.getAgingStageByBatchId(query)
@@ -192,9 +194,84 @@ public class AgingStageController {
                     description = "La etapa de añejamiento no fue creada. Datos inválidos o faltantes."
             )
     })
-    @PostMapping
+    @PostMapping("/aging-stage")
     public ResponseEntity<AgingStageResource> addAgingStageByBatch(@RequestBody @Valid CreateAgingStageResource resource, @PathVariable Long batchId) {
         var command = CreateAgingStageCommandFromResourceAssembler.toCommandFromResource(resource, batchId);
+        var agingStage = commandService.handle(command)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "No se pudo agregar la etapa de añejamiento."));
+
+        var agingStageResource = AgingStageResourceAssembler.toResource(agingStage);
+        return ResponseEntity.status(HttpStatus.CREATED).body(agingStageResource);
+    }
+
+
+
+    /* POST: /api/v1/batches/{batchId}/aging-stage */
+    @Operation(
+            summary = "Create an empty Aging Stage for a Wine Batch ID",
+            description = "Crea una nueva etapa de añejamiento con todos los campos vacíos. Este endpoint no requiere ninguno de los campos para registrar correctamente la etapa de añejamiento.\n\n" +
+                    "### Significado de los Atributos:\n" +
+                    "- **batchId** (Long): es el ID que representa que esta fase está relacionada con un lote específico.\n" +
+                    "- **Employee** (String): es el encargado del registro de los datos.\n" +
+                    "- **Start Date** (LocalDate): es la fecha de inicio del añejamiento.\n" +
+                    "- **End Date** (LocalDate): es la fecha de finalización del añejamiento.\n" +
+                    "- **Container Type** (String): es el tipo de contenedor utilizado para el añejamiento.\n" +
+                    "- **Material** (String): es el material del contenedor.\n" +
+                    "- **Container Code** (String): es el código del contenedor.\n" +
+                    "- **Average Temperature** (Double): es la temperatura promedio durante el añejamiento.\n" +
+                    "- **Volume** (Double): es el volumen de vino en litros.\n" +
+                    "- **Duration** (Integer): es la duración del añejamiento en meses.\n" +
+                    "- **Frequency** (Integer): es la frecuencia de batonnage en días.\n" +
+                    "- **Batonnage** (Double): es el número de veces que se realiza el batonnage.\n" +
+                    "- **Refills** (Integer): es la cantidad de recargas realizadas.\n" +
+                    "- **Racking** (Integer): es la cantidad de trasiegos realizados.\n" +
+                    "- **Purpose** (String): es el propósito del añejamiento.\n" +
+                    "- **Comment** (String): son los comentarios adicionales sobre el añejamiento.",
+            parameters = {
+                    @Parameter(name = "batchId", description = "ID del lote de vino para el cual se crea la etapa de añejamiento", required = true)
+            }
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "La etapa de añejamiento fue creada exitosamente.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = AgingStageResource.class),
+                            examples = @ExampleObject(
+                                    name = "Ejemplo de etapa de añejamiento creada",
+                                    summary = "Respuesta exitosa de creación",
+                                    value = """
+                                    {
+                                      "agingStageId": 2,
+                                      "batchId": 10,
+                                      "employee": null,
+                                      "startDate": null,
+                                      "endDate": null,
+                                      "containerType": null,
+                                      "material": null,
+                                      "containerCode": null,
+                                      "averageTemperature": null,
+                                      "volume": null,
+                                      "duration": null,
+                                      "frequency": null,
+                                      "batonnage": null,
+                                      "refills": null,
+                                      "rackings": null,
+                                      "purpose": null,
+                                      "comment": null,
+                                      "completionStatus": "NOT_COMPLETED",
+                                      "currentStage": "AGING",
+                                      "completedAt": null
+                                    }
+                                    """
+                            )
+                    )
+            )
+    })
+    @PostMapping("empty/aging-stage")
+    public ResponseEntity<AgingStageResource> addEmptyAgingStageByBatch(@RequestBody @Valid CreateEmptyAgingStageResource resource, @PathVariable Long batchId) {
+        var command = CreateEmptyAgingStageCommandFromResourceAssembler.toCommandFromResource(resource, batchId);
         var agingStage = commandService.handle(command)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "No se pudo agregar la etapa de añejamiento."));
 
@@ -273,7 +350,7 @@ public class AgingStageController {
                     description = "La etapa de añejamiento no fue encontrada."
             )
     })
-    @PatchMapping
+    @PatchMapping("/aging-stage")
     public ResponseEntity<AgingStageResource> updateAgingStage(@PathVariable Long batchId, @RequestBody @Valid UpdateAgingStageResource resource) {
         var command = UpdateAgingStageCommandFromResourceAssembler.toCommandFromResource(batchId, resource);
         var updatedAgingStage = commandService.update(command)
@@ -304,7 +381,7 @@ public class AgingStageController {
                     description = "La etapa de añejamiento no fue encontrada."
             )
     })
-    @DeleteMapping
+    @DeleteMapping("/aging-stage")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteAgingStage(@PathVariable Long batchId) {
         commandService.delete(new DeleteAgingStageByBatchCommand(batchId));

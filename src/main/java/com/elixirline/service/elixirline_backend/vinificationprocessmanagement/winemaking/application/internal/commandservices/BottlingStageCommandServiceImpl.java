@@ -2,6 +2,7 @@ package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.
 
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.aggregates.BottlingStage;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.bottlingstage.CreateBottlingStageCommand;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.bottlingstage.CreateEmptyBottlingStageCommand;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.bottlingstage.DeleteBottlingStageByBatchCommand;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.bottlingstage.UpdateBottlingStageCommand;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.common.CompletionStatus;
@@ -43,6 +44,13 @@ public class BottlingStageCommandServiceImpl implements BottlingStageCommandServ
         bottlingStage.setCapsuleOrSealApplication(command.capsuleOrSealApplication());
         bottlingStage.setComment(command.comment());
 
+        return Optional.of(bottlingStageRepository.save(bottlingStage));
+    }
+
+    @Override
+    public Optional<BottlingStage> handle(CreateEmptyBottlingStageCommand command) {
+        BottlingStage bottlingStage = new BottlingStage();
+        bottlingStage.setBatchId(command.batchId());
         return Optional.of(bottlingStageRepository.save(bottlingStage));
     }
 

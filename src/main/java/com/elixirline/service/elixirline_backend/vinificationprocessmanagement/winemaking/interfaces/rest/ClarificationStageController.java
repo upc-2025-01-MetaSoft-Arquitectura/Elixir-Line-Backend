@@ -6,9 +6,11 @@ import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.w
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.services.clarificationstage.ClarificationStageQueryService;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.clarificationstage.ClarificationStageResource;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.clarificationstage.CreateClarificationStageResource;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.clarificationstage.CreateEmptyClarificationStageResource;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.resources.clarificationstage.UpdateClarificationStageResource;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform.clarificationstage.ClarificationStageResourceAssembler;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform.clarificationstage.CreateClarificationStageCommandFromResourceAssembler;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform.clarificationstage.CreateEmptyClarificationStageCommandFromResourceAssembler;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.interfaces.rest.transform.clarificationstage.UpdateClarificationStageCommandFromResourceAssembler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -26,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequestMapping(value = "/api/v1/batches/{batchId}/clarification-stage", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/v1/batches/{batchId}", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Clarification Stage", description = "Clarification Stage Management Endpoints")
 public class ClarificationStageController {
     private final ClarificationStageCommandService commandService;
@@ -106,7 +108,7 @@ public class ClarificationStageController {
                     description = "El lote de vino o la etapa de clarificación no fue encontrada."
             )
     })
-    @GetMapping
+    @GetMapping("/clarification-stage")
     public ResponseEntity<ClarificationStageResource> getClarificationStageByWineBatchId(@PathVariable Long batchId) {
         var query = new GetClarificationStageByBatchIdQuery(batchId);
         var clarificationStage = queryService.getClarificationStageByBatchId(query)
@@ -181,9 +183,77 @@ public class ClarificationStageController {
                     description = "La etapa de clarificación no fue creada. Datos inválidos o faltantes."
             )
     })
-    @PostMapping
+    @PostMapping("/clarification-stage")
     public ResponseEntity<ClarificationStageResource> addClarificationStageByBatch(@RequestBody @Valid CreateClarificationStageResource resource, @PathVariable Long batchId) {
         var command = CreateClarificationStageCommandFromResourceAssembler.toCommandFromResource(resource, batchId);
+        var clarificationStage = commandService.handle(command)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "No se pudo agregar la etapa de clarificación."));
+
+        var clarificationStageResource = ClarificationStageResourceAssembler.toResource(clarificationStage);
+        return ResponseEntity.status(HttpStatus.CREATED).body(clarificationStageResource);
+    }
+
+
+
+
+    /* POST: /api/v1/batches/{batchId}/empty/clarification-stage */
+    @Operation(
+            summary = "Create an empty Clarification Stage for a Wine Batch ID",
+            description = "Crea una nueva etapa de correción con todos los campos vacíos. Este endpoint no requiere ninguno de los campos para registrar correctamente la etapa de correción.\n\n" +
+                    "### Significado de los Atributos:\n" +
+                    "- **batchId** (Long): es el ID que representa que esta fase está relacionada con un lote específico.\n" +
+                    "- **Employee** (String): es el encargado del registro de los datos.\n" +
+                    "- **Start Date** (LocalDate): es la fecha de inicio de la clarificación.\n" +
+                    "- **End Date** (LocalDate): es la fecha de finalización de la clarificación.\n" +
+                    "- **Method Used** (String): es el método de clarificación utilizado.\n" +
+                    "- **Initial Turbidity** (Double): es la turbidez inicial en NTU.\n" +
+                    "- **Final Turbidity** (Double): es la turbidez final en NTU.\n" +
+                    "- **Volume** (Double): es el volumen de vino en litros.\n" +
+                    "- **Temperature** (Double): es la temperatura durante la clarificación.\n" +
+                    "- **Duration** (Integer): es la duración de la clarificación en horas.\n" +
+                    "- **Clarifying Agents** (Map<String, Double>): son los agentes clarificantes utilizados, donde cada agente tiene una dosis en g/hL.\n" +
+                    "- **Comment** (String): son los comentarios adicionales sobre la clarificación.",
+            parameters = {
+                    @Parameter(name = "batchId", description = "ID del lote de vino para el cual se crea la etapa de clarificación", required = true)
+            }
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "La etapa de clarificación fue creada exitosamente.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ClarificationStageResource.class),
+                            examples = @ExampleObject(
+                                    name = "Ejemplo de etapa de clarificación creada",
+                                    summary = "Respuesta exitosa de creación",
+                                    value = """
+                                    {
+                                      "clarificationStageId": 2,
+                                      "batchId": 10,
+                                      "employee": null,
+                                      "startDate": null,
+                                      "endDate": null,
+                                      "methodUsed": null,
+                                      "initialTurbidity": null,
+                                      "finalTurbidity": null,
+                                      "volume": null,
+                                      "temperature": null,
+                                      "duration": null,
+                                      "clarifyingAgents": { },
+                                      "comment": null,
+                                      "completionStatus": "NOT_COMPLETED",
+                                      "currentStage": "CLARIFICATION",
+                                      "completedAt": null
+                                    }
+                                    """
+                            )
+                    )
+            )
+    })
+    @PostMapping("empty/clarification-stage")
+    public ResponseEntity<ClarificationStageResource> addEmptyClarificationStageByBatch(@RequestBody @Valid CreateEmptyClarificationStageResource resource, @PathVariable Long batchId) {
+        var command = CreateEmptyClarificationStageCommandFromResourceAssembler.toCommandFromResource(resource, batchId);
         var clarificationStage = commandService.handle(command)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "No se pudo agregar la etapa de clarificación."));
 
@@ -257,7 +327,7 @@ public class ClarificationStageController {
                     description = "La etapa de clarificación no fue encontrada."
             )
     })
-    @PatchMapping
+    @PatchMapping("/clarification-stage")
     public ResponseEntity<ClarificationStageResource> updateClarificationStage(@PathVariable Long batchId, @RequestBody @Valid UpdateClarificationStageResource resource) {
         var command = UpdateClarificationStageCommandFromResourceAssembler.toCommandFromResource(batchId, resource);
         var updatedClarificationStage = commandService.update(command)
@@ -288,7 +358,7 @@ public class ClarificationStageController {
                     description = "La etapa de clarificación no fue encontrada."
             )
     })
-    @DeleteMapping
+    @DeleteMapping("/clarification-stage")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteClarificationStage(@PathVariable Long batchId) {
         commandService.delete(new DeleteClarificationStageByBatchCommand(batchId));
