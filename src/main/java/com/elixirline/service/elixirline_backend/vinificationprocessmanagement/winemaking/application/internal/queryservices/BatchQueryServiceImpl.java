@@ -3,6 +3,7 @@ package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.exceptions.batch.BatchNotFoundException;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.aggregates.Batch;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.entities.ProcessStage;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.queries.batch.GetAllBatchesByCapaignIdQuery;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.queries.batch.GetAllBatchesQuery;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.queries.batch.GetBatchByIdQuery;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.queries.batch.GetBatchesByVineyardCodeQuery;
@@ -37,9 +38,10 @@ public class BatchQueryServiceImpl implements BatchQueryService {
     }
 
     @Override
-    public List<Batch> getAllByCampaignIdByWinegrowerId(Long winegrowerId , Long campaignId) {
-        return batchRepository.findByWinegrowerIdAndCampaignId(winegrowerId, campaignId);
+    public List<Batch> getAllBatchesByCampaignId(GetAllBatchesByCapaignIdQuery query) {
+        return batchRepository.findByCampaignId(query.campaignId());
     }
+
 
     @Override
     public List<Batch> getAllByWinegrowerId(Long winegrowerId) {

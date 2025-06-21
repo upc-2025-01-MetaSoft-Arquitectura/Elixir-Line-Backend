@@ -6,6 +6,7 @@ import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.w
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.batch.CreateBatchCommand;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.batch.DeleteBatchCommand;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.entities.ProcessStage;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.queries.batch.GetAllBatchesByCapaignIdQuery;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.queries.batch.GetAllBatchesQuery;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.queries.batch.GetBatchByIdQuery;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.services.batch.BatchCommandService;
@@ -383,16 +384,15 @@ public class WineMakingProcessController {
                     )
             )
     })
-    @GetMapping("/winegrower/{winegrowerId}/campaign/{campaignId}")
-    public ResponseEntity<List<BatchResource>> getAllByCampaignId(
+    @GetMapping("/campaign/{campaignId}")
+    public ResponseEntity<List<BatchResource>> getAllBatchesByCampaignId(
             @Parameter(
                     description = "The ID of the campaign.",
                     required = true
             )
-            @PathVariable Long winegrowerId,
             @PathVariable Long campaignId
     ) {
-        List<Batch> batches = queryService.getAllByCampaignIdByWinegrowerId(winegrowerId, campaignId);
+        List<Batch> batches = queryService.getAllBatchesByCampaignId(new GetAllBatchesByCapaignIdQuery(campaignId));
         List<BatchResource> resources = batches.stream()
                 .map(BatchResourceAssembler::toResource)
                 .collect(Collectors.toList());
