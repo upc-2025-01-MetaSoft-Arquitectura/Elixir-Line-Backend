@@ -1,0 +1,4 @@
+package com.elixirline.service.elixirline_backend.shared.infrastructure.storage;
+
+public class AzureBlobService {
+}

@@ -10,4 +10,5 @@ public interface BatchRepository extends JpaRepository<Batch, Long> {
     List<Batch> findByVineyardCode(String vineyardCode);
     List<Batch> findByCampaignId(Long campaignId);
     List<Batch> findByWinegrowerId(Long winegrowerId);
+    List<Batch> findByWinegrowerIdAndCampaignId(Long winegrowerId, Long campaignId);
 }
