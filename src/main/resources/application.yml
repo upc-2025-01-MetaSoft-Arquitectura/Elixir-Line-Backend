@@ -20,17 +20,6 @@ spring:
         show_sql: true
         dialect: org.hibernate.dialect.MySQL8Dialect
 
-#  cloud:
-#    azure:
-#      storage:
-#        account-name: ${AZURE_STORAGE_ACCOUNT_NAME}
-#        account-key: ${AZURE_STORAGE_ACCOUNT_KEY}
-#
-#  servlet:
-#    multipart:
-#      max-file-size: 2MB
-#      max-request-size: 20MB
-
 app:
   jwt:
     secret: ${JWT_SECRET}
@@ -45,4 +34,32 @@ azure:
     connection-string: ${AZURE_STORAGE_CONNECTION_STRING}
     container-name: ${AZURE_STORAGE_CONTAINER_NAME}
 
+web3:
+  network:
+    url: ${WEB3_NETWORK_URL}
+  contract:
+    address: ${WEB3_CONTRACT_ADDRESS}
+  private:
+    key: ${WEB3_PRIVATE_KEY}
+  gas:
+    limit: ${WEB3_GAS_LIMIT}
+    price: ${WEB3_GAS_PRICE}
 
+
+logging:
+  level:
+    root: INFO
+    org.we3j: DEBUG
+    com.elixirline: DEBUG
+
+
+#  cloud:
+#    azure:
+#      storage:
+#        account-name: ${AZURE_STORAGE_ACCOUNT_NAME}
+#        account-key: ${AZURE_STORAGE_ACCOUNT_KEY}
+#
+#  servlet:
+#    multipart:
+#      max-file-size: 2MB
+#      max-request-size: 20MB
