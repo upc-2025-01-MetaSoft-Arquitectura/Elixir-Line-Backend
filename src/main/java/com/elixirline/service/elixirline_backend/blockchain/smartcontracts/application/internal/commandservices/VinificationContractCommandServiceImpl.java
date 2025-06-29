@@ -1,13 +1,18 @@
 package com.elixirline.service.elixirline_backend.blockchain.smartcontracts.application.internal.commandservices;
 
+import com.elixirline.service.elixirline_backend.blockchain.smartcontracts.domain.exceptions.BatchIdAndStageNameAlreadyRegistered;
+import com.elixirline.service.elixirline_backend.blockchain.smartcontracts.domain.exceptions.DeployedContractNotFound;
+import com.elixirline.service.elixirline_backend.blockchain.smartcontracts.domain.exceptions.TransactionNotBeCreated;
 import com.elixirline.service.elixirline_backend.blockchain.smartcontracts.domain.model.aggregates.DeployedContract;
 import com.elixirline.service.elixirline_backend.blockchain.smartcontracts.domain.model.commands.DeployContractCommand;
 import com.elixirline.service.elixirline_backend.blockchain.smartcontracts.domain.model.commands.SignStageCommand;
 import com.elixirline.service.elixirline_backend.blockchain.smartcontracts.domain.model.entities.generated.SmartContractVinificationProcess;
+import com.elixirline.service.elixirline_backend.blockchain.smartcontracts.domain.model.queries.GetStageIsSigned;
 import com.elixirline.service.elixirline_backend.blockchain.smartcontracts.domain.model.valueobjects.ContractAddress;
 import com.elixirline.service.elixirline_backend.blockchain.smartcontracts.domain.model.valueobjects.ContractName;
 import com.elixirline.service.elixirline_backend.blockchain.smartcontracts.domain.model.valueobjects.DeployedAt;
 import com.elixirline.service.elixirline_backend.blockchain.smartcontracts.domain.services.VinificationProcessCommandService;
+import com.elixirline.service.elixirline_backend.blockchain.smartcontracts.domain.services.VinificationProcessQueryService;
 import com.elixirline.service.elixirline_backend.blockchain.smartcontracts.infrastructure.persistance.jpa.repositories.DeployedContractRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -18,9 +23,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
+import org.web3j.tx.exceptions.ContractCallException;
 import org.web3j.tx.gas.DefaultGasProvider;
 import java.math.BigInteger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -29,6 +38,7 @@ public class VinificationContractCommandServiceImpl implements VinificationProce
     private final Web3j web3j;
     private final Credentials credentials;
     private final DeployedContractRepository contractRepository;
+    private final VinificationProcessQueryService vinificationProcessQueryService;
     private static Logger log = LoggerFactory.getLogger(VinificationContractCommandServiceImpl.class);
 
     @Value("${web3.gas.limit}")
@@ -45,18 +55,18 @@ public class VinificationContractCommandServiceImpl implements VinificationProce
         ContractName contractName = new ContractName(CONTRACT_NAME);
 
         // 1. Verificar si ya existe un contrato desplegado
+        /*
         Optional<DeployedContract> existing = contractRepository
                 .findTopByContractNameContractNameOrderByDeployedAtDesc(CONTRACT_NAME);
 
         if (existing.isPresent()) {
             log.info("Usando contrato existente: {}", existing.get().getContractAddress());
             return existing.get();
-        }
+        }*/
 
         // Si no existe, desplegar uno nuevo SmartContract
         return deployNewContract(contractName);
     }
-
 
     private DeployedContract deployNewContract(ContractName contractName) throws Exception {
         log.info("Iniciando despliegue de nuevo contrato...");
@@ -100,16 +110,28 @@ public class VinificationContractCommandServiceImpl implements VinificationProce
         }
     }
 
-
-
     @Override
     public TransactionReceipt signStage(SignStageCommand command) throws Exception {
-        // 1. Buscar el contrato desplegado
+        GetStageIsSigned isSigned = new GetStageIsSigned(command.batchId(), command.stageName());
+
+        if (vinificationProcessQueryService.isStageSigned(isSigned)) {
+            throw new BatchIdAndStageNameAlreadyRegistered(
+                    "Sign smart contract",
+                    "El SmartContract ya fue firmado para la etapa " + command.stageName() + " del lote " + command.batchId(),
+                    new RuntimeException("The Signed SmartContract already exists")
+            );
+        }
+
+        // 1: Buscar el SmartContract desplegado
         DeployedContract deployed = contractRepository
                 .findTopByContractNameContractNameOrderByDeployedAtDesc("SmartContractVinificationProcess")
-                .orElseThrow(() -> new RuntimeException("No deployed contract found"));
+                .orElseThrow(() -> new DeployedContractNotFound(
+                        "Find deployed contract",
+                        "Failed to find deployed contract with name: " + "SmartContractVinificationProcess",
+                        new RuntimeException("No deployed contract found")
+                ));
 
-        // 2. Cargar el contrato
+        // 2: Cargar el SmartContract
         SmartContractVinificationProcess contract = SmartContractVinificationProcess.load(
                 deployed.getContractAddress().getContractAddress(),
                 web3j,
@@ -122,27 +144,30 @@ public class VinificationContractCommandServiceImpl implements VinificationProce
                 }
         );
 
-        // 3. Conversión de datos
-        BigInteger batchIdBigInt = BigInteger.valueOf(command.batchId());
-        BigInteger stageIdBigInt = BigInteger.valueOf(command.stageId());
-        BigInteger startDateBigInt = BigInteger.valueOf(command.startDate());
-        BigInteger endDateBigInt = BigInteger.valueOf(command.endDate());
 
-        // 4. Llamar al contrato
-        TransactionReceipt receipt = contract.signStage(
-                batchIdBigInt,
-                stageIdBigInt,
-                command.stageName(),
-                startDateBigInt,
-                endDateBigInt,
-                command.dataHash()
-        ).send();
-
-        if (!receipt.isStatusOK()) {
-            throw new RuntimeException("Error al firmar la etapa: " + receipt.getTransactionHash());
+        // 3: Convertir datos, llamar al SmartContract y firmar
+        try {
+            return contract.signStage(
+                    BigInteger.valueOf(command.batchId()),
+                    BigInteger.valueOf(command.stageId()),
+                    command.stageName(),
+                    BigInteger.valueOf(command.getStartDateEpochSeconds()),
+                    BigInteger.valueOf(command.getEndDateEpochSeconds()),
+                    command.dataHash()
+            ).send();
+        } catch (ContractCallException e) {
+            throw new TransactionNotBeCreated(
+                    "signStage",
+                    "Contract reverted. Message: " + e.getMessage(),
+                    e
+            );
+        } catch (Exception e) {
+            throw new TransactionNotBeCreated(
+                    "signStage",
+                    "Unexpected error while signing stage with batchId: " + command.batchId() + " and stageName: " + command.stageName(),
+                    e
+            );
         }
-
-        return receipt;
     }
 }
 

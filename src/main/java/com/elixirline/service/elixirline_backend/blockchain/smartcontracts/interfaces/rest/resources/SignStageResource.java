@@ -4,11 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDate;
 
-public record StageResource(
+public record SignStageResource(
         @JsonProperty("batchId") Long batchId,
         @JsonProperty("stageId") Long stageId,
         @JsonProperty("stageName") String stageName,
         @JsonProperty("startDate") LocalDate startDate,
         @JsonProperty("endDate") LocalDate endDate,
         @JsonProperty("dataHash") String dataHash
-) { }
+) {}

@@ -1,10 +1,10 @@
-package com.elixirline.service.elixirline_backend.blockchain.smartcontracts.interfaces.rest.resources;
+package com.elixirline.service.elixirline_backend.blockchain.smartcontracts.domain.model.commands;
 
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 
-public record StageDetailsResource(
+public record StageDetailsCommand(
         Long batchId,
         Long stageId,
         String stageName,
@@ -15,7 +15,7 @@ public record StageDetailsResource(
         String signatureDate,
         boolean completed
 ) {
-    public StageDetailsResource(
+    public StageDetailsCommand(
             Long batchId,
             Long stageId,
             String stageName,
@@ -29,7 +29,7 @@ public record StageDetailsResource(
     }
 
     // Método factory para crear desde valores de la blockchain
-    public static StageDetailsResource fromBlockchain(
+    public static StageDetailsCommand fromBlockchain(
             Long batchId,
             Long stageId,
             String stageName,
@@ -40,7 +40,7 @@ public record StageDetailsResource(
             String signatureDate,
             boolean completed
     ) {
-        return new StageDetailsResource(
+        return new StageDetailsCommand(
                 batchId,
                 stageId,
                 stageName,
