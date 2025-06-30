@@ -39,6 +39,8 @@ web3:
     url: ${WEB3_NETWORK_URL}
   contract:
     address: ${WEB3_CONTRACT_ADDRESS}
+  wallet:
+    address: ${WALLET_ADDRESS}
   private:
     key: ${WEB3_PRIVATE_KEY}
   gas:

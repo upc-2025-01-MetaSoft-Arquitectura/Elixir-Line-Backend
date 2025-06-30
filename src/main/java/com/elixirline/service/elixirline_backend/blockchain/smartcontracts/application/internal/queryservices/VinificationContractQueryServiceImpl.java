@@ -44,13 +44,7 @@ public class VinificationContractQueryServiceImpl implements VinificationProcess
                         deployed.getContractAddress().getContractAddress(),
                         web3j,
                         credentials,
-                        new DefaultGasProvider() {
-                            @Override
-                            public BigInteger getGasLimit() { return gasLimit; }
-
-                            @Override
-                            public BigInteger getGasPrice() { return gasPrice; }
-                        }
+                        new DefaultGasProvider()
                 ))
                 .orElseThrow(() -> new RuntimeException("No deployed contract found"));
     }

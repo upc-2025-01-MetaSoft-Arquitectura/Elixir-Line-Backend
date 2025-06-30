@@ -9,7 +9,8 @@ public class DeployedContractResourceAssembler {
                 contract.getId(),
                 contract.getContractName().getContractName(),
                 contract.getContractAddress().getContractAddress(),
-                contract.getDeployedAt().getDeployedAt()
+                contract.getDeployedAt().getDeployedAt(),
+                contract.getBlockNumber().getBlockNumber()
         );
     }
 }

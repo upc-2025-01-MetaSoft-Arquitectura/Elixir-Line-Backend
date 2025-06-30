@@ -8,6 +8,7 @@ import com.elixirline.service.elixirline_backend.blockchain.smartcontracts.domai
 import com.elixirline.service.elixirline_backend.blockchain.smartcontracts.domain.model.commands.SignStageCommand;
 import com.elixirline.service.elixirline_backend.blockchain.smartcontracts.domain.model.entities.generated.SmartContractVinificationProcess;
 import com.elixirline.service.elixirline_backend.blockchain.smartcontracts.domain.model.queries.GetStageIsSigned;
+import com.elixirline.service.elixirline_backend.blockchain.smartcontracts.domain.model.valueobjects.BlockNumber;
 import com.elixirline.service.elixirline_backend.blockchain.smartcontracts.domain.model.valueobjects.ContractAddress;
 import com.elixirline.service.elixirline_backend.blockchain.smartcontracts.domain.model.valueobjects.ContractName;
 import com.elixirline.service.elixirline_backend.blockchain.smartcontracts.domain.model.valueobjects.DeployedAt;
@@ -22,9 +23,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.tx.exceptions.ContractCallException;
 import org.web3j.tx.gas.DefaultGasProvider;
+import org.web3j.utils.Convert;
+
 import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -51,6 +55,14 @@ public class VinificationContractCommandServiceImpl implements VinificationProce
     @Override
     @Transactional
     public DeployedContract deployContract(DeployContractCommand command) throws Exception {
+        BigInteger balance = web3j.ethGetBalance(credentials.getAddress(), DefaultBlockParameterName.LATEST).send().getBalance();
+        log.info("Saldo en Sepolia: {} ETH", Convert.fromWei(balance.toString(), Convert.Unit.ETHER));
+        if (balance.compareTo(BigInteger.valueOf(5_000_000_000_000_000L)) < 0) { // 0.005 ETH mínimo
+            throw new RuntimeException("Saldo insuficiente para desplegar contrato");
+        }
+
+
+
         final String CONTRACT_NAME = "SmartContractVinificationProcess";
         ContractName contractName = new ContractName(CONTRACT_NAME);
 
@@ -76,19 +88,19 @@ public class VinificationContractCommandServiceImpl implements VinificationProce
             SmartContractVinificationProcess contract = SmartContractVinificationProcess.deploy(
                     web3j,
                     credentials,
-                    new DefaultGasProvider() {
-                        @Override public BigInteger getGasLimit() { return gasLimit; }
-                        @Override public BigInteger getGasPrice() { return gasPrice; }
-                    }
+                    new DefaultGasProvider()
             ).send();
 
             if (contract == null || contract.getContractAddress() == null) {
                 throw new RuntimeException("El contrato no generó una dirección válida");
             }
 
-            log.info("Contrato desplegado exitosamente en: {}", contract.getContractAddress());
-            return saveDeployedContract(contractName, contract.getContractAddress());
+            // Obtener el receipt para conocer el bloque (blockNumber)
+            TransactionReceipt receipt = contract.getTransactionReceipt().orElseThrow(() -> new RuntimeException("No se obtuvo el recibo de la transacción"));
+            BigInteger blockNumber = receipt.getBlockNumber();
+            log.info("Contrato desplegado exitosamente en: {} en bloque {}", contract.getContractAddress(), blockNumber);
 
+            return saveDeployedContract(contractName, contract.getContractAddress(), blockNumber);
         } catch (Exception e) {
             if (e.getMessage() != null && e.getMessage().contains("invalid opcode")) {
                 throw new RuntimeException("No se pudo verificar el despliegue del contrato", e);
@@ -97,12 +109,13 @@ public class VinificationContractCommandServiceImpl implements VinificationProce
         }
     }
 
-    private DeployedContract saveDeployedContract(ContractName contractName, String contractAddress) {
+    private DeployedContract saveDeployedContract(ContractName contractName, String contractAddress, BigInteger blockNumber) {
         try {
             DeployedContract deployed = new DeployedContract(
                     contractName,
                     new ContractAddress(contractAddress),
-                    new DeployedAt(LocalDateTime.now())
+                    new DeployedAt(LocalDateTime.now()),
+                    new BlockNumber(blockNumber)
             );
             return contractRepository.saveAndFlush(deployed);
         } catch (Exception e) {
@@ -136,12 +149,7 @@ public class VinificationContractCommandServiceImpl implements VinificationProce
                 deployed.getContractAddress().getContractAddress(),
                 web3j,
                 credentials,
-                new DefaultGasProvider() {
-                    @Override
-                    public BigInteger getGasLimit() { return gasLimit; }
-                    @Override
-                    public BigInteger getGasPrice() { return gasPrice; }
-                }
+                new DefaultGasProvider()
         );
 
 
