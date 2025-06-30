@@ -206,7 +206,7 @@
                 </executions>
                 <configuration>
                     <soliditySourceFiles>
-                        <directory>src/main/resources/blockchain/smartcontracts/solidity</directory>
+                        <directory>src/main/java/com/elixirline/service/elixirline_backend/blockchain/smartcontracts/domain/model/entities/solidity</directory>
                         <includes>
                             <include>**/*.sol</include>
                         </includes>
@@ -215,8 +215,8 @@
                     <!-- Carpeta destino para las clases Java generadas -->
                     <sourceDestination>src/main/java</sourceDestination>
 
-                    <!-- Paquete base para las clases generadas -->
-                    <packageName>com.elixirline.service.elixirline_backend.blockchain.smartcontracts.generated</packageName>
+                    <!-- Paquete base para las clases generadas de .sol (solidity) a .java -->
+                    <packageName>com.elixirline.service.elixirline_backend.blockchain.smartcontracts.domain.model.entities.generated</packageName>
                 </configuration>
             </plugin>
         </plugins>
