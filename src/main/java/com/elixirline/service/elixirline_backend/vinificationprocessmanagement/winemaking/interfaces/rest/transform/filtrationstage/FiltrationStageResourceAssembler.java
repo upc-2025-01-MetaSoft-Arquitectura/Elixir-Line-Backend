@@ -25,7 +25,8 @@ public class FiltrationStageResourceAssembler {
                 filtrationStage.getComment(),
                 filtrationStage.getCompletionStatus(),
                 filtrationStage.getCurrentStage(),
-                filtrationStage.getCompletedAt()
+                filtrationStage.getCompletedAt(),
+                filtrationStage.getDataHash()
         );
     }
 }

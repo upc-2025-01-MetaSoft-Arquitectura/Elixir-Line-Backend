@@ -18,7 +18,8 @@ public class ReceptionStageResourceAssembler {
                 receptionStage.getComment(),
                 receptionStage.getCompletionStatus(),
                 receptionStage.getCurrentStage(),
-                receptionStage.getCompletedAt()
+                receptionStage.getCompletedAt(),
+                receptionStage.getDataHash()
         );
     }
 }

@@ -21,7 +21,8 @@ public class ClarificationStageResourceAssembler {
                 clarificationStage.getComment(),
                 clarificationStage.getCompletionStatus(),
                 clarificationStage.getCurrentStage(),
-                clarificationStage.getCompletedAt()
+                clarificationStage.getCompletedAt(),
+                clarificationStage.getDataHash()
         );
     }
 }

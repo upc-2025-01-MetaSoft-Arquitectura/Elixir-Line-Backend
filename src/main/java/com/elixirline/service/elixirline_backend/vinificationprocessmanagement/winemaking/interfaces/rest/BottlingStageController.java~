@@ -82,7 +82,7 @@ public class BottlingStageController {
                                     summary = "Respuesta exitosa con los detalles de la etapa de embotellado",
                                     value = """
                                     {
-                                      "id": 1,
+                                      "bottlingStageId": 1,
                                       "batchId": 10,
                                       "employee": "Luis Carlos Prada Naez",
                                       "startDate": "2025-06-01",
@@ -100,8 +100,7 @@ public class BottlingStageController {
                                       "comment": "Embotellado realizado con éxito.",
                                       "completionStatus": "NOT_COMPLETED",
                                       "currentStage": "BOTTLING",
-                                      "completedAt": null,
-                                      "dataHash": null
+                                      "completedAt": null
                                     }
                                     """
                             )
@@ -161,7 +160,7 @@ public class BottlingStageController {
                                     summary = "Respuesta exitosa de creación",
                                     value = """
                                     {
-                                      "id": 2,
+                                      "bottlingStageId": 2,
                                       "batchId": 10,
                                       "employee": "Luis Carlos Prada Naez",
                                       "startDate": "2025-06-01",
@@ -179,8 +178,7 @@ public class BottlingStageController {
                                       "comment": "Embotellado realizado con éxito.",
                                       "completionStatus": "NOT_COMPLETED",
                                       "currentStage": "BOTTLING",
-                                      "completedAt": null,
-                                      "dataHash": null
+                                      "completedAt": null
                                     }
                                     """
                             )
@@ -239,7 +237,7 @@ public class BottlingStageController {
                                     summary = "Respuesta exitosa de creación",
                                     value = """
                                     {
-                                      "id": 2,
+                                      "bottlingStageId": 2,
                                       "batchId": 10,
                                       "employee": null,
                                       "startDate": null,
@@ -257,8 +255,7 @@ public class BottlingStageController {
                                       "comment": null,
                                       "completionStatus": "NOT_COMPLETED",
                                       "currentStage": "BOTTLING",
-                                      "completedAt": null,
-                                      "dataHash": null
+                                      "completedAt": null
                                     }
                                     """
                             )
@@ -316,7 +313,7 @@ public class BottlingStageController {
                                     summary = "Respuesta exitosa de actualización",
                                     value = """
                                     {
-                                      "id": 1,
+                                      "bottlingStageId": 1,
                                       "batchId": 10,
                                       "employee": "Luis Carlos Prada Naez",
                                       "startDate": "2025-06-01",
@@ -334,8 +331,7 @@ public class BottlingStageController {
                                       "comment": "Embotellado realizado con éxito.",
                                       "completionStatus": "NOT_COMPLETED",
                                       "currentStage": "BOTTLING",
-                                      "completedAt": null,
-                                      "dataHash": null
+                                      "completedAt": null
                                     }
                                     """
                             )

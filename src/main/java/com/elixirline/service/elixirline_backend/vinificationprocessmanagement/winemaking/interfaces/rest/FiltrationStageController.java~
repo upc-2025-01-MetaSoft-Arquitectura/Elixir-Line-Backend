@@ -83,7 +83,7 @@ public class FiltrationStageController {
                                     summary = "Respuesta exitosa con los detalles de la etapa de filtración",
                                     value = """
                                     {
-                                      "id": 1,
+                                      "filtrationStageId": 1,
                                       "batchId": 10,
                                       "employee": "Luis Carlos Prada Naez",
                                       "startDate": "2025-06-01",
@@ -102,8 +102,7 @@ public class FiltrationStageController {
                                       "comment": "Filtración realizada con éxito.",
                                       "completionStatus": "NOT_COMPLETED",
                                       "currentStage": "FILTRATION",
-                                      "completedAt": null,
-                                      "dataHash": null
+                                      "completedAt": null
                                     }
                                     """
                             )
@@ -164,7 +163,7 @@ public class FiltrationStageController {
                                     summary = "Respuesta exitosa de creación",
                                     value = """
                                     {
-                                      "id": 2,
+                                      "filtrationStageId": 2,
                                       "batchId": 10,
                                       "employee": "Luis Carlos Prada Naez",
                                       "startDate": "2025-06-01",
@@ -183,8 +182,7 @@ public class FiltrationStageController {
                                       "comment": "Filtración realizada con éxito.",
                                       "completionStatus": "NOT_COMPLETED",
                                       "currentStage": "FILTRATION",
-                                      "completedAt": null,
-                                      "dataHash": null
+                                      "completedAt": null
                                     }
                                     """
                             )
@@ -245,7 +243,7 @@ public class FiltrationStageController {
                                     summary = "Respuesta exitosa de creación",
                                     value = """
                                     {
-                                      "id": 2,
+                                      "filtrationStageId": 2,
                                       "batchId": 10,
                                       "employee": null,
                                       "startDate": null,
@@ -264,8 +262,7 @@ public class FiltrationStageController {
                                       "comment": null,
                                       "completionStatus": "NOT_COMPLETED",
                                       "currentStage": "FILTRATION",
-                                      "completedAt": null,
-                                      "dataHash": null
+                                      "completedAt": null
                                     }
                                     """
                             )
@@ -323,7 +320,7 @@ public class FiltrationStageController {
                                     summary = "Respuesta exitosa de actualización",
                                     value = """
                                     {
-                                      "id": 1,
+                                      "filtrationStageId": 1,
                                       "batchId": 10,
                                       "employee": "Luis Carlos Prada Naez",
                                       "startDate": "2025-06-01",
@@ -342,8 +339,7 @@ public class FiltrationStageController {
                                       "comment": "Filtración realizada con éxito.",
                                       "completionStatus": "NOT_COMPLETED",
                                       "currentStage": "FILTRATION",
-                                      "completedAt": null,
-                                      "dataHash": null
+                                      "completedAt": null
                                     }
                                     """
                             )

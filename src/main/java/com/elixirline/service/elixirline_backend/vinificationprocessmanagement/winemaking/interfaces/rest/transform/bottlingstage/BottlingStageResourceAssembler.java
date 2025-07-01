@@ -24,7 +24,8 @@ public class BottlingStageResourceAssembler {
                 bottlingStage.getComment(),
                 bottlingStage.getCompletionStatus(),
                 bottlingStage.getCurrentStage(),
-                bottlingStage.getCompletedAt()
+                bottlingStage.getCompletedAt(),
+                bottlingStage.getDataHash()
         );
     }
 }

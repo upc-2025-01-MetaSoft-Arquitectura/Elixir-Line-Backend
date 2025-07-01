@@ -16,7 +16,7 @@ public record MustUsage(
     }
 
     @JsonValue
-    public String getMustUsage() {
+    public String getUsage() {
         return value;
     }
 }

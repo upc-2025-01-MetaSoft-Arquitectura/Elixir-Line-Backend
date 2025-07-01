@@ -5,7 +5,7 @@ import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.w
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.common.*;
 
 public record BottlingStageResource(
-        Long bottlingStageId,
+        Long id,
         Long batchId,
         Employee employee,
         StartDate startDate,
@@ -23,5 +23,6 @@ public record BottlingStageResource(
         Comment comment,
         CompletionStatus completionStatus,
         CurrentStage currentStage,
-        java.time.LocalDateTime completedAt
+        java.time.LocalDateTime completedAt,
+        String dataHash
 ) { }

@@ -5,7 +5,7 @@ import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.w
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.receptionstage.*;
 
 public record ReceptionStageResource(
-        Long receptionStageId,
+        Long id,
         Long batchId,
         Employee employee,
         StartDate startDate,
@@ -17,5 +17,6 @@ public record ReceptionStageResource(
         Comment comment,
         CompletionStatus completionStatus,
         CurrentStage currentStage,
-        java.time.LocalDateTime completedAt
+        java.time.LocalDateTime completedAt,
+        String dataHash
 ) { }

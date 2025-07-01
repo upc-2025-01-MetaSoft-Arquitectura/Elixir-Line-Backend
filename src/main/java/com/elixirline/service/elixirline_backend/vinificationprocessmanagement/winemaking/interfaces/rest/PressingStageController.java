@@ -78,7 +78,7 @@ public class PressingStageController {
                                     summary = "Respuesta exitosa con los detalles de la etapa de prensado",
                                     value = """
                                     {
-                                      "pressingStageId": 1,
+                                      "id": 1,
                                       "batchId": 10,
                                       "employee": "Luis Carlos Prada Naez",
                                       "startDate": "2025-06-01",
@@ -92,7 +92,8 @@ public class PressingStageController {
                                       "comment": "Prensado realizado con éxito.",
                                       "completionStatus": "NOT_COMPLETED",
                                       "currentStage": "PRESSING",
-                                      "completedAt": null
+                                      "completedAt": null,
+                                      "dataHash": null
                                     }
                                     """
                             )
@@ -152,7 +153,7 @@ public class PressingStageController {
                                     summary = "Respuesta exitosa de creación",
                                     value = """
                                     {
-                                      "pressingStageId": 2,
+                                      "id": 2,
                                       "batchId": 10,
                                       "employee": "Luis Carlos Prada Naez",
                                       "startDate": "2025-06-01",
@@ -166,7 +167,8 @@ public class PressingStageController {
                                       "comment": "Prensado realizado con éxito.",
                                       "completionStatus": "NOT_COMPLETED",
                                       "currentStage": "PRESSING",
-                                      "completedAt": null
+                                      "completedAt": null,
+                                      "dataHash": null
                                     }
                                     """
                             )
@@ -226,7 +228,7 @@ public class PressingStageController {
                                     summary = "Respuesta exitosa de creación",
                                     value = """
                                     {
-                                      "pressingStageId": 2,
+                                      "id": 2,
                                       "batchId": 10,
                                       "employee": null,
                                       "startDate": null,
@@ -240,7 +242,8 @@ public class PressingStageController {
                                       "comment": null,
                                       "completionStatus": "NOT_COMPLETED",
                                       "currentStage": "PRESSING",
-                                      "completedAt": null
+                                      "completedAt": null,
+                                      "dataHash": null
                                     }
                                     """
                             )
@@ -296,7 +299,7 @@ public class PressingStageController {
                                     summary = "Respuesta exitosa de actualización",
                                     value = """
                                     {
-                                      "pressingStageId": 1,
+                                      "id": 1,
                                       "batchId": 10,
                                       "employee": "Luis Carlos Prada Naez",
                                       "startDate": "2025-06-01",
@@ -310,7 +313,8 @@ public class PressingStageController {
                                       "comment": "Prensado realizado con éxito.",
                                       "completionStatus": "NOT_COMPLETED",
                                       "currentStage": "PRESSING",
-                                      "completedAt": null
+                                      "completedAt": null,
+                                      "dataHash": null
                                     }
                                     """
                             )

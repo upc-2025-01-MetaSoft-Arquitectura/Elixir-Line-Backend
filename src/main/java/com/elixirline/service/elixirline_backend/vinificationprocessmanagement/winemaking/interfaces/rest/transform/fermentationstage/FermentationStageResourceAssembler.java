@@ -23,7 +23,8 @@ public class FermentationStageResourceAssembler {
                 fermentationStage.getComment(),
                 fermentationStage.getCompletionStatus(),
                 fermentationStage.getCurrentStage(),
-                fermentationStage.getCompletedAt()
+                fermentationStage.getCompletedAt(),
+                fermentationStage.getDataHash()
         );
     }
 }

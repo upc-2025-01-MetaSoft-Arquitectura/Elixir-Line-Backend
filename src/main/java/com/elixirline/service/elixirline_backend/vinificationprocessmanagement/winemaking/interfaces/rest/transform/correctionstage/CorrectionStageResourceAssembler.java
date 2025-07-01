@@ -24,7 +24,8 @@ public class CorrectionStageResourceAssembler {
                 correctionStage.getComment(),
                 correctionStage.getCompletionStatus(),
                 correctionStage.getCurrentStage(),
-                correctionStage.getCompletedAt()
+                correctionStage.getCompletedAt(),
+                correctionStage.getDataHash()
         );
     }
 }
