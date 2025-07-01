@@ -3,7 +3,7 @@ package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.batch.*;
 
 public record BatchResource(
-        Long batchId,
+        Long id,
         Long winegrowerId,
         Long campaignId,
         String vineyardCode,

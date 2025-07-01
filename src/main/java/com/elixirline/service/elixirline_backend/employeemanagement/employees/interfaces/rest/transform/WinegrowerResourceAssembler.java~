@@ -6,7 +6,7 @@ import com.elixirline.service.elixirline_backend.employeemanagement.employees.in
 public class WinegrowerResourceAssembler {
     public static WinegrowerResource toResource(Winegrower winegrower) {
         return new WinegrowerResource(
-                winegrower.getId(),
+                winegrower.getWinegrowerId(),
                 winegrower.getUserId(),
                 winegrower.getName(),
                 winegrower.getLastname(),

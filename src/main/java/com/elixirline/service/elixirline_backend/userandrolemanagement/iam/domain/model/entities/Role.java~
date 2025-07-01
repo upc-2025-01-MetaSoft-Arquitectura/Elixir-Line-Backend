@@ -48,7 +48,7 @@ public class Role {
      * @return the default role
      */
     public static Role getDefaultRole() {
-        return new Role(Roles.WINEGROWER);
+        return new Role(Roles.VINEGROWER);
     }
 
     /**

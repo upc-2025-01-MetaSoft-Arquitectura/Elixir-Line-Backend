@@ -16,10 +16,6 @@ import lombok.Setter;
 @Entity(name = "deployed_contracts")
 @NoArgsConstructor
 public class DeployedContract extends AuditableAbstractAggregateRoot<DeployedContract>  {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @Embedded
     private ContractName contractName;
 

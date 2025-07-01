@@ -39,7 +39,7 @@ public class IamContextFacade {
         var signUpCommand = new SignUpCommand(username, password, Role.getDefaultRole());
         var result = userCommandService.handle(signUpCommand);
         if (result.isEmpty()) return 0L;
-        return result.get().getId();
+        return result.get().getUserId();
     }
 
     /**
@@ -54,7 +54,7 @@ public class IamContextFacade {
         var signUpCommand = new SignUpCommand(username, password,role);
         var result = userCommandService.handle(signUpCommand);
         if (result.isEmpty()) return 0L;
-        return result.get().getId();
+        return result.get().getUserId();
     }
 
     /**
@@ -66,7 +66,7 @@ public class IamContextFacade {
         var getUserByUsernameQuery = new GetUserByEmailQuery(username);
         var result = userQueryService.handle(getUserByUsernameQuery);
         if (result.isEmpty()) return 0L;
-        return result.get().getId();
+        return result.get().getUserId();
     }
 
     /**

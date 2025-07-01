@@ -70,7 +70,7 @@ public class FieldWorkerController {
                                             value = """
                                             [
                                               {
-                                                "fieldWorkerId": 1,
+                                                "id": 1,
                                                 "userId": 5,
                                                 "name": "Mateo Lucas",
                                                 "lastname": "Hernandez Sanchez",
@@ -166,7 +166,7 @@ public class FieldWorkerController {
                                             value = """
                                             [
                                               {
-                                                "fieldWorkerId": 1,
+                                                "id": 1,
                                                 "userId": 5,
                                                 "name": "Mateo Lucas",
                                                 "lastname": "Hernandez Sanchez",
@@ -282,7 +282,7 @@ public class FieldWorkerController {
                                     summary = "Respuesta exitosa de creación",
                                     value = """
                                     {
-                                      "fieldWorkerId": 1,
+                                      "id": 1,
                                       "userId": 3,
                                       "name": "Mateo Lucas",
                                       "lastname": "Hernandez Sanchez",
@@ -413,7 +413,7 @@ public class FieldWorkerController {
                                     summary = "Respuesta exitosa con los detalles del trabajador de campo actualizado",
                                     value = """
                                     {
-                                      "fieldWorkerId": 1,
+                                      "id": 1,
                                       "userId": 3,
                                       "name": "Mateo Lucas",
                                       "lastname": "Hernandez Sanchez",
@@ -743,7 +743,7 @@ public class FieldWorkerController {
                                             summary = "Respuesta exitosa con los detalles del trabajador de campo activado",
                                             value = """
                                             {
-                                              "fieldWorkerId": 1,
+                                              "id": 1,
                                               "userId": 3,
                                               "name": "Mateo Lucas",
                                               "lastname": "Hernandez Sanchez",
