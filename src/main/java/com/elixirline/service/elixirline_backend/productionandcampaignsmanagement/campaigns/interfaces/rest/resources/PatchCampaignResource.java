@@ -1,9 +1,8 @@
-package com.elixirline.service.elixirline_backend.productionandcampaignsmanagement.campaigns.domain.model.commands;
+package com.elixirline.service.elixirline_backend.productionandcampaignsmanagement.campaigns.interfaces.rest.resources;
 
 import java.time.LocalDate;
 
-public record UpdateCampaignCommand(
-        Long campaignId,
+public record PatchCampaignResource(
         String name,
         String year,
         Long winegrowerId,

@@ -8,7 +8,7 @@ public record CreateTasksCommand(
         String description,
         LocalDate startDate,
         LocalDate endDate,
-        String assignedTo,
+        Long winegrowerId,
         Long batchId,
         List<Long> suppliesIds
 ) {

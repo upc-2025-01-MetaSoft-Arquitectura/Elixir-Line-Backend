@@ -2,7 +2,7 @@ package com.elixirline.service.elixirline_backend.productionandcampaignsmanageme
 
 import java.time.LocalDate;
 
-public record UpdateCampaignCommand(
+public record PatchCampaignCommand(
         Long campaignId,
         String name,
         String year,

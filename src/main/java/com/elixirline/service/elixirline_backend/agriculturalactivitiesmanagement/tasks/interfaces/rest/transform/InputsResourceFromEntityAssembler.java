@@ -10,6 +10,7 @@ public class InputsResourceFromEntityAssembler {
                 entity.getName(),
                 entity.getDescription(),
                 entity.getQuantity(),
+                entity.getWinegrowerId(),
                 entity.getUnits().name(),
                 entity.getImage()
         );

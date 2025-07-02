@@ -12,4 +12,5 @@ public interface TasksQueryService {
     List<Tasks> handle(GetFieldTasksQuery query);
     List<Tasks> handle(GetIndustrialTasksQuery query);
     Optional<Tasks> handle(GetTaskByIdQuery query);
+    List<Tasks> findByWinegrowerId(Long winegrowerId);
 }

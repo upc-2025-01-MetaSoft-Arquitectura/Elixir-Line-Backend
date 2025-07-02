@@ -3,6 +3,7 @@ package com.elixirline.service.elixirline_backend.agriculturalactivitiesmanageme
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.aggregates.Tasks;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.commands.CreateTasksCommand;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.commands.DeleteTaskCommand;
+import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.commands.PatchTaskCommand;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.commands.UpdateTaskCommand;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.valueobjetcs.TaskType;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.services.TasksCommandService;
@@ -25,10 +26,10 @@ public class TasksCommandServiceImpl implements TasksCommandService {
                 command.description(),
                 command.startDate(),
                 command.endDate(),
-                command.assignedTo(),
+                command.winegrowerId(),
                 command.batchId(),
                 command.suppliesIds(),
-                TaskType.FIELD
+                TaskType.TASK_FIELD
         );
         tasksRepository.save(task);
         return Optional.of(task);
@@ -41,10 +42,10 @@ public class TasksCommandServiceImpl implements TasksCommandService {
                 command.description(),
                 command.startDate(),
                 command.endDate(),
-                command.assignedTo(),
+                command.winegrowerId(),
                 command.batchId(),
                 command.suppliesIds(),
-                TaskType.INDUSTRIAL
+                TaskType.TASK_INDUSTRY
         );
         tasksRepository.save(task);
         return Optional.of(task);
@@ -54,7 +55,7 @@ public class TasksCommandServiceImpl implements TasksCommandService {
     public Optional<Tasks> handle(UpdateTaskCommand command) {
         var task = tasksRepository.findById(command.taskId());
         if(task.isEmpty()) return Optional.empty();
-        var updated = task.get().updateInformation(command.title(), command.description(), command.startDate(), command.endDate(), command.assignedTo(), command.batchId(), command.suppliesIds());
+        var updated = task.get().updateInformation(command.title(), command.description(), command.startDate(), command.endDate(), command.winegrowerId(), command.batchId(), command.suppliesIds(), command.type());
         tasksRepository.save(updated);
         return Optional.of(updated);
     }
@@ -69,5 +70,25 @@ public class TasksCommandServiceImpl implements TasksCommandService {
         }catch (Exception ex){
             throw new IllegalArgumentException("Task does not exist");
         }
+    }
+
+    @Override
+    public Optional<Tasks> handle(PatchTaskCommand command) {
+        var taskOptional = tasksRepository.findById(command.taskId());
+        if (taskOptional.isEmpty()) return Optional.empty();
+
+        var task = taskOptional.get();
+        task.updateInformation(
+                command.title(),
+                command.description(),
+                command.startDate(),
+                command.endDate(),
+                command.winegrowerId(),
+                command.batchId(),
+                command.suppliesIds(),
+                command.type()
+        );
+
+        return Optional.of(tasksRepository.save(task));
     }
 }

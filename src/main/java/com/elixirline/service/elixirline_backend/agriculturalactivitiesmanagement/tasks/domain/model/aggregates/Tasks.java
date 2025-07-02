@@ -23,7 +23,7 @@ public class Tasks extends AuditableAbstractAggregateRoot<Tasks> {
     private LocalDate startDate;
     private LocalDate endDate;
 
-    private String assignedTo;
+    private Long winegrowerId;
     private Long batchId;
 
     @ElementCollection
@@ -37,7 +37,7 @@ public class Tasks extends AuditableAbstractAggregateRoot<Tasks> {
             String description,
             LocalDate startDate,
             LocalDate endDate,
-            String assignedTo,
+            Long winegrowerId,
             Long batchId,
             List<Long> suppliesIds,
             TaskType type
@@ -46,7 +46,7 @@ public class Tasks extends AuditableAbstractAggregateRoot<Tasks> {
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.assignedTo = assignedTo;
+        this.winegrowerId = winegrowerId;
         this.batchId = batchId;
         this.suppliesIds = suppliesIds;
         this.type = type;
@@ -57,9 +57,10 @@ public class Tasks extends AuditableAbstractAggregateRoot<Tasks> {
             String description,
             LocalDate startDate,
             LocalDate endDate,
-            String assignedTo,
+            Long winegrowerId,
             Long batchId,
-            List<Long> suppliesIds
+            List<Long> suppliesIds,
+            TaskType type
     ) {
         if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
             throw new IllegalArgumentException("Start date cannot be after end date");
@@ -69,9 +70,10 @@ public class Tasks extends AuditableAbstractAggregateRoot<Tasks> {
         this.description = description != null ? description : this.description;
         this.startDate = startDate != null ? startDate : this.startDate;
         this.endDate = endDate != null ? endDate : this.endDate;
-        this.assignedTo = assignedTo != null ? assignedTo : this.assignedTo;
+        this.winegrowerId = winegrowerId != null ? winegrowerId : this.winegrowerId;
         this.batchId = batchId != null ? batchId : this.batchId;
         this.suppliesIds = suppliesIds != null ? suppliesIds : this.suppliesIds;
+        this.type = type != null ? type : this.type;
 
         return this;
     }

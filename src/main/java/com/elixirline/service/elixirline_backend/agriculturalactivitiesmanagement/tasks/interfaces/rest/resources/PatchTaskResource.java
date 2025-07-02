@@ -5,7 +5,7 @@ import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagemen
 import java.time.LocalDate;
 import java.util.List;
 
-public record UpdateTasksResource(
+public record PatchTaskResource(
         String title,
         String description,
         LocalDate startDate,

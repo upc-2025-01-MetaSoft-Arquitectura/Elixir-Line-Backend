@@ -3,6 +3,7 @@ package com.elixirline.service.elixirline_backend.productionandcampaignsmanageme
 import com.elixirline.service.elixirline_backend.productionandcampaignsmanagement.campaigns.domain.model.aggregates.Campaign;
 import com.elixirline.service.elixirline_backend.productionandcampaignsmanagement.campaigns.domain.model.commands.CreateCampaignCommand;
 import com.elixirline.service.elixirline_backend.productionandcampaignsmanagement.campaigns.domain.model.commands.DeleteCampaignCommand;
+import com.elixirline.service.elixirline_backend.productionandcampaignsmanagement.campaigns.domain.model.commands.PatchCampaignCommand;
 import com.elixirline.service.elixirline_backend.productionandcampaignsmanagement.campaigns.domain.model.commands.UpdateCampaignCommand;
 import com.elixirline.service.elixirline_backend.productionandcampaignsmanagement.campaigns.domain.model.exceptions.DuplicateCampaignNameException;
 import com.elixirline.service.elixirline_backend.productionandcampaignsmanagement.campaigns.domain.services.CampaignCommandService;
@@ -42,12 +43,40 @@ public class CampaignCommandServiceImpl implements CampaignCommandService {
 
     @Override
     public Optional<Campaign> handle(UpdateCampaignCommand command) {
-        var campaign = campaignRepository.findById(command.campaignId());
-        if (campaign.isEmpty()) return Optional.empty();
+        var campaignOptional = campaignRepository.findById(command.campaignId());
+        if (campaignOptional.isEmpty()) return Optional.empty();
 
-        var updated = campaign.get()
-                .updateInformation(command.name(), command.year(), command.startDate(), command.endDate());
-        campaignRepository.save(updated);
-        return Optional.of(updated);
+        var campaign = campaignOptional.get();
+        campaign.updateInformation(
+                command.name(),
+                command.year(),
+                command.winegrowerId(),
+                command.batches(),
+                command.status(),
+                command.startDate(),
+                command.endDate()
+        );
+
+        return Optional.of(campaignRepository.save(campaign));
+    }
+
+    @Override
+    public Optional<Campaign> handle(PatchCampaignCommand command) {
+        var campaignOptional = campaignRepository.findById(command.campaignId());
+        if (campaignOptional.isEmpty()) return Optional.empty();
+
+        Campaign campaign = campaignOptional.get();
+
+        campaign.patchInformation(
+                command.name(),
+                command.year(),
+                command.winegrowerId(),
+                command.batches(),
+                command.status(),
+                command.startDate(),
+                command.endDate()
+        );
+
+        return Optional.of(campaignRepository.save(campaign));
     }
 }

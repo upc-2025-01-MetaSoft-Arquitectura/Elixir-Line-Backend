@@ -1,5 +1,7 @@
 package com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.commands;
 
+import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.valueobjetcs.TaskType;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -9,8 +11,9 @@ public record UpdateTaskCommand(
         String description,
         LocalDate startDate,
         LocalDate endDate,
-        String assignedTo,
+        Long winegrowerId,
         Long batchId,
-        List<Long> suppliesIds
+        List<Long> suppliesIds,
+        TaskType type
 ) {
 }

@@ -45,11 +45,33 @@ public class Campaign extends AuditableAbstractAggregateRoot<Campaign> {
         this.endDate = command.endDate();
     }
 
-    public Campaign updateInformation(String name, String year, LocalDate startDate, LocalDate endDate) {
+//    public Campaign updateInformation(String name, String year, LocalDate startDate, LocalDate endDate) {
+//        this.name = name;
+//        this.year = year;
+//        this.startDate = startDate;
+//        this.endDate = endDate;
+//        return this;
+//    }
+
+    public Campaign updateInformation(String name, String year, Long winegrowerId, Long batches,String status, LocalDate startDate, LocalDate endDate) {
         this.name = name;
         this.year = year;
+        this.winegrowerId = winegrowerId;
+        this.batches = batches;
+        this.status = CampaignStatus.valueOf(status.toUpperCase());
         this.startDate = startDate;
         this.endDate = endDate;
+        return this;
+    }
+
+    public Campaign patchInformation(String name, String year, Long winegrowerId, Long batches, String status, LocalDate startDate, LocalDate endDate) {
+        if (name != null) this.name = name;
+        if (year != null) this.year = year;
+        if (winegrowerId != null) this.winegrowerId = winegrowerId;
+        if (batches != null) this.batches = batches;
+        if (status != null) this.status = CampaignStatus.valueOf(status.toUpperCase());
+        if (startDate != null) this.startDate = startDate;
+        if (endDate != null) this.endDate = endDate;
         return this;
     }
 }

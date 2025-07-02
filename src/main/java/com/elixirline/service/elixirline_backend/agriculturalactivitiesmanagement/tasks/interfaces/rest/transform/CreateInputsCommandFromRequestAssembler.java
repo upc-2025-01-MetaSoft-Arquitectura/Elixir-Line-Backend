@@ -5,8 +5,8 @@ import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagemen
 import org.springframework.web.multipart.MultipartFile;
 
 public class CreateInputsCommandFromRequestAssembler {
-    public static CreateInputsCommand toCommand(String name, String description,Long quantity, String units, MultipartFile imageFile) {
+    public static CreateInputsCommand toCommand(String name, String description,Long quantity, Long winegrowerId,String units, MultipartFile imageFile) {
         UnitType unitType = UnitType.valueOf(units.toUpperCase());
-        return new CreateInputsCommand(name, description,quantity, unitType, imageFile);
+        return new CreateInputsCommand(name, description,quantity, winegrowerId, unitType, imageFile);
     }
 }

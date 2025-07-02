@@ -8,6 +8,7 @@ public record UpdateInputsCommand(
         String name,
         String description,
         Long quantity,
+        Long winegrowerId,
         UnitType unit,
         MultipartFile image
 ) {

@@ -4,6 +4,7 @@ import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagemen
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.queries.GetAllInputsQuery;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.queries.GetInputsByIdQuery;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.queries.GetInputsByNameQuery;
+import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.queries.GetInputsByWinegrowerIdQuery;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.services.InputsQueryService;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.infrastructure.persistance.jpa.repositories.InputsRepository;
 import org.springframework.stereotype.Service;
@@ -34,5 +35,10 @@ public class InputsQueryServiceImpl implements InputsQueryService {
     @Override
     public Optional<Inputs> handle(GetInputsByNameQuery query) {
         return inputsRepository.findByNameIgnoreCase(query.name());
+    }
+
+    @Override
+    public List<Inputs> handle(GetInputsByWinegrowerIdQuery query) {
+        return inputsRepository.findByWinegrowerId(query.winegrowerId());
     }
 }

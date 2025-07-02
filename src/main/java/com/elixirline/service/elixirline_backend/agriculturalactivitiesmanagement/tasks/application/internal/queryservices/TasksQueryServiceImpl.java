@@ -21,16 +21,21 @@ public class TasksQueryServiceImpl implements TasksQueryService {
 
     @Override
     public List<Tasks> handle(GetFieldTasksQuery query){
-        return tasksRepository.findByType(TaskType.FIELD);
+        return tasksRepository.findByType(TaskType.TASK_FIELD);
     }
     @Override
     public List<Tasks> handle(GetIndustrialTasksQuery query){
-        return tasksRepository.findByType(TaskType.INDUSTRIAL);
+        return tasksRepository.findByType(TaskType.TASK_INDUSTRY);
     }
 
     @Override
     public Optional<Tasks> handle(GetTaskByIdQuery query) {
         return tasksRepository.findById(query.taskId());
+    }
+
+    @Override
+    public List<Tasks> findByWinegrowerId(Long winegrowerId) {
+        return tasksRepository.findByWinegrowerId(winegrowerId);
     }
 
 

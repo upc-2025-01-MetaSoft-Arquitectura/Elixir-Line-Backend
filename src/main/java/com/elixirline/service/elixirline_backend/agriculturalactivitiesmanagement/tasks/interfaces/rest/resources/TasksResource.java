@@ -1,5 +1,7 @@
 package com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.interfaces.rest.resources;
 
+import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.valueobjetcs.TaskType;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -9,8 +11,10 @@ public record TasksResource(
         String description,
         LocalDate startDate,
         LocalDate endDate,
-        String assignedTo,
+        Long winegrowerId,
         Long batchId,
+        TaskType type,
         List<Long> suppliesIds
+
 ) {
 }
