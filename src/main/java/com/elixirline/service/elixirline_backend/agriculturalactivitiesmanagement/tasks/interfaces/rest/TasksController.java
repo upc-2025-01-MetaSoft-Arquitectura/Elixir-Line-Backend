@@ -1,19 +1,15 @@
 package com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.interfaces.rest;
 
+import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.commands.CreateEvidenceCommand;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.commands.DeleteTaskCommand;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.queries.GetFieldTasksQuery;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.queries.GetIndustrialTasksQuery;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.queries.GetTaskByIdQuery;
+import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.services.EvidenceCommandService;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.services.TasksCommandService;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.services.TasksQueryService;
-import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.interfaces.rest.resources.CreateTaskResource;
-import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.interfaces.rest.resources.PatchTaskResource;
-import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.interfaces.rest.resources.TasksResource;
-import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.interfaces.rest.resources.UpdateTasksResource;
-import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.interfaces.rest.transform.CreateTaskCommandFromResourceAssembler;
-import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.interfaces.rest.transform.PatchTaskCommandFromResourceAssembler;
-import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.interfaces.rest.transform.TasksResourceFromEntityAssembler;
-import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.interfaces.rest.transform.UpdateTaskCommandFromResourceAssembler;
+import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.interfaces.rest.resources.*;
+import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.interfaces.rest.transform.*;
 import com.elixirline.service.elixirline_backend.shared.domain.model.entities.ApiErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -23,8 +19,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -34,10 +32,12 @@ import java.util.List;
 public class TasksController {
     private final TasksQueryService tasksQueryService;
     private final TasksCommandService tasksCommandService;
+    private final EvidenceCommandService evidenceCommandService;
 
-    public TasksController(TasksQueryService tasksQueryService, TasksCommandService tasksCommandService) {
+    public TasksController(TasksQueryService tasksQueryService, TasksCommandService tasksCommandService,  EvidenceCommandService evidenceCommandService) {
         this.tasksQueryService = tasksQueryService;
         this.tasksCommandService = tasksCommandService;
+        this.evidenceCommandService = evidenceCommandService;
     }
 
     /* GET: /api/v1/tasks/field */
@@ -355,7 +355,6 @@ public class TasksController {
     public ResponseEntity<TasksResource> createFieldTask(@RequestBody CreateTaskResource resource) {
         var command = CreateTaskCommandFromResourceAssembler.toCommandFromResource(resource);
         var task = tasksCommandService.createFieldTask(command);
-
         var taskResource = TasksResourceFromEntityAssembler.toResourceFromEntity(task.get());
         return new ResponseEntity<>(taskResource, HttpStatus.CREATED);
     }
