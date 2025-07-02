@@ -62,7 +62,7 @@ public class TasksController {
                                                         "description": "Aplicar fertilizante al lote 4A",
                                                         "startDate": "2025-07-01",
                                                         "endDate": "2025-07-02",
-                                                        "assignedTo": "Juan Pérez",
+                                                        "winegrowerId": "1",
                                                         "batchId": 12,
                                                         "suppliesIds": [101, 102]
                                                       },
@@ -159,7 +159,7 @@ public class TasksController {
                                                         "description": "Revisar y limpiar equipos industriales",
                                                         "startDate": "2025-07-06",
                                                         "endDate": "2025-07-06",
-                                                        "assignedTo": "Carlos Vargas",
+                                                        "winegrowerId": "3",
                                                         "batchId": 21,
                                                         "suppliesIds": [201, 202]
                                                       },
@@ -169,7 +169,7 @@ public class TasksController {
                                                         "description": "Calibrar sensores del sistema de riego automatizado",
                                                         "startDate": "2025-07-07",
                                                         "endDate": "2025-07-08",
-                                                        "assignedTo": "Ana Torres",
+                                                        "winegrowerId": "4",
                                                         "batchId": 23,
                                                         "suppliesIds": [203]
                                                       }
@@ -604,7 +604,7 @@ public class TasksController {
                                                       "description": "Inspeccionar los sensores del sistema de monitoreo agrícola",
                                                       "startDate": "2025-07-20",
                                                       "endDate": "2025-07-21",
-                                                      "assignedTo": "Sandra León",
+                                                      "winegrowerId": "2",
                                                       "batchId": 60,
                                                       "suppliesIds": [601, 602]
                                                     }
@@ -887,7 +887,7 @@ public class TasksController {
                                                     "description": "Monitoreo de sensores",
                                                     "startDate": "2025-07-01",
                                                     "endDate": "2025-07-03",
-                                                    "assignedTo": "5",
+                                                    "winegrowerId": "5",
                                                     "batchId": 12,
                                                     "suppliesIds": [301, 302],
                                                     "type": "TASK_FIELD"
@@ -898,7 +898,7 @@ public class TasksController {
                                                     "description": "Verificación de maquinaria industrial",
                                                     "startDate": "2025-07-05",
                                                     "endDate": "2025-07-07",
-                                                    "assignedTo": "5",
+                                                    "winegrowerId": "5",
                                                     "batchId": 13,
                                                     "suppliesIds": [],
                                                     "type": "TASK_INDUSTRIAL"
