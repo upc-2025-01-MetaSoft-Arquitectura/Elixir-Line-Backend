@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Evidence extends AuditableModel {
+public class Incident extends AuditableModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,21 +20,17 @@ public class Evidence extends AuditableModel {
 
     private String description;
 
-    private Integer progressPercentage;
-
     private String imageUrl;
 
-    public Evidence(Long taskId, String description, Integer progressPercentage, String imageUrl) {
+    public Incident(Long taskId, String description, String imageUrl) {
         this.taskId = taskId;
         this.description = description;
-        this.progressPercentage = progressPercentage;
         this.imageUrl = imageUrl;
     }
 
-    public Evidence updateInformation(Long taskId, String description, Integer progressPercentage, String imageUrl) {
+    public Incident updateInformation(Long taskId, String description, String imageUrl) {
         if (taskId != null) this.taskId = taskId;
         if (description != null) this.description = description;
-        if (progressPercentage != null) this.progressPercentage = progressPercentage;
         if (imageUrl != null && !imageUrl.isEmpty()) this.imageUrl = imageUrl;
         return this;
     }

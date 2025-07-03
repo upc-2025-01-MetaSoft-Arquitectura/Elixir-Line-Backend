@@ -5,6 +5,7 @@ import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagemen
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.queries.GetFieldTasksQuery;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.queries.GetIndustrialTasksQuery;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.queries.GetTaskByIdQuery;
+import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.valueobjetcs.TaskType;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.services.EvidenceCommandService;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.services.TasksCommandService;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.services.TasksQueryService;
@@ -934,6 +935,35 @@ public class TasksController {
     public ResponseEntity<List<TasksResource>> getTasksByWinegrowerId(@PathVariable Long winegrowerId) {
         var tasks = tasksQueryService.findByWinegrowerId(winegrowerId);
         if (tasks.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        var resources = tasks.stream().map(TasksResourceFromEntityAssembler::toResourceFromEntity).toList();
+        return ResponseEntity.ok(resources);
+    }
+
+
+    /* GET: /api/v1/tasks/with-evidence/field */
+    @GetMapping("/with-evidence/field")
+    @Operation(
+            summary = "Obtener tareas de campo con evidencia",
+            description = "Devuelve las tareas de tipo TASK_FIELD que tienen al menos una evidencia asociada. Esta lista se utilizará para alimentar la vista de Evidencias."
+    )
+    public ResponseEntity<List<TasksResource>> getFieldTasksWithEvidence() {
+        var tasks = tasksQueryService.findByTypeWithEvidence(TaskType.TASK_FIELD);
+        if (tasks.isEmpty()) return ResponseEntity.noContent().build();
+        var resources = tasks.stream()
+                .map(TasksResourceFromEntityAssembler::toResourceFromEntity)
+                .toList();
+        return ResponseEntity.ok(resources);
+    }
+
+    /* GET: /api/v1/tasks/with-evidence/industry */
+    @GetMapping("/with-evidence/industrial")
+    @Operation(
+            summary = "Obtener tareas industriales con evidencia",
+            description = "Devuelve las tareas de tipo TASK_INDUSTRY que tienen al menos una evidencia asociada. Esta lista se utilizará para alimentar la vista de Evidencias."
+    )
+    public ResponseEntity<List<TasksResource>> getIndustrialTasksWithEvidence() {
+        var tasks = tasksQueryService.findByTypeWithEvidence(TaskType.TASK_INDUSTRY);
+        if (tasks.isEmpty()) return ResponseEntity.noContent().build();
         var resources = tasks.stream().map(TasksResourceFromEntityAssembler::toResourceFromEntity).toList();
         return ResponseEntity.ok(resources);
     }

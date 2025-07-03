@@ -6,17 +6,22 @@ import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagemen
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.queries.GetTaskByIdQuery;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.valueobjetcs.TaskType;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.services.TasksQueryService;
+import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.infrastructure.persistance.jpa.repositories.EvidenceRepository;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.infrastructure.persistance.jpa.repositories.TasksRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class TasksQueryServiceImpl implements TasksQueryService {
     private final TasksRepository tasksRepository;
-    public TasksQueryServiceImpl(TasksRepository tasksRepository) {
+    private final EvidenceRepository evidenceRepository;
+    public TasksQueryServiceImpl(TasksRepository tasksRepository,  EvidenceRepository evidenceRepository) {
         this.tasksRepository = tasksRepository;
+        this.evidenceRepository = evidenceRepository;
     }
 
     @Override
@@ -38,5 +43,9 @@ public class TasksQueryServiceImpl implements TasksQueryService {
         return tasksRepository.findByWinegrowerId(winegrowerId);
     }
 
-
+    @Override
+    public List<Tasks> findByTypeWithEvidence(TaskType type) {
+        Set<Long> taskIdsWithEvidence = evidenceRepository.findAll().stream().map(e -> e.getTaskId()).collect(Collectors.toSet());
+        return tasksRepository.findAllById(taskIdsWithEvidence).stream().filter(task -> task.getType() == type).collect(Collectors.toList());
+    }
 }

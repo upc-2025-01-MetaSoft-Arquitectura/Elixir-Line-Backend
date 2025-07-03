@@ -1,7 +1,10 @@
 package com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.interfaces.rest;
 
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.commands.CreateEvidenceCommand;
+import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.commands.DeleteEvidenceCommand;
+import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.commands.PatchEvidenceCommand;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.queries.GetEvidenceByTaskIdQuery;
+import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.valueobjetcs.TaskType;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.services.EvidenceCommandService;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.services.EvidenceQueryService;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.interfaces.rest.resources.EvidenceResource;
@@ -15,6 +18,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -153,5 +157,87 @@ public class EvidenceController {
         if (evidences.isEmpty()) return ResponseEntity.notFound().build();
         var resources = evidences.stream().map(EvidenceResourceFromEntityAssembler::toResourceFromEntity).toList();
         return ResponseEntity.ok(resources);
+    }
+
+
+    /* PATCH: /api/v1/evidences/task/{taskId} */
+    @Operation(
+            summary = "Actualizar parcialmente una evidencia",
+            description = "Permite actualizar uno o varios campos de una evidencia existente, incluyendo la imagen, descripción, porcentaje de avance o taskId.",
+            parameters = {
+                    @Parameter(name = "evidenceId", description = "ID de la evidencia a actualizar", required = true)
+            },
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    required = true,
+                    content = @Content(
+                            mediaType = "multipart/form-data",
+                            examples = @ExampleObject(
+                                    name = "Ejemplo PATCH",
+                                    summary = "Ejemplo de actualización parcial",
+                                    value = """
+                    taskId: 2
+                    description: Nueva descripción
+                    progressPercentage: 60
+                    imageFile: (seleccionar nueva imagen)
+                    """
+                            )
+                    )
+            )
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Evidencia actualizada correctamente"),
+            @ApiResponse(responseCode = "404", description = "Evidencia no encontrada"),
+            @ApiResponse(responseCode = "500", description = "Error al actualizar evidencia")
+    })
+    @PatchMapping(value = "/{evidenceId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<EvidenceResource> patchEvidence(
+            @PathVariable Long evidenceId,
+            @RequestParam(required = false) Long taskId,
+            @RequestParam(required = false) String description,
+            @RequestParam(required = false) Integer progressPercentage,
+            @RequestParam(required = false) MultipartFile imageFile
+    ) {
+        var command = new PatchEvidenceCommand(evidenceId, taskId, description, progressPercentage, imageFile);
+        var updated = evidenceCommandService.handle(command);
+        if (updated.isEmpty()) return ResponseEntity.notFound().build();
+
+        var resource = EvidenceResourceFromEntityAssembler.toResourceFromEntity(updated.get());
+        return ResponseEntity.ok(resource);
+    }
+
+
+    @Operation(
+            summary = "Eliminar evidencia",
+            description = "Elimina una evidencia existente por su ID.",
+            parameters = {
+                    @Parameter(name = "evidenceId", description = "ID de la evidencia a eliminar", required = true)
+            },
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "Evidencia eliminada correctamente"),
+                    @ApiResponse(responseCode = "404", description = "Evidencia no encontrada",
+                            content = @Content(schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            name = "Evidencia no encontrada",
+                                            summary = "ID no existe",
+                                            value = """
+                        {
+                          "status": "ERROR",
+                          "message": "Evidencia no encontrada.",
+                          "details": ["No existe una evidencia con ese ID."]
+                        }
+                    """
+                                    )
+                            )
+                    )
+            }
+    )
+    @DeleteMapping("/{evidenceId}")
+    public ResponseEntity<Void> deleteEvidence(@PathVariable Long evidenceId) {
+        try {
+            evidenceCommandService.handle(new DeleteEvidenceCommand(evidenceId));
+            return ResponseEntity.noContent().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
