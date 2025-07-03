@@ -4,9 +4,11 @@ import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagemen
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface InputsRepository extends JpaRepository<Inputs, Long> {
     Optional<Inputs> findByNameIgnoreCase(String name);
+    List<Inputs> findByWinegrowerId(Long winegrowerId);
 }

@@ -3,6 +3,7 @@ package com.elixirline.service.elixirline_backend.agriculturalactivitiesmanageme
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.aggregates.Inputs;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.commands.CreateInputsCommand;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.commands.DeleteInputsCommand;
+import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.commands.PatchInputsCommand;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.commands.UpdateInputsCommand;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.services.InputsCommandService;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.infrastructure.persistance.jpa.repositories.InputsRepository;
@@ -23,7 +24,7 @@ public class InputsCommandServiceImpl implements InputsCommandService {
     @Override
     public Optional<Inputs> handle(CreateInputsCommand command) {
         String imageUrl = azureBlobService.upload(command.imageFile());
-        var inputs = new Inputs(command.name(), command.description(), command.quantity(), command.unit(), imageUrl);
+        var inputs = new Inputs(command.name(), command.description(), command.quantity(), command.winegrowerId(), command.unit(), imageUrl);
         inputsRepository.save(inputs);
         return Optional.of(inputs);
     }
@@ -35,7 +36,7 @@ public class InputsCommandServiceImpl implements InputsCommandService {
         if (existing.isEmpty()) return Optional.empty();
 
         Inputs input = existing.get();
-        input.updateInformation(command.name(), command.description(), command.quantity(), command.unit());
+        input.updateInformation(command.name(), command.description(), command.quantity(), command.winegrowerId(), command.unit());
 
         if (command.image() != null && !command.image().isEmpty()) {
             String imageUrl = azureBlobService.upload(command.image());
@@ -55,5 +56,27 @@ public class InputsCommandServiceImpl implements InputsCommandService {
         }catch (Exception ex){
             throw new IllegalArgumentException("Error deleting input " + command.InputsId());
         }
+    }
+
+    @Override
+    public Optional<Inputs> handle(PatchInputsCommand command) {
+        var existing = inputsRepository.findById(command.inputsId());
+        if (existing.isEmpty()) return Optional.empty();
+
+        var input = existing.get();
+        input.updateInformation(
+                command.name(),
+                command.description(),
+                command.quantity(),
+                command.winegrowerId(),
+                command.unit()
+        );
+
+        if (command.image() != null && !command.image().isEmpty()) {
+            String imageUrl = azureBlobService.upload(command.image());
+            input.updateImage(imageUrl);
+        }
+
+        return Optional.of(inputsRepository.save(input));
     }
 }

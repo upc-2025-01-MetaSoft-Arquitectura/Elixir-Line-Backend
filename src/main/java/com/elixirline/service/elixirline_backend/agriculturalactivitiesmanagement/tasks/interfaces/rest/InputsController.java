@@ -1,14 +1,18 @@
 package com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.interfaces.rest;
+
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.commands.DeleteInputsCommand;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.queries.GetAllInputsQuery;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.queries.GetInputsByIdQuery;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.queries.GetInputsByNameQuery;
+import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.queries.GetInputsByWinegrowerIdQuery;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.services.InputsCommandService;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.services.InputsQueryService;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.interfaces.rest.resources.InputsResource;
+import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.interfaces.rest.resources.UpdateInputsResource;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.interfaces.rest.transform.CreateInputsCommandFromRequestAssembler;
 
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.interfaces.rest.transform.InputsResourceFromEntityAssembler;
+import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.interfaces.rest.transform.PatchInputsCommandFromRequestAssembler;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.interfaces.rest.transform.UpdateInputsCommandFromRequestAssembler;
 import com.elixirline.service.elixirline_backend.shared.domain.model.entities.ApiErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -54,25 +58,25 @@ public class InputsController {
                                             name = "Ejemplo de insumos recuperados",
                                             summary = "Respuesta exitosa con una lista de insumos",
                                             value = """
-                    [
-                      {
-                        "id": 1,
-                        "name": "Fertilizante A",
-                        "description": "Fertilizante de alta calidad",
-                        "quantity": 20,
-                        "unit": "KG",
-                        "image": "https://elixirblob.blob.core.windows.net/inputs/fertilizanteA.png"
-                      },
-                      {
-                        "id": 2,
-                        "name": "Insecticida B",
-                        "description": "Insecticida ecológico",
-                        "quantity": 10,
-                        "unit": "LITRO",
-                        "image": "https://elixirblob.blob.core.windows.net/inputs/insecticidaB.png"
-                      }
-                    ]
-                    """
+                                                    [
+                                                      {
+                                                        "id": 1,
+                                                        "name": "Fertilizante A",
+                                                        "description": "Fertilizante de alta calidad",
+                                                        "quantity": 20,
+                                                        "unit": "KG",
+                                                        "image": "https://elixirblob.blob.core.windows.net/inputs/fertilizanteA.png"
+                                                      },
+                                                      {
+                                                        "id": 2,
+                                                        "name": "Insecticida B",
+                                                        "description": "Insecticida ecológico",
+                                                        "quantity": 10,
+                                                        "unit": "LITRO",
+                                                        "image": "https://elixirblob.blob.core.windows.net/inputs/insecticidaB.png"
+                                                      }
+                                                    ]
+                                                    """
                                     )
                             )
                     ),
@@ -86,14 +90,14 @@ public class InputsController {
                                             name = "Token inválido",
                                             summary = "No se proporcionó token Bearer",
                                             value = """
-                    {
-                      "status": "ERROR",
-                      "message": "Token inválido o no proporcionado.",
-                      "details": [
-                        "Debe incluir el encabezado Authorization con el token Bearer."
-                      ]
-                    }
-                    """
+                                                    {
+                                                      "status": "ERROR",
+                                                      "message": "Token inválido o no proporcionado.",
+                                                      "details": [
+                                                        "Debe incluir el encabezado Authorization con el token Bearer."
+                                                      ]
+                                                    }
+                                                    """
                                     )
                             )
                     ),
@@ -107,15 +111,15 @@ public class InputsController {
                                             name = "Error inesperado",
                                             summary = "Error al recuperar los insumos",
                                             value = """
-                    {
-                      "status": "ERROR",
-                      "message": "No se pudo recuperar la lista de insumos.",
-                      "details": [
-                        "Error en el servicio de consulta de insumos.",
-                        "Revisar logs del backend para más detalles."
-                      ]
-                    }
-                    """
+                                                    {
+                                                      "status": "ERROR",
+                                                      "message": "No se pudo recuperar la lista de insumos.",
+                                                      "details": [
+                                                        "Error en el servicio de consulta de insumos.",
+                                                        "Revisar logs del backend para más detalles."
+                                                      ]
+                                                    }
+                                                    """
                                     )
                             )
                     )
@@ -129,6 +133,7 @@ public class InputsController {
         return ResponseEntity.ok(inputsResource);
     }
 
+    /*POST: /api/v1/inputs*/
     @Operation(
             summary = "Create input",
             description = "Crea un nuevo insumo con nombre, descripción, cantidad, unidad y una imagen.",
@@ -140,12 +145,12 @@ public class InputsController {
                                     name = "Ejemplo de formulario",
                                     summary = "Formulario de ejemplo para crear un insumo",
                                     value = """
-                name: Fertilizante Orgánico
-                description: Mejora el rendimiento del cultivo.
-                quantity: 25
-                units: KG
-                image: (seleccionar archivo .jpg o .png)
-                """
+                                            name: Fertilizante Orgánico
+                                            description: Mejora el rendimiento del cultivo.
+                                            quantity: 25
+                                            units: KG
+                                            image: (seleccionar archivo .jpg o .png)
+                                            """
                             )
                     )
             ),
@@ -171,13 +176,16 @@ public class InputsController {
             @Parameter(description = "Cantidad del insumo. Ej: 25", required = true)
             @RequestParam("quantity") Long quantity,
 
+            @Parameter(description = "Id de winegrower para saber que insumo le corresponde. Ej: 1", required = true)
+            @RequestParam("winegrowerId") Long winegrowerId,
+
             @Parameter(description = "Unidad de medida (KG, LITRO, ML, UNIDAD)", required = true)
             @RequestParam("units") String units,
 
             @Parameter(description = "Archivo de imagen (.jpg o .png)", required = true)
             @RequestParam("image") MultipartFile imageFile
     ) {
-        var command = CreateInputsCommandFromRequestAssembler.toCommand(name, description, quantity, units, imageFile);
+        var command = CreateInputsCommandFromRequestAssembler.toCommand(name, description, quantity, winegrowerId, units, imageFile);
         var inputs = inputsCommandService.handle(command);
         var inputsResource = InputsResourceFromEntityAssembler.toResourceFromEntity(inputs.get());
         return new ResponseEntity<>(inputsResource, HttpStatus.CREATED);
@@ -206,15 +214,15 @@ public class InputsController {
                                             name = "Ejemplo de insumo recuperado",
                                             summary = "Respuesta exitosa con los detalles del insumo",
                                             value = """
-                    {
-                      "id": 1,
-                      "name": "Fertilizante A",
-                      "description": "Fertilizante de alta calidad",
-                      "quantity": 20,
-                      "unit": "KG",
-                      "image": "https://elixirblob.blob.core.windows.net/inputs/fertilizanteA.png"
-                    }
-                    """
+                                                    {
+                                                      "id": 1,
+                                                      "name": "Fertilizante A",
+                                                      "description": "Fertilizante de alta calidad",
+                                                      "quantity": 20,
+                                                      "unit": "KG",
+                                                      "image": "https://elixirblob.blob.core.windows.net/inputs/fertilizanteA.png"
+                                                    }
+                                                    """
                                     )
                             )
                     ),
@@ -228,14 +236,14 @@ public class InputsController {
                                             name = "Token inválido",
                                             summary = "No se proporcionó token Bearer",
                                             value = """
-                    {
-                      "status": "ERROR",
-                      "message": "Token inválido o no proporcionado.",
-                      "details": [
-                        "Debe incluir el encabezado Authorization con el token Bearer."
-                      ]
-                    }
-                    """
+                                                    {
+                                                      "status": "ERROR",
+                                                      "message": "Token inválido o no proporcionado.",
+                                                      "details": [
+                                                        "Debe incluir el encabezado Authorization con el token Bearer."
+                                                      ]
+                                                    }
+                                                    """
                                     )
                             )
                     ),
@@ -249,14 +257,14 @@ public class InputsController {
                                             name = "Error de insumo no encontrado",
                                             summary = "Respuesta cuando no se encuentra el insumo",
                                             value = """
-                    {
-                      "status": "ERROR",
-                      "message": "Insumo no encontrado.",
-                      "details": [
-                        "No existe un insumo con el ID proporcionado."
-                      ]
-                    }
-                    """
+                                                    {
+                                                      "status": "ERROR",
+                                                      "message": "Insumo no encontrado.",
+                                                      "details": [
+                                                        "No existe un insumo con el ID proporcionado."
+                                                      ]
+                                                    }
+                                                    """
                                     )
                             )
                     ),
@@ -270,15 +278,15 @@ public class InputsController {
                                             name = "Error inesperado",
                                             summary = "Error al recuperar el insumo",
                                             value = """
-                    {
-                      "status": "ERROR",
-                      "message": "No se pudo recuperar el insumo con el ID proporcionado.",
-                      "details": [
-                        "Error en el servicio de consulta de insumos.",
-                        "Revisar logs del backend para más detalles."
-                      ]
-                    }
-                    """
+                                                    {
+                                                      "status": "ERROR",
+                                                      "message": "No se pudo recuperar el insumo con el ID proporcionado.",
+                                                      "details": [
+                                                        "Error en el servicio de consulta de insumos.",
+                                                        "Revisar logs del backend para más detalles."
+                                                      ]
+                                                    }
+                                                    """
                                     )
                             )
                     )
@@ -288,150 +296,231 @@ public class InputsController {
     public ResponseEntity<InputsResource> getInputs(@PathVariable Long inputsId) {
         var getCInputsByIdQuery = new GetInputsByIdQuery(inputsId);
         var inputs = inputsQueryService.handle(getCInputsByIdQuery);
-        if(inputs.isEmpty()) return ResponseEntity.notFound().build();
+        if (inputs.isEmpty()) return ResponseEntity.notFound().build();
         var inputsResource = InputsResourceFromEntityAssembler.toResourceFromEntity(inputs.get());
         return ResponseEntity.ok(inputsResource);
     }
 
-    /*PUT: /api/v1/inputs/{inputsId}*/
-    @Operation(
-            summary = "Update input",
-            description = "Actualiza un insumo existente utilizando su ID y los datos proporcionados.",
-            parameters = {
-                    @Parameter(
-                            name = "inputsId",
-                            description = "El ID del insumo a actualizar.",
-                            required = true,
-                            schema = @Schema(type = "integer", format = "int64")
-                    )
-            },
-            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                    description = "Datos del insumo a actualizar",
-                    required = true,
-                    content = @Content(
-                            mediaType = "multipart/form-data",
-                            schema = @Schema(type = "object", requiredProperties = {
-                                    "name", "description", "quantity", "unit"
-                            }),
-                            examples = @ExampleObject(
-                                    name = "Ejemplo de input actualizado",
-                                    summary = "Actualización exitosa de insumo",
-                                    value = """
-                {
-                  "name": "Fertilizante Orgánico",
-                  "description": "Mejora el crecimiento de cultivos",
-                  "quantity": 50,
-                  "unit": "KG"
-                }
-                """
-                            )
-                    )
-            )
-    )
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Operación exitosa. Se devuelve el insumo actualizado.",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = InputsResource.class),
-                            examples = @ExampleObject(
-                                    name = "Ejemplo de insumo actualizado",
-                                    summary = "Respuesta exitosa con los detalles del insumo actualizado",
-                                    value = """
-                {
-                  "id": 1,
-                  "name": "Fertilizante Orgánico",
-                  "description": "Mejora el crecimiento de cultivos",
-                  "quantity": 50,
-                  "unit": "KG",
-                  "image": "https://tubucket.blob.core.windows.net/imagenes/fertilizante.jpg"
-                }
-                """
-                            )
-                    )
-            ),
-            @ApiResponse(
-                    responseCode = "401",
-                    description = "No autorizado. Token inválido o no proporcionado.",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = ApiErrorResponse.class),
-                            examples = @ExampleObject(
-                                    name = "Token inválido",
-                                    summary = "No se proporcionó token Bearer",
-                                    value = """
-                {
-                  "status": "ERROR",
-                  "message": "Token inválido o no proporcionado.",
-                  "details": [
-                    "Debe incluir el encabezado Authorization con el token Bearer."
-                  ]
-                }
-                """
-                            )
-                    )
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Insumo no encontrado. No existe un insumo con el ID proporcionado.",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = ApiErrorResponse.class),
-                            examples = @ExampleObject(
-                                    name = "Error de insumo no encontrado",
-                                    summary = "Respuesta cuando no se encuentra el insumo",
-                                    value = """
-                {
-                  "status": "ERROR",
-                  "message": "Insumo no encontrado.",
-                  "details": [
-                    "No existe un insumo con el ID proporcionado."
-                  ]
-                }
-                """
-                            )
-                    )
-            ),
-            @ApiResponse(
-                    responseCode = "500",
-                    description = "Error interno del servidor. Ocurrió un problema al intentar actualizar el insumo.",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = ApiErrorResponse.class),
-                            examples = @ExampleObject(
-                                    name = "Error inesperado",
-                                    summary = "Error al actualizar el insumo",
-                                    value = """
-                {
-                  "status": "ERROR",
-                  "message": "No se pudo actualizar el insumo.",
-                  "details": [
-                    "Error en el servicio de actualización de insumos.",
-                    "Revisar logs del backend para más detalles."
-                  ]
-                }
-                """
-                            )
-                    )
-            )
-    })
-    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<InputsResource> updateInputs(
-            @PathVariable Long id,
-            @RequestParam String name,
-            @RequestParam String description,
-            @RequestParam Long quantity,
-            @RequestParam String units,
-            @RequestParam(required = false) MultipartFile imageFile
-    ) {
-        var command = UpdateInputsCommandFromRequestAssembler.toCommand(id, name, description, quantity, units, imageFile);
-        var updated = inputsCommandService.handle(command);
+//    /*PUT: /api/v1/inputs/{inputsId}*/
+//    @Operation(
+//            summary = "Update input",
+//            description = "Actualiza un insumo existente utilizando su ID y los datos proporcionados.",
+//            parameters = {
+//                    @Parameter(
+//                            name = "inputsId",
+//                            description = "El ID del insumo a actualizar.",
+//                            required = true,
+//                            schema = @Schema(type = "integer", format = "int64")
+//                    )
+//            },
+//            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+//                    description = "Datos del insumo a actualizar",
+//                    required = true,
+//                    content = @Content(
+//                            mediaType = "multipart/form-data",
+//                            schema = @Schema(type = "object", requiredProperties = {
+//                                    "name", "description", "quantity", "unit"
+//                            }),
+//                            examples = @ExampleObject(
+//                                    name = "Ejemplo de input actualizado",
+//                                    summary = "Actualización exitosa de insumo",
+//                                    value = """
+//                {
+//                  "name": "Fertilizante Orgánico",
+//                  "description": "Mejora el crecimiento de cultivos",
+//                  "quantity": 50,
+//                  "unit": "KG"
+//                }
+//                """
+//                            )
+//                    )
+//            )
+//    )
+//    @ApiResponses(value = {
+//            @ApiResponse(
+//                    responseCode = "200",
+//                    description = "Operación exitosa. Se devuelve el insumo actualizado.",
+//                    content = @Content(
+//                            mediaType = "application/json",
+//                            schema = @Schema(implementation = InputsResource.class),
+//                            examples = @ExampleObject(
+//                                    name = "Ejemplo de insumo actualizado",
+//                                    summary = "Respuesta exitosa con los detalles del insumo actualizado",
+//                                    value = """
+//                {
+//                  "id": 1,
+//                  "name": "Fertilizante Orgánico",
+//                  "description": "Mejora el crecimiento de cultivos",
+//                  "quantity": 50,
+//                  "unit": "KG",
+//                  "image": "https://tubucket.blob.core.windows.net/imagenes/fertilizante.jpg"
+//                }
+//                """
+//                            )
+//                    )
+//            ),
+//            @ApiResponse(
+//                    responseCode = "401",
+//                    description = "No autorizado. Token inválido o no proporcionado.",
+//                    content = @Content(
+//                            mediaType = "application/json",
+//                            schema = @Schema(implementation = ApiErrorResponse.class),
+//                            examples = @ExampleObject(
+//                                    name = "Token inválido",
+//                                    summary = "No se proporcionó token Bearer",
+//                                    value = """
+//                {
+//                  "status": "ERROR",
+//                  "message": "Token inválido o no proporcionado.",
+//                  "details": [
+//                    "Debe incluir el encabezado Authorization con el token Bearer."
+//                  ]
+//                }
+//                """
+//                            )
+//                    )
+//            ),
+//            @ApiResponse(
+//                    responseCode = "404",
+//                    description = "Insumo no encontrado. No existe un insumo con el ID proporcionado.",
+//                    content = @Content(
+//                            mediaType = "application/json",
+//                            schema = @Schema(implementation = ApiErrorResponse.class),
+//                            examples = @ExampleObject(
+//                                    name = "Error de insumo no encontrado",
+//                                    summary = "Respuesta cuando no se encuentra el insumo",
+//                                    value = """
+//                {
+//                  "status": "ERROR",
+//                  "message": "Insumo no encontrado.",
+//                  "details": [
+//                    "No existe un insumo con el ID proporcionado."
+//                  ]
+//                }
+//                """
+//                            )
+//                    )
+//            ),
+//            @ApiResponse(
+//                    responseCode = "500",
+//                    description = "Error interno del servidor. Ocurrió un problema al intentar actualizar el insumo.",
+//                    content = @Content(
+//                            mediaType = "application/json",
+//                            schema = @Schema(implementation = ApiErrorResponse.class),
+//                            examples = @ExampleObject(
+//                                    name = "Error inesperado",
+//                                    summary = "Error al actualizar el insumo",
+//                                    value = """
+//                {
+//                  "status": "ERROR",
+//                  "message": "No se pudo actualizar el insumo.",
+//                  "details": [
+//                    "Error en el servicio de actualización de insumos.",
+//                    "Revisar logs del backend para más detalles."
+//                  ]
+//                }
+//                """
+//                            )
+//                    )
+//            )
+//    })
+//    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+//    public ResponseEntity<InputsResource> updateInputs(
+//            @PathVariable Long id,
+//            @RequestParam String name,
+//            @RequestParam String description,
+//            @RequestParam Long quantity,
+//            @RequestParam String units,
+//            @RequestParam(required = false) MultipartFile imageFile
+//    ) {
+//        var command = UpdateInputsCommandFromRequestAssembler.toCommand(id, name, description, quantity, units, imageFile);
+//        var updated = inputsCommandService.handle(command);
+//
+//        if (updated.isEmpty()) return ResponseEntity.notFound().build();
+//
+//        var resource = InputsResourceFromEntityAssembler.toResourceFromEntity(updated.get());
+//        return ResponseEntity.ok(resource);
+//    }
 
+    @PutMapping(path = "/{inputsId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<InputsResource> updateInputs(
+            @Parameter(description = "ID del insumo que se desea actualizar", required = true)
+            @PathVariable Long inputsId,
+
+            @Parameter(description = "Nombre del insumo. Ej: Fertilizante Orgánico", required = true)
+            @RequestParam("name") String name,
+
+            @Parameter(description = "Descripción del insumo. Ej: Mejora el rendimiento del cultivo", required = true)
+            @RequestParam("description") String description,
+
+            @Parameter(description = "Cantidad del insumo. Ej: 25", required = true)
+            @RequestParam("quantity") Long quantity,
+
+            @Parameter(description = "Id de winegrower para saber a quién pertenece el insumo. Ej: 1", required = true)
+            @RequestParam("winegrowerId") Long winegrowerId,
+
+            @Parameter(description = "Unidad de medida (kg, litro, ml, unidad)", required = true)
+            @RequestParam("unit") String unit,
+
+            @Parameter(description = "Archivo de imagen (.jpg o .png)", required = true)
+            @RequestParam("image") MultipartFile imageFile
+    ) {
+        var command = UpdateInputsCommandFromRequestAssembler.toCommand(
+                inputsId, name, description, quantity, winegrowerId, unit, imageFile
+        );
+
+        var updated = inputsCommandService.handle(command);
         if (updated.isEmpty()) return ResponseEntity.notFound().build();
 
-        var resource = InputsResourceFromEntityAssembler.toResourceFromEntity(updated.get());
-        return ResponseEntity.ok(resource);
+        var updatedResource = InputsResourceFromEntityAssembler.toResourceFromEntity(updated.get());
+        return ResponseEntity.ok(updatedResource);
+    }
+
+    /*PATCH: /api/v1/inputs/{inputsId}*/
+    @PatchMapping(path = "/{inputsId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<InputsResource> patchInputs(
+            @Parameter(description = "ID del insumo a actualizar parcialmente")
+            @PathVariable Long inputsId,
+
+            @Parameter(description = "Nuevo nombre del insumo. Ej: Fertilizante Orgánico", required = false)
+            @RequestParam(value = "name", required = false) String name,
+            @Parameter(description = "Nueva descripción del insumo. Ej: Mejora el rendimiento del cultivo", required = false)
+            @RequestParam(value = "description", required = false) String description,
+            @Parameter(description = "Nueva cantidad del insumo. Ej: 25", required = false)
+            @RequestParam(value = "quantity", required = false) Long quantity,
+            @Parameter(description = "Nuevo ID del agricultor al que pertenece el insumo. Ej: 1", required = false)
+            @RequestParam(value = "winegrowerId", required = false) Long winegrowerId,
+            @Parameter(description = "Nueva unidad de medida del insumo (KG, LITRO, ML, UNIDAD)", required = false)
+            @RequestParam(value = "unit", required = false) String unit,
+            @Parameter(description = "Nueva imagen del insumo (.jpg o .png)", required = false)
+            @RequestParam(value = "image", required = false) MultipartFile imageFile
+    ) {
+        var command = PatchInputsCommandFromRequestAssembler.toCommand(
+                inputsId, name, description, quantity, winegrowerId, unit, imageFile
+        );
+
+        var updated = inputsCommandService.handle(command);
+        if (updated.isEmpty()) return ResponseEntity.notFound().build();
+
+        var updatedResource = InputsResourceFromEntityAssembler.toResourceFromEntity(updated.get());
+        return ResponseEntity.ok(updatedResource);
+    }
+
+
+    /*GET: /api/v1/inputs/winegrower/{winegrowerId}*/
+    @GetMapping("/winegrower/{winegrowerId}")
+    @Operation(
+            summary = "Obtener insumos por ID de agricultor",
+            description = "Devuelve todos los insumos registrados para un determinado agricultor (winegrowerId).",
+            parameters = {
+                    @Parameter(name = "winegrowerId", description = "ID del agricultor", required = true)
+            }
+    )
+    public ResponseEntity<List<InputsResource>> getInputsByWinegrowerId(@RequestParam Long winegrowerId) {
+        var query = new GetInputsByWinegrowerIdQuery(winegrowerId);
+        var inputs = inputsQueryService.handle(query);
+        var resources = inputs.stream().map(InputsResourceFromEntityAssembler::toResourceFromEntity).toList();
+        return ResponseEntity.ok(resources);
     }
 
     /*DELETE: /api/v1/inputs/{inputsId}*/
@@ -461,14 +550,14 @@ public class InputsController {
                                             name = "Token inválido",
                                             summary = "No se proporcionó token Bearer",
                                             value = """
-                    {
-                      "status": "ERROR",
-                      "message": "Token inválido o no proporcionado.",
-                      "details": [
-                        "Debe incluir el encabezado Authorization con el token Bearer."
-                      ]
-                    }
-                    """
+                                                    {
+                                                      "status": "ERROR",
+                                                      "message": "Token inválido o no proporcionado.",
+                                                      "details": [
+                                                        "Debe incluir el encabezado Authorization con el token Bearer."
+                                                      ]
+                                                    }
+                                                    """
                                     )
                             )
                     ),
@@ -482,14 +571,14 @@ public class InputsController {
                                             name = "Error de insumo no encontrado",
                                             summary = "Respuesta cuando no se encuentra el insumo",
                                             value = """
-                    {
-                      "status": "ERROR",
-                      "message": "Insumo no encontrado.",
-                      "details": [
-                        "No existe un insumo con el ID proporcionado."
-                      ]
-                    }
-                    """
+                                                    {
+                                                      "status": "ERROR",
+                                                      "message": "Insumo no encontrado.",
+                                                      "details": [
+                                                        "No existe un insumo con el ID proporcionado."
+                                                      ]
+                                                    }
+                                                    """
                                     )
                             )
                     ),
@@ -503,15 +592,15 @@ public class InputsController {
                                             name = "Error inesperado",
                                             summary = "Error al eliminar el insumo",
                                             value = """
-                    {
-                      "status": "ERROR",
-                      "message": "No se pudo eliminar el insumo.",
-                      "details": [
-                        "Error en el servicio de eliminación de insumos.",
-                        "Revisar logs del backend para más detalles."
-                      ]
-                    }
-                    """
+                                                    {
+                                                      "status": "ERROR",
+                                                      "message": "No se pudo eliminar el insumo.",
+                                                      "details": [
+                                                        "Error en el servicio de eliminación de insumos.",
+                                                        "Revisar logs del backend para más detalles."
+                                                      ]
+                                                    }
+                                                    """
                                     )
                             )
                     )
@@ -547,15 +636,15 @@ public class InputsController {
                                             name = "Ejemplo de insumo recuperado",
                                             summary = "Respuesta exitosa con los detalles del insumo",
                                             value = """
-                    {
-                      "id": 1,
-                      "name": "Fertilizante A",
-                      "description": "Fertilizante de alta calidad",
-                      "quantity": 20,
-                      "unit": "KG",
-                      "image": "https://storage.azure.net/insumos/fertilizante-a.png"
-                    }
-                    """
+                                                    {
+                                                      "id": 1,
+                                                      "name": "Fertilizante A",
+                                                      "description": "Fertilizante de alta calidad",
+                                                      "quantity": 20,
+                                                      "unit": "KG",
+                                                      "image": "https://storage.azure.net/insumos/fertilizante-a.png"
+                                                    }
+                                                    """
                                     )
                             )
                     ),
@@ -569,14 +658,14 @@ public class InputsController {
                                             name = "Token inválido",
                                             summary = "No se proporcionó token Bearer",
                                             value = """
-                    {
-                      "status": "ERROR",
-                      "message": "Token inválido o no proporcionado.",
-                      "details": [
-                        "Debe incluir el encabezado Authorization con el token Bearer."
-                      ]
-                    }
-                    """
+                                                    {
+                                                      "status": "ERROR",
+                                                      "message": "Token inválido o no proporcionado.",
+                                                      "details": [
+                                                        "Debe incluir el encabezado Authorization con el token Bearer."
+                                                      ]
+                                                    }
+                                                    """
                                     )
                             )
                     ),
@@ -590,14 +679,14 @@ public class InputsController {
                                             name = "Insumo no encontrado",
                                             summary = "Respuesta cuando no se encuentra el insumo",
                                             value = """
-                    {
-                      "status": "ERROR",
-                      "message": "Insumo no encontrado.",
-                      "details": [
-                        "No existe un insumo con el nombre proporcionado."
-                      ]
-                    }
-                    """
+                                                    {
+                                                      "status": "ERROR",
+                                                      "message": "Insumo no encontrado.",
+                                                      "details": [
+                                                        "No existe un insumo con el nombre proporcionado."
+                                                      ]
+                                                    }
+                                                    """
                                     )
                             )
                     ),
@@ -611,15 +700,15 @@ public class InputsController {
                                             name = "Error inesperado",
                                             summary = "Error al recuperar el insumo",
                                             value = """
-                    {
-                      "status": "ERROR",
-                      "message": "No se pudo recuperar el insumo con el nombre proporcionado.",
-                      "details": [
-                        "Error en el servicio de consulta de insumos.",
-                        "Revisar logs del backend para más detalles."
-                      ]
-                    }
-                    """
+                                                    {
+                                                      "status": "ERROR",
+                                                      "message": "No se pudo recuperar el insumo con el nombre proporcionado.",
+                                                      "details": [
+                                                        "Error en el servicio de consulta de insumos.",
+                                                        "Revisar logs del backend para más detalles."
+                                                      ]
+                                                    }
+                                                    """
                                     )
                             )
                     )
@@ -629,7 +718,7 @@ public class InputsController {
     public ResponseEntity<InputsResource> getInputsByName(@RequestParam String name) {
         var query = new GetInputsByNameQuery(name);
         var inputs = inputsQueryService.handle(query);
-        if(inputs.isEmpty()) return ResponseEntity.notFound().build();
+        if (inputs.isEmpty()) return ResponseEntity.notFound().build();
         var inputsResource = InputsResourceFromEntityAssembler.toResourceFromEntity(inputs.get());
         return ResponseEntity.ok(inputsResource);
     }

@@ -4,6 +4,7 @@ import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagemen
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.queries.GetFieldTasksQuery;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.queries.GetIndustrialTasksQuery;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.queries.GetTaskByIdQuery;
+import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.valueobjetcs.TaskType;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,4 +13,6 @@ public interface TasksQueryService {
     List<Tasks> handle(GetFieldTasksQuery query);
     List<Tasks> handle(GetIndustrialTasksQuery query);
     Optional<Tasks> handle(GetTaskByIdQuery query);
+    List<Tasks> findByWinegrowerId(Long winegrowerId);
+    List<Tasks> findByTypeWithEvidence(TaskType type);
 }

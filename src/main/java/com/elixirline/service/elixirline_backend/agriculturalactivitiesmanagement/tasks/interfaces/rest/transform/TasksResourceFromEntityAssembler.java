@@ -11,8 +11,9 @@ public class TasksResourceFromEntityAssembler {
                 task.getDescription(),
                 task.getStartDate(),
                 task.getEndDate(),
-                task.getAssignedTo(),
+                task.getWinegrowerId(),
                 task.getBatchId(),
+                task.getType(),
                 task.getSuppliesIds()
         );
     }

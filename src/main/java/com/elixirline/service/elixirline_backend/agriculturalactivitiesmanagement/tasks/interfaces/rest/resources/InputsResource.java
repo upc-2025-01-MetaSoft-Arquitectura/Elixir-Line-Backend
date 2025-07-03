@@ -5,6 +5,7 @@ public record InputsResource(
         String name,
         String description,
         Long quantity,
+        Long winegrowerId,
         String unit,
         String image
 ) {

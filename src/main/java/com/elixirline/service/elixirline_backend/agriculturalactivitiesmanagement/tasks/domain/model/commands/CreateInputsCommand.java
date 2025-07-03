@@ -7,6 +7,7 @@ public record CreateInputsCommand(
         String name,
         String description,
         Long quantity,
+        Long winegrowerId,
         UnitType unit,
         MultipartFile imageFile
 ) {

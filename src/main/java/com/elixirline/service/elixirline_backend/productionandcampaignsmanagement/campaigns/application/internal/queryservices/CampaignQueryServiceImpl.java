@@ -4,6 +4,7 @@ import com.elixirline.service.elixirline_backend.productionandcampaignsmanagemen
 import com.elixirline.service.elixirline_backend.productionandcampaignsmanagement.campaigns.domain.model.queries.GetAllCampaignsQuery;
 import com.elixirline.service.elixirline_backend.productionandcampaignsmanagement.campaigns.domain.model.queries.GetCampaignByIdQuery;
 import com.elixirline.service.elixirline_backend.productionandcampaignsmanagement.campaigns.domain.model.queries.GetCampaignByNameQuery;
+import com.elixirline.service.elixirline_backend.productionandcampaignsmanagement.campaigns.domain.model.queries.GetCampaignsByWinegrowerIdQuery;
 import com.elixirline.service.elixirline_backend.productionandcampaignsmanagement.campaigns.domain.services.CampaignQueryService;
 import com.elixirline.service.elixirline_backend.productionandcampaignsmanagement.campaigns.infrastructure.persistence.jpa.repositories.CampaignRepository;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,11 @@ public class CampaignQueryServiceImpl implements CampaignQueryService {
     @Override
     public Optional<Campaign> handle(GetCampaignByNameQuery query) {
         return campaignRepository.findByName(query.name());
+    }
+
+    @Override
+    public List<Campaign> handle(GetCampaignsByWinegrowerIdQuery query) {
+        return campaignRepository.findByWinegrowerId(query.winegrowerId());
     }
 
 }

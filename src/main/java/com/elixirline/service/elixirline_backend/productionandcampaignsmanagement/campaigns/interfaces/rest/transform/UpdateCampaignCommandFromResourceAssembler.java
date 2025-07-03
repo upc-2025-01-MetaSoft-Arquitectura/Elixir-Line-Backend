@@ -9,6 +9,9 @@ public class UpdateCampaignCommandFromResourceAssembler {
                 campaignId,
                 resource.name(),
                 resource.year(),
+                resource.winegrowerId(),
+                resource.batches(),
+                resource.status(),
                 resource.startDate(),
                 resource.endDate()
         );

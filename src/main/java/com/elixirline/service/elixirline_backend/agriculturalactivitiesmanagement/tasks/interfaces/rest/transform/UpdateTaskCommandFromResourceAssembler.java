@@ -12,9 +12,10 @@ public class UpdateTaskCommandFromResourceAssembler {
                 resource.description(),
                 resource.startDate(),
                 resource.endDate(),
-                resource.assignedTo(),
+                resource.winegrowerId(),
                 resource.batchId(),
-                resource.suppliesIds()
+                resource.suppliesIds(),
+                resource.type()
         );
     }
 }

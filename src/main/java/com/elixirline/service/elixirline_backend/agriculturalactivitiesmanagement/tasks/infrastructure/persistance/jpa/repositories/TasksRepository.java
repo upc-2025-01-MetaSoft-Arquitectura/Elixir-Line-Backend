@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface TasksRepository extends JpaRepository<Tasks, Long> {
     List<Tasks> findByType(TaskType type);
+    List<Tasks> findByWinegrowerId(Long winegrowerId);
+    List<Tasks> findByIdInAndType(List<Long> ids, TaskType type);
 }

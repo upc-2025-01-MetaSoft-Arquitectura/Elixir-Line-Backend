@@ -1,17 +1,16 @@
 package com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.interfaces.rest;
 
+import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.commands.CreateEvidenceCommand;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.commands.DeleteTaskCommand;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.queries.GetFieldTasksQuery;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.queries.GetIndustrialTasksQuery;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.queries.GetTaskByIdQuery;
+import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.valueobjetcs.TaskType;
+import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.services.EvidenceCommandService;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.services.TasksCommandService;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.services.TasksQueryService;
-import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.interfaces.rest.resources.CreateTaskResource;
-import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.interfaces.rest.resources.TasksResource;
-import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.interfaces.rest.resources.UpdateTasksResource;
-import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.interfaces.rest.transform.CreateTaskCommandFromResourceAssembler;
-import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.interfaces.rest.transform.TasksResourceFromEntityAssembler;
-import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.interfaces.rest.transform.UpdateTaskCommandFromResourceAssembler;
+import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.interfaces.rest.resources.*;
+import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.interfaces.rest.transform.*;
 import com.elixirline.service.elixirline_backend.shared.domain.model.entities.ApiErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -21,8 +20,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -32,10 +33,12 @@ import java.util.List;
 public class TasksController {
     private final TasksQueryService tasksQueryService;
     private final TasksCommandService tasksCommandService;
+    private final EvidenceCommandService evidenceCommandService;
 
-    public TasksController(TasksQueryService tasksQueryService, TasksCommandService tasksCommandService) {
+    public TasksController(TasksQueryService tasksQueryService, TasksCommandService tasksCommandService,  EvidenceCommandService evidenceCommandService) {
         this.tasksQueryService = tasksQueryService;
         this.tasksCommandService = tasksCommandService;
+        this.evidenceCommandService = evidenceCommandService;
     }
 
     /* GET: /api/v1/tasks/field */
@@ -60,7 +63,7 @@ public class TasksController {
                                                         "description": "Aplicar fertilizante al lote 4A",
                                                         "startDate": "2025-07-01",
                                                         "endDate": "2025-07-02",
-                                                        "assignedTo": "Juan Pérez",
+                                                        "winegrowerId": "1",
                                                         "batchId": 12,
                                                         "suppliesIds": [101, 102]
                                                       },
@@ -157,7 +160,7 @@ public class TasksController {
                                                         "description": "Revisar y limpiar equipos industriales",
                                                         "startDate": "2025-07-06",
                                                         "endDate": "2025-07-06",
-                                                        "assignedTo": "Carlos Vargas",
+                                                        "winegrowerId": "3",
                                                         "batchId": 21,
                                                         "suppliesIds": [201, 202]
                                                       },
@@ -167,7 +170,7 @@ public class TasksController {
                                                         "description": "Calibrar sensores del sistema de riego automatizado",
                                                         "startDate": "2025-07-07",
                                                         "endDate": "2025-07-08",
-                                                        "assignedTo": "Ana Torres",
+                                                        "winegrowerId": "4",
                                                         "batchId": 23,
                                                         "suppliesIds": [203]
                                                       }
@@ -250,7 +253,7 @@ public class TasksController {
                                               "description": "Preparar el terreno y sembrar maíz en el lote 7B",
                                               "startDate": "2025-07-12",
                                               "endDate": "2025-07-14",
-                                              "assignedTo": "Pedro Sánchez",
+                                              "winegrowerId": "12",
                                               "batchId": 45,
                                               "suppliesIds": [401, 402]
                                             }
@@ -275,7 +278,7 @@ public class TasksController {
                                                       "description": "Preparar el terreno y sembrar maíz en el lote 7B",
                                                       "startDate": "2025-07-12",
                                                       "endDate": "2025-07-14",
-                                                      "assignedTo": "Pedro Sánchez",
+                                                      "winegrowerId": "11",
                                                       "batchId": 45,
                                                       "suppliesIds": [401, 402]
                                                     }
@@ -353,7 +356,6 @@ public class TasksController {
     public ResponseEntity<TasksResource> createFieldTask(@RequestBody CreateTaskResource resource) {
         var command = CreateTaskCommandFromResourceAssembler.toCommandFromResource(resource);
         var task = tasksCommandService.createFieldTask(command);
-
         var taskResource = TasksResourceFromEntityAssembler.toResourceFromEntity(task.get());
         return new ResponseEntity<>(taskResource, HttpStatus.CREATED);
     }
@@ -377,7 +379,7 @@ public class TasksController {
                                               "description": "Reemplazar filtro de aire en la planta procesadora",
                                               "startDate": "2025-07-10",
                                               "endDate": "2025-07-11",
-                                              "assignedTo": "Luis Ramírez",
+                                              "winegrowerId": "21",
                                               "batchId": 33,
                                               "suppliesIds": [301, 302]
                                             }
@@ -402,7 +404,7 @@ public class TasksController {
                                                       "description": "Reemplazar filtro de aire en la planta procesadora",
                                                       "startDate": "2025-07-10",
                                                       "endDate": "2025-07-11",
-                                                      "assignedTo": "Luis Ramírez",
+                                                      "winegrowerId": "22",
                                                       "batchId": 33,
                                                       "suppliesIds": [301, 302]
                                                     }
@@ -497,21 +499,40 @@ public class TasksController {
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = UpdateTasksResource.class),
-                            examples = @ExampleObject(
-                                    name = "Ejemplo de actualización de tarea",
-                                    summary = "Modificar datos de una tarea existente",
-                                    value = """
-                                            {
-                                              "title": "Riego automatizado",
-                                              "description": "Actualizar configuración del riego por aspersión",
-                                              "startDate": "2025-07-15",
-                                              "endDate": "2025-07-16",
-                                              "assignedTo": "Laura Fernández",
-                                              "batchId": 56,
-                                              "suppliesIds": [501, 502]
-                                            }
-                                            """
-                            )
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Actualizar tarea de campo",
+                                            summary = "Modificar datos de una tarea existente de tipo FIELD",
+                                            value = """
+                            {
+                              "title": "Fertilización de invierno",
+                              "description": "Aplicar fertilizante en el lote 7",
+                              "startDate": "2025-08-01",
+                              "endDate": "2025-08-03",
+                              "winegrowerId": 4,
+                              "batchId": 12,
+                              "type": "TASK_FIELD",
+                              "suppliesIds": [101, 102]
+                            }
+                            """
+                                    ),
+                                    @ExampleObject(
+                                            name = "Actualizar tarea industrial",
+                                            summary = "Modificar datos de una tarea existente de tipo INDUSTRY",
+                                            value = """
+                            {
+                              "title": "Mantenimiento de maquinaria",
+                              "description": "Revisión general de equipos de fermentación",
+                              "startDate": "2025-08-05",
+                              "endDate": "2025-08-07",
+                              "winegrowerId": 5,
+                              "batchId": 20,
+                              "type": "TASK_INDUSTRY",
+                              "suppliesIds": [201, 202]
+                            }
+                            """
+                                    )
+                            }
                     )
             ),
             responses = {
@@ -520,23 +541,7 @@ public class TasksController {
                             description = "Tarea actualizada exitosamente.",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = TasksResource.class),
-                                    examples = @ExampleObject(
-                                            name = "Tarea actualizada",
-                                            summary = "Respuesta con los datos de la tarea actualizada",
-                                            value = """
-                                                    {
-                                                      "id": 20,
-                                                      "title": "Riego automatizado",
-                                                      "description": "Actualizar configuración del riego por aspersión",
-                                                      "startDate": "2025-07-15",
-                                                      "endDate": "2025-07-16",
-                                                      "assignedTo": "Laura Fernández",
-                                                      "batchId": 56,
-                                                      "suppliesIds": [501, 502]
-                                                    }
-                                                    """
-                                    )
+                                    schema = @Schema(implementation = TasksResource.class)
                             )
                     ),
                     @ApiResponse(
@@ -544,20 +549,7 @@ public class TasksController {
                             description = "No se encontró la tarea con el ID proporcionado.",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = ApiErrorResponse.class),
-                                    examples = @ExampleObject(
-                                            name = "Tarea no encontrada",
-                                            summary = "No existe la tarea con ese ID",
-                                            value = """
-                                                    {
-                                                      "status": "ERROR",
-                                                      "message": "Tarea no encontrada.",
-                                                      "details": [
-                                                        "No existe una tarea con el ID proporcionado en la base de datos."
-                                                      ]
-                                                    }
-                                                    """
-                                    )
+                                    schema = @Schema(implementation = ApiErrorResponse.class)
                             )
                     ),
                     @ApiResponse(
@@ -565,21 +557,7 @@ public class TasksController {
                             description = "Solicitud inválida. Datos malformateados o incompletos.",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = ApiErrorResponse.class),
-                                    examples = @ExampleObject(
-                                            name = "Datos inválidos",
-                                            summary = "Error de validación de campos",
-                                            value = """
-                                                    {
-                                                      "status": "ERROR",
-                                                      "message": "Error de validación.",
-                                                      "details": [
-                                                        "El campo 'title' no puede estar vacío.",
-                                                        "El campo 'startDate' es obligatorio."
-                                                      ]
-                                                    }
-                                                    """
-                                    )
+                                    schema = @Schema(implementation = ApiErrorResponse.class)
                             )
                     ),
                     @ApiResponse(
@@ -587,20 +565,7 @@ public class TasksController {
                             description = "Error interno del servidor al actualizar la tarea.",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = ApiErrorResponse.class),
-                                    examples = @ExampleObject(
-                                            name = "Error inesperado",
-                                            summary = "Fallo al actualizar",
-                                            value = """
-                                                    {
-                                                      "status": "ERROR",
-                                                      "message": "Ocurrió un error inesperado al actualizar la tarea.",
-                                                      "details": [
-                                                        "Revisar los logs del backend para más información."
-                                                      ]
-                                                    }
-                                                    """
-                                    )
+                                    schema = @Schema(implementation = ApiErrorResponse.class)
                             )
                     )
             }
@@ -639,7 +604,7 @@ public class TasksController {
                                                       "description": "Inspeccionar los sensores del sistema de monitoreo agrícola",
                                                       "startDate": "2025-07-20",
                                                       "endDate": "2025-07-21",
-                                                      "assignedTo": "Sandra León",
+                                                      "winegrowerId": "2",
                                                       "batchId": 60,
                                                       "suppliesIds": [601, 602]
                                                     }
@@ -778,5 +743,230 @@ public class TasksController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    /* PATCH: /api/v1/tasks/{taskId} */
+    @Operation(
+            summary = "Actualizar parcialmente una tarea",
+            description = "Permite actualizar solo ciertos campos de una tarea de campo o industrial, sin necesidad de enviar todo el objeto.",
+            parameters = {
+                    @Parameter(name = "taskId", description = "ID de la tarea a actualizar parcialmente", required = true)
+            },
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Campos que se desean modificar en la tarea",
+                    required = true,
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = PatchTaskResource.class),
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Tarea de campo",
+                                            summary = "Actualizar parcialmente una tarea de campo",
+                                            value = """
+                                                {
+                                                  "title": "Control de malezas",
+                                                  "startDate": "2025-08-10",
+                                                  "suppliesIds": [601, 602]
+                                                }
+                                                """
+                                    ),
+                                    @ExampleObject(
+                                            name = "Tarea industrial",
+                                            summary = "Actualizar parcialmente una tarea industrial",
+                                            value = """
+                                                {
+                                                  "description": "Revisión técnica del sistema de enfriamiento",
+                                                  "endDate": "2025-08-12",
+                                                  "type": "TASK_INDUSTRIAL"
+                                                }
+                                                """
+                                    )
+                            }
+                    )
+            ),
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Tarea actualizada exitosamente.",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = TasksResource.class),
+                                    examples = @ExampleObject(
+                                            name = "Respuesta exitosa",
+                                            summary = "Datos de la tarea después de la actualización",
+                                            value = """
+                                                {
+                                                  "id": 25,
+                                                  "title": "Control de malezas",
+                                                  "description": "Revisión técnica del sistema de enfriamiento",
+                                                  "startDate": "2025-08-10",
+                                                  "endDate": "2025-08-12",
+                                                  "assignedTo": "5",
+                                                  "batchId": 60,
+                                                  "suppliesIds": [601, 602],
+                                                  "type": "TASK_INDUSTRY"
+                                                }
+                                                """
+                                    )
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "No se encontró la tarea con el ID proporcionado.",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            name = "Tarea no encontrada",
+                                            summary = "ID de tarea inválido",
+                                            value = """
+                                                {
+                                                  "status": "ERROR",
+                                                  "message": "Tarea no encontrada.",
+                                                  "details": [
+                                                    "No existe una tarea con el ID proporcionado en la base de datos."
+                                                  ]
+                                                }
+                                                """
+                                    )
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Error interno del servidor.",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            name = "Error inesperado",
+                                            summary = "Fallo al actualizar parcialmente",
+                                            value = """
+                                                {
+                                                  "status": "ERROR",
+                                                  "message": "Ocurrió un error inesperado al actualizar la tarea.",
+                                                  "details": [
+                                                    "Revisar los logs del backend para más información."
+                                                  ]
+                                                }
+                                                """
+                                    )
+                            )
+                    )
+            }
+    )
+    @PatchMapping("/{taskId}")
+    public ResponseEntity<TasksResource> patchTask(@PathVariable Long taskId, @RequestBody PatchTaskResource resource) {
+        var command = PatchTaskCommandFromResourceAssembler.toCommandFromResource(taskId, resource);
+        var updated = tasksCommandService.handle(command);
+        if (updated.isEmpty()) return ResponseEntity.notFound().build();
+        var resourceUpdated = TasksResourceFromEntityAssembler.toResourceFromEntity(updated.get());
+        return ResponseEntity.ok(resourceUpdated);
+    }
+
+    /* GET: /api/v1/tasks/winegrower/{winegrowerId} */
+    @Operation(
+            summary = "Obtener tareas por ID del viticultor",
+            description = "Devuelve una lista de tareas asociadas a un viticultor específico según su ID.",
+            parameters = {
+                    @Parameter(name = "winegrowerId", description = "ID del viticultor", required = true)
+            },
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Lista de tareas encontrada.",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = TasksResource.class),
+                                    examples = @ExampleObject(
+                                            name = "Tareas por viticultor",
+                                            summary = "Lista de tareas",
+                                            value = """
+                                                [
+                                                  {
+                                                    "id": 10,
+                                                    "title": "Revisión de sensores",
+                                                    "description": "Monitoreo de sensores",
+                                                    "startDate": "2025-07-01",
+                                                    "endDate": "2025-07-03",
+                                                    "winegrowerId": "5",
+                                                    "batchId": 12,
+                                                    "suppliesIds": [301, 302],
+                                                    "type": "TASK_FIELD"
+                                                  },
+                                                  {
+                                                    "id": 11,
+                                                    "title": "Mantenimiento de equipos",
+                                                    "description": "Verificación de maquinaria industrial",
+                                                    "startDate": "2025-07-05",
+                                                    "endDate": "2025-07-07",
+                                                    "winegrowerId": "5",
+                                                    "batchId": 13,
+                                                    "suppliesIds": [],
+                                                    "type": "TASK_INDUSTRIAL"
+                                                  }
+                                                ]
+                                                """
+                                    )
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "No se encontraron tareas para el viticultor.",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            name = "Sin tareas",
+                                            summary = "El ID proporcionado no tiene tareas",
+                                            value = """
+                                                {
+                                                  "status": "ERROR",
+                                                  "message": "No se encontraron tareas.",
+                                                  "details": [
+                                                    "El ID de viticultor no tiene tareas asignadas."
+                                                  ]
+                                                }
+                                                """
+                                    )
+                            )
+                    )
+            }
+    )
+    @GetMapping("/winegrower/{winegrowerId}")
+    public ResponseEntity<List<TasksResource>> getTasksByWinegrowerId(@PathVariable Long winegrowerId) {
+        var tasks = tasksQueryService.findByWinegrowerId(winegrowerId);
+        if (tasks.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        var resources = tasks.stream().map(TasksResourceFromEntityAssembler::toResourceFromEntity).toList();
+        return ResponseEntity.ok(resources);
+    }
+
+
+    /* GET: /api/v1/tasks/with-evidence/field */
+    @GetMapping("/with-evidence/field")
+    @Operation(
+            summary = "Obtener tareas de campo con evidencia",
+            description = "Devuelve las tareas de tipo TASK_FIELD que tienen al menos una evidencia asociada. Esta lista se utilizará para alimentar la vista de Evidencias."
+    )
+    public ResponseEntity<List<TasksResource>> getFieldTasksWithEvidence() {
+        var tasks = tasksQueryService.findByTypeWithEvidence(TaskType.TASK_FIELD);
+        if (tasks.isEmpty()) return ResponseEntity.noContent().build();
+        var resources = tasks.stream()
+                .map(TasksResourceFromEntityAssembler::toResourceFromEntity)
+                .toList();
+        return ResponseEntity.ok(resources);
+    }
+
+    /* GET: /api/v1/tasks/with-evidence/industry */
+    @GetMapping("/with-evidence/industrial")
+    @Operation(
+            summary = "Obtener tareas industriales con evidencia",
+            description = "Devuelve las tareas de tipo TASK_INDUSTRY que tienen al menos una evidencia asociada. Esta lista se utilizará para alimentar la vista de Evidencias."
+    )
+    public ResponseEntity<List<TasksResource>> getIndustrialTasksWithEvidence() {
+        var tasks = tasksQueryService.findByTypeWithEvidence(TaskType.TASK_INDUSTRY);
+        if (tasks.isEmpty()) return ResponseEntity.noContent().build();
+        var resources = tasks.stream().map(TasksResourceFromEntityAssembler::toResourceFromEntity).toList();
+        return ResponseEntity.ok(resources);
+    }
+
 
 }

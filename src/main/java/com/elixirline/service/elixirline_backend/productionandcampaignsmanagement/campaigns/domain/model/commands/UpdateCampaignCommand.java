@@ -6,6 +6,9 @@ public record UpdateCampaignCommand(
         Long campaignId,
         String name,
         String year,
+        Long winegrowerId,
+        Long batches,
+        String status,
         LocalDate startDate,
         LocalDate endDate
 ) {

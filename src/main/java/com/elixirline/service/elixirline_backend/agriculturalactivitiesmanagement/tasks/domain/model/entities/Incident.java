@@ -1,0 +1,37 @@
+package com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.entities;
+
+import com.elixirline.service.elixirline_backend.shared.domain.model.entities.AuditableModel;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Getter
+@NoArgsConstructor
+public class Incident extends AuditableModel {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private Long taskId;
+
+    private String description;
+
+    private String imageUrl;
+
+    public Incident(Long taskId, String description, String imageUrl) {
+        this.taskId = taskId;
+        this.description = description;
+        this.imageUrl = imageUrl;
+    }
+
+    public Incident updateInformation(Long taskId, String description, String imageUrl) {
+        if (taskId != null) this.taskId = taskId;
+        if (description != null) this.description = description;
+        if (imageUrl != null && !imageUrl.isEmpty()) this.imageUrl = imageUrl;
+        return this;
+    }
+}
