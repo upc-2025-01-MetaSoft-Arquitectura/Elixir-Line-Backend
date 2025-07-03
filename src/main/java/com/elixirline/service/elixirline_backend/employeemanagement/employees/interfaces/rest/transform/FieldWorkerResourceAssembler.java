@@ -6,7 +6,7 @@ import com.elixirline.service.elixirline_backend.employeemanagement.employees.in
 public class FieldWorkerResourceAssembler {
     public static FieldWorkerResource toResource(FieldWorker fieldWorker) {
         return new FieldWorkerResource(
-                fieldWorker.getFieldWorkerId(),
+                fieldWorker.getId(),
                 fieldWorker.getUserId(),
                 fieldWorker.getName(),
                 fieldWorker.getLastname(),

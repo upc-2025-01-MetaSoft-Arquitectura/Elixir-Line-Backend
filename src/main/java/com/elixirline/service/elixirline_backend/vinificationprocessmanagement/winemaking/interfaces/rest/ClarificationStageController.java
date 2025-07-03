@@ -79,7 +79,7 @@ public class ClarificationStageController {
                                     summary = "Respuesta exitosa con los detalles de la etapa de clarificación",
                                     value = """
                                     {
-                                      "clarificationStageId": 1,
+                                      "id": 1,
                                       "batchId": 10,
                                       "employee": "Luis Carlos Prada Naez",
                                       "startDate": "2025-06-01",
@@ -97,7 +97,8 @@ public class ClarificationStageController {
                                       "comment": "Clarificación realizada con éxito.",
                                       "completionStatus": "NOT_COMPLETED",
                                       "currentStage": "CLARIFICATION",
-                                      "completedAt": null
+                                      "completedAt": null,
+                                      "dataHash": null
                                     }
                                     """
                             )
@@ -154,7 +155,7 @@ public class ClarificationStageController {
                                     summary = "Respuesta exitosa de creación",
                                     value = """
                                     {
-                                      "clarificationStageId": 2,
+                                      "id": 2,
                                       "batchId": 10,
                                       "employee": "Luis Carlos Prada Naez",
                                       "startDate": "2025-06-01",
@@ -172,7 +173,8 @@ public class ClarificationStageController {
                                       "comment": "Clarificación realizada con éxito.",
                                       "completionStatus": "NOT_COMPLETED",
                                       "currentStage": "CLARIFICATION",
-                                      "completedAt": null
+                                      "completedAt": null,
+                                      "dataHash": null
                                     }
                                     """
                             )
@@ -229,7 +231,7 @@ public class ClarificationStageController {
                                     summary = "Respuesta exitosa de creación",
                                     value = """
                                     {
-                                      "clarificationStageId": 2,
+                                      "id": 2,
                                       "batchId": 10,
                                       "employee": null,
                                       "startDate": null,
@@ -244,7 +246,8 @@ public class ClarificationStageController {
                                       "comment": null,
                                       "completionStatus": "NOT_COMPLETED",
                                       "currentStage": "CLARIFICATION",
-                                      "completedAt": null
+                                      "completedAt": null,
+                                      "dataHash": null
                                     }
                                     """
                             )
@@ -298,7 +301,7 @@ public class ClarificationStageController {
                                     summary = "Respuesta exitosa de actualización",
                                     value = """
                                     {
-                                      "clarificationStageId": 1,
+                                      "id": 1,
                                       "batchId": 10,
                                       "employee": "Luis Carlos Prada Naez",
                                       "startDate": "2025-06-01",
@@ -316,7 +319,8 @@ public class ClarificationStageController {
                                       "comment": "Clarificación realizada con éxito.",
                                       "completionStatus": "NOT_COMPLETED",
                                       "currentStage": "CLARIFICATION",
-                                      "completedAt": null
+                                      "completedAt": null,
+                                      "dataHash": null
                                     }
                                     """
                             )

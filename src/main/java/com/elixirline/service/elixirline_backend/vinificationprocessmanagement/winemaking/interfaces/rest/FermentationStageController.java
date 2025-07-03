@@ -81,7 +81,7 @@ public class FermentationStageController {
                                     summary = "Respuesta exitosa con los detalles de la etapa de fermentación",
                                     value = """
                                     {
-                                      "fermentationStageId": 1,
+                                      "id": 1,
                                       "batchId": 10,
                                       "employee": "Luis Carlos Prada Naez",
                                       "startDate": "2025-06-01",
@@ -98,7 +98,8 @@ public class FermentationStageController {
                                       "comment": "Fermentación realizada con éxito.",
                                       "completionStatus": "NOT_COMPLETED",
                                       "currentStage": "FERMENTATION",
-                                      "completedAt": null
+                                      "completedAt": null,
+                                      "dataHash": null
                                     }
                                     """
                             )
@@ -157,7 +158,7 @@ public class FermentationStageController {
                                     summary = "Respuesta exitosa de creación",
                                     value = """
                                     {
-                                      "fermentationStageId": 2,
+                                      "id": 2,
                                       "batchId": 10,
                                       "employee": "Luis Carlos Prada Naez",
                                       "startDate": "2025-06-01",
@@ -174,7 +175,8 @@ public class FermentationStageController {
                                       "comment": "Fermentación realizada con éxito.",
                                       "completionStatus": "NOT_COMPLETED",
                                       "currentStage": "FERMENTATION",
-                                      "completedAt": null
+                                      "completedAt": null,
+                                      "dataHash": null
                                     }
                                     """
                             )
@@ -233,7 +235,7 @@ public class FermentationStageController {
                                     summary = "Respuesta exitosa de creación",
                                     value = """
                                     {
-                                      "fermentationStageId": 2,
+                                      "id": 2,
                                       "batchId": 10,
                                       "employee": null,
                                       "startDate": null,
@@ -250,7 +252,8 @@ public class FermentationStageController {
                                       "comment": null,
                                       "completionStatus": "NOT_COMPLETED",
                                       "currentStage": "FERMENTATION",
-                                      "completedAt": null
+                                      "completedAt": null,
+                                      "dataHash": null
                                     }
                                     """
                             )
@@ -306,7 +309,7 @@ public class FermentationStageController {
                                     summary = "Respuesta exitosa de actualización",
                                     value = """
                                     {
-                                      "fermentationStageId": 1,
+                                      "id": 1,
                                       "batchId": 10,
                                       "employee": "Luis Carlos Prada Naez",
                                       "startDate": "2025-06-01",
@@ -323,7 +326,8 @@ public class FermentationStageController {
                                       "comment": "Fermentación realizada con éxito.",
                                       "completionStatus": "NOT_COMPLETED",
                                       "currentStage": "FERMENTATION",
-                                      "completedAt": null
+                                      "completedAt": null,
+                                      "dataHash": null
                                     }
                                     """
                             )

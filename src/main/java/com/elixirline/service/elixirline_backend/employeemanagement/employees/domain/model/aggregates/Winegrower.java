@@ -13,11 +13,6 @@ import lombok.Setter;
 @Entity(name = "winegrower")
 @NoArgsConstructor
 public class Winegrower extends AuditableAbstractAggregateRoot<Winegrower> {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "winegrower_id", unique = true)
-    private Long winegrowerId;
-
     @Column(name = "user_id", unique = true)
     private Long userId;
 

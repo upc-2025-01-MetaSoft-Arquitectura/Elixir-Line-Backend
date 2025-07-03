@@ -81,7 +81,7 @@ public class UserCommandServiceImpl implements UserCommandService {
         Role role = command.role() != null ?
                 roleRepository.findByName(command.role().getName())
                         .orElseThrow(() -> new RuntimeException("Role not found")) :
-                roleRepository.findByName(Roles.VINEGROWER)
+                roleRepository.findByName(Roles.WINEGROWER)
                         .orElseThrow(() -> new RuntimeException("Default role not found"));
 
         var user = new User(command.email(), hashingService.encode(command.password()), role);

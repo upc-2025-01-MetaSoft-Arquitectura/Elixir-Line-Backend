@@ -25,7 +25,8 @@ public class AgingStageResourceAssembler {
                 agingStage.getComment(),
                 agingStage.getCompletionStatus(),
                 agingStage.getCurrentStage(),
-                agingStage.getCompletedAt()
+                agingStage.getCompletedAt(),
+                agingStage.getDataHash()
         );
     }
 }

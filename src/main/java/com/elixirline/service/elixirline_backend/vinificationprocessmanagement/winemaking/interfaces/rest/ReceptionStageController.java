@@ -75,7 +75,7 @@ public class ReceptionStageController {
                                     summary = "Respuesta exitosa con los detalles de la etapa de recepción",
                                     value = """
                                     {
-                                      "receptionStageId": 1,
+                                      "id": 1,
                                       "batchId": 10,
                                       "employee": "Luis Carlos Prada Naez",
                                       "startDate": "2025-06-01",
@@ -87,7 +87,8 @@ public class ReceptionStageController {
                                       "comment": "Recepción de uvas en buen estado.",
                                       "completionStatus": "NOT_COMPLETED",
                                       "currentStage": "RECEPTION",
-                                      "completedAt": null
+                                      "completedAt": null,
+                                      "dataHash": null
                                     }
                                     """
                             )
@@ -139,7 +140,7 @@ public class ReceptionStageController {
                                     summary = "Respuesta exitosa de creación",
                                     value = """
                                     {
-                                      "receptionStageId": 2,
+                                      "id": 2,
                                       "batchId": 10,
                                       "employee": "Luis Carlos Prada Naez",
                                       "startDate": "2025-06-01",
@@ -151,7 +152,8 @@ public class ReceptionStageController {
                                       "comment": "Recepción de uvas en buen estado.",
                                       "completionStatus": "NOT_COMPLETED",
                                       "currentStage": "RECEPTION",
-                                      "completedAt": null
+                                      "completedAt": null,
+                                      "dataHash": null
                                     }
                                     """
                             )
@@ -203,7 +205,7 @@ public class ReceptionStageController {
                                     summary = "Respuesta exitosa de creación",
                                     value = """
                                     {
-                                      "receptionStageId": 3,
+                                      "id": 3,
                                       "batchId": 7,
                                       "employee": null,
                                       "startDate": null,
@@ -215,7 +217,8 @@ public class ReceptionStageController {
                                       "comment": null,
                                       "completionStatus": "NOT_COMPLETED",
                                       "currentStage": "RECEPTION",
-                                      "completedAt": null
+                                      "completedAt": null,
+                                      "dataHash": null
                                     }
                                     """
                             )
@@ -267,7 +270,7 @@ public class ReceptionStageController {
                                     summary = "Respuesta exitosa de actualización",
                                     value = """
                                     {
-                                      "receptionStageId": 1,
+                                      "id": 1,
                                       "batchId": 10,
                                       "employee": "Luis Carlos Prada Naez",
                                       "startDate": "2025-06-01",
@@ -279,7 +282,8 @@ public class ReceptionStageController {
                                       "comment": "Recepción de uvas en excelente estado.",
                                       "completionStatus": "NOT_COMPLETED",
                                       "currentStage": "RECEPTION",
-                                      "completedAt": null
+                                      "completedAt": null,
+                                      "dataHash": null
                                     }
                                     """
                             )

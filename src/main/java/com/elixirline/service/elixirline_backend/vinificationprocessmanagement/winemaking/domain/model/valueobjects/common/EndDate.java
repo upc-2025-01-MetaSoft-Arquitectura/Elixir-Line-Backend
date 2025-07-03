@@ -7,10 +7,6 @@ import java.time.LocalDate;
 
 @Embeddable
 public record EndDate(LocalDate endDate) {
-    public EndDate {
-
-    }
-
     @JsonValue
     public LocalDate getEndDate() {
         return endDate;

@@ -1,5 +1,6 @@
 package com.elixirline.service.elixirline_backend.userandrolemanagement.iam.domain.model.entities;
 
+import com.elixirline.service.elixirline_backend.shared.domain.model.entities.AuditableModel;
 import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.domain.model.valueobjects.Roles;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -47,7 +48,7 @@ public class Role {
      * @return the default role
      */
     public static Role getDefaultRole() {
-        return new Role(Roles.VINEGROWER);
+        return new Role(Roles.WINEGROWER);
     }
 
     /**

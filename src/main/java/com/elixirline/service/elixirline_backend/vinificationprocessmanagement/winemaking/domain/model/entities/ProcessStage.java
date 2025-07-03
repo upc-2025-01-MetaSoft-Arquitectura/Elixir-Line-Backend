@@ -41,6 +41,9 @@ public abstract class ProcessStage {
     @Column(name = "completed_at")
     private java.time.LocalDateTime completedAt = null; // Fecha y hora de finalización de la etapa
 
+    @Column(name = "data_hash")
+    private String dataHash = null; // Hash de los datos de la etapa para pasarlos al Smart Contract
+
     public void completePhase() {
         this.completedAt = java.time.LocalDateTime.now();
     }

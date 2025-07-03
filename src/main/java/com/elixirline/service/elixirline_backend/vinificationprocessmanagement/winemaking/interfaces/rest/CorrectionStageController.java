@@ -83,7 +83,7 @@ public class CorrectionStageController {
                                     summary = "Respuesta exitosa con los detalles de la etapa de corrección",
                                     value = """
                                     {
-                                      "correctionStageId": 1,
+                                      "id": 1,
                                       "batchId": 10,
                                       "employee": "Luis Carlos Prada Naez",
                                       "startDate": "2025-06-01",
@@ -101,7 +101,8 @@ public class CorrectionStageController {
                                       "comment": "Corrección realizada con éxito.",
                                       "completionStatus": "NOT_COMPLETED",
                                       "currentStage": "CORRECTION",
-                                      "completedAt": null
+                                      "completedAt": null,
+                                      "dataHash": null
                                     }
                                     """
                             )
@@ -161,7 +162,7 @@ public class CorrectionStageController {
                                     summary = "Respuesta exitosa de creación",
                                     value = """
                                     {
-                                      "correctionStageId": 2,
+                                      "id": 2,
                                       "batchId": 10,
                                       "employee": "Luis Carlos Prada Naez",
                                       "startDate": "2025-06-01",
@@ -179,7 +180,8 @@ public class CorrectionStageController {
                                       "comment": "Corrección realizada con éxito.",
                                       "completionStatus": "NOT_COMPLETED",
                                       "currentStage": "CORRECTION",
-                                      "completedAt": null
+                                      "completedAt": null,
+                                      "dataHash": null
                                     }
                                     """
                             )
@@ -239,7 +241,7 @@ public class CorrectionStageController {
                                     summary = "Respuesta exitosa de creación",
                                     value = """
                                     {
-                                      "correctionStageId": 2,
+                                      "id": 2,
                                       "batchId": 10,
                                       "employee": null,
                                       "startDate": null,
@@ -257,7 +259,8 @@ public class CorrectionStageController {
                                       "comment": null,
                                       "completionStatus": "NOT_COMPLETED",
                                       "currentStage": "CORRECTION",
-                                      "completedAt": null
+                                      "completedAt": null,
+                                      "dataHash": null
                                     }
                                     """
                             )
@@ -314,7 +317,7 @@ public class CorrectionStageController {
                                     summary = "Respuesta exitosa de actualización",
                                     value = """
                                     {
-                                      "correctionStageId": 1,
+                                      "id": 1,
                                       "batchId": 10,
                                       "employee": "Luis Carlos Prada Naez",
                                       "startDate": "2025-06-01",
@@ -332,7 +335,8 @@ public class CorrectionStageController {
                                       "comment": "Corrección realizada con éxito.",
                                       "completionStatus": "NOT_COMPLETED",
                                       "currentStage": "CORRECTION",
-                                      "completedAt": null
+                                      "completedAt": null,
+                                      "dataHash": null
                                     }
                                     """
                             )

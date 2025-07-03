@@ -13,24 +13,13 @@ import java.time.LocalDate;
 @Getter
 @NoArgsConstructor
 public class Campaign extends AuditableAbstractAggregateRoot<Campaign> {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    //editable
     private String name;
-    //editable
     private String year;
-
     private Long winegrowerId;
-
     private Long batches;
-
     @Enumerated(EnumType.STRING)
     private CampaignStatus status;
-    //editable
     private LocalDate startDate;
-    //editable
     private LocalDate endDate;
 
     public Campaign(CreateCampaignCommand command) {

@@ -7,7 +7,7 @@ import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.w
 import java.util.List;
 
 public record CorrectionStageResource(
-        Long correctionStageId,
+        Long id,
         Long batchId,
         Employee employee,
         StartDate startDate,
@@ -25,5 +25,6 @@ public record CorrectionStageResource(
         Comment comment,
         CompletionStatus completionStatus,
         CurrentStage currentStage,
-        java.time.LocalDateTime completedAt
+        java.time.LocalDateTime completedAt,
+        String dataHash
 ) { }

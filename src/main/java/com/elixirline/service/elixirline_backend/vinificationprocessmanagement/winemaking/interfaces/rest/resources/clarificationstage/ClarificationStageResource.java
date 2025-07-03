@@ -6,7 +6,7 @@ import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.w
 import java.util.Map;
 
 public record ClarificationStageResource(
-        Long clarificationStageId,
+        Long id,
         Long batchId,
         Employee employee,
         StartDate startDate,
@@ -21,5 +21,6 @@ public record ClarificationStageResource(
         Comment comment,
         CompletionStatus completionStatus,
         CurrentStage currentStage,
-        java.time.LocalDateTime completedAt
+        java.time.LocalDateTime completedAt,
+        String dataHash
 ) { }

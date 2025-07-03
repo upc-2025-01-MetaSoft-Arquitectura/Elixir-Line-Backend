@@ -20,7 +20,8 @@ public class PressingStageResourceAssembler {
                 pressingStage.getComment(),
                 pressingStage.getCompletionStatus(),
                 pressingStage.getCurrentStage(),
-                pressingStage.getCompletedAt()
+                pressingStage.getCompletedAt(),
+                pressingStage.getDataHash()
         );
     }
 }

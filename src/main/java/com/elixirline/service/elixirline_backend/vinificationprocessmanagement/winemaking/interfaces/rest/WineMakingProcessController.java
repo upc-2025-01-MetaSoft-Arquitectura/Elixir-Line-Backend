@@ -81,7 +81,7 @@ public class WineMakingProcessController {
                                     value = """
                                 [
                                   {
-                                    "batchId": 10,
+                                    "id": 10,
                                     "campaignId": 5,
                                     "winegrowerId": 1,
                                     "vineyardCode": "B2025-VINEYARD01",
@@ -96,7 +96,7 @@ public class WineMakingProcessController {
                                     "currentStage": "RECEPTION"
                                   },
                                   {
-                                    "batchId": 11,
+                                    "id": 11,
                                     "campaignId": 6,
                                     "winegrowerId": 2,
                                     "vineyardCode": "B2025-VINEYARD02",
@@ -188,7 +188,7 @@ public class WineMakingProcessController {
                                     summary = "Respuesta exitosa con los detalles del lote",
                                     value = """
                                 {
-                                  "batchId": 10,
+                                  "id": 10,
                                   "campaignId": 5,
                                   "winegrowerId": 1,
                                   "vineyardCode": "B2025-VINEYARD01",
@@ -306,7 +306,7 @@ public class WineMakingProcessController {
                                     value = """
                                 [
                                   {
-                                    "batchId": 10,
+                                    "id": 10,
                                     "campaignId": 5,
                                     "winegrowerId": 1,
                                     "vineyardCode": "B2025-VINEYARD01",
@@ -321,7 +321,7 @@ public class WineMakingProcessController {
                                     "currentStage": "RECEPTION"
                                   },
                                   {
-                                    "batchId": 11,
+                                    "id": 11,
                                     "campaignId": 5,
                                     "winegrowerId": 2,
                                     "vineyardCode": "B2025-VINEYARD02",
@@ -420,7 +420,7 @@ public class WineMakingProcessController {
                                     value = """
                                 [
                                   {
-                                    "batchId": 10,
+                                    "id": 10,
                                     "campaignId": 5,
                                     "winegrowerId": 1,
                                     "vineyardCode": "B2025-VINEYARD01",
@@ -435,7 +435,7 @@ public class WineMakingProcessController {
                                     "currentStage": "RECEPTION"
                                   },
                                   {
-                                    "batchId": 11,
+                                    "id": 11,
                                     "campaignId": 6,
                                     "winegrowerId": 1,
                                     "vineyardCode": "B2025-VINEYARD02",
@@ -577,7 +577,7 @@ public class WineMakingProcessController {
                                     summary = "Respuesta exitosa de creación",
                                     value = """
                                     {
-                                      "batchId": 10,
+                                      "id": 10,
                                       "campaignId": 5,
                                       "winegrowerId": 1,
                                       "vineyardCode": "B2025-VINEYARD01",
@@ -697,7 +697,7 @@ public class WineMakingProcessController {
                                     summary = "Respuesta exitosa con los detalles del lote actualizado",
                                     value = """
                                 {
-                                  "batchId": 10,
+                                  "id": 10,
                                   "campaignId": 5,
                                   "winegrowerId": 1,
                                   "vineyardCode": "B2025-VINEYARD01",
@@ -812,7 +812,7 @@ public class WineMakingProcessController {
                                     summary = "Respuesta exitosa con los detalles del lote actualizado",
                                     value = """
                                 {
-                                  "batchId": 10,
+                                  "id": 10,
                                   "campaignId": 5,
                                   "winegrowerId": 1,
                                   "vineyardCode": "B2025-VINEYARD01",

@@ -13,11 +13,6 @@ import lombok.Setter;
 @Entity(name = "batch")
 @NoArgsConstructor
 public class Batch extends AuditableAbstractAggregateRoot<Batch> {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "batch_id")
-    private Long batchId;
-
     @Column(name = "vineyard_id")
     private String vineyardCode;
 

@@ -6,7 +6,7 @@ import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.w
 public class BatchResourceAssembler {
     public static BatchResource toResource(Batch batch) {
         return new BatchResource(
-                batch.getBatchId(),
+                batch.getId(),
                 batch.getWinegrowerId(),
                 batch.getCampaignId(),
                 batch.getVineyardCode(),

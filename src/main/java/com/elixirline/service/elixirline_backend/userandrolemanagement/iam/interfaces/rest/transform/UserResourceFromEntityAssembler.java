@@ -7,6 +7,6 @@ import com.elixirline.service.elixirline_backend.userandrolemanagement.iam.inter
 public class UserResourceFromEntityAssembler {
     public static UserResource toResourceFromEntity(User user) {
         String role = user.getRole() != null ? user.getRole().getStringName() : null;
-        return new UserResource(user.getUserId(), user.getEmail(), role);
+        return new UserResource(user.getId(), user.getEmail(), role);
     }
 }

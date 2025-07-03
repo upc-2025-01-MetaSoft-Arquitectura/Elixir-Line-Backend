@@ -6,10 +6,6 @@ import jakarta.persistence.Embeddable;
 
 @Embeddable
 public record StartDate(LocalDate startDate) {
-    public StartDate {
-
-    }
-
     @JsonValue
     public LocalDate getStartDate() {
         return startDate;

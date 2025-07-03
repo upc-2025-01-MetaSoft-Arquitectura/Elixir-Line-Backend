@@ -1,24 +1,34 @@
 package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.application.internal.commandservices;
 
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.exceptions.batch.BatchNotFoundException;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.aggregates.Batch;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.aggregates.FiltrationStage;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.aggregates.PressingStage;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.filtrationstage.CreateEmptyFiltrationStageCommand;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.filtrationstage.CreateFiltrationStageCommand;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.filtrationstage.DeleteFiltrationStageByBatchCommand;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.commands.filtrationstage.UpdateFiltrationStageCommand;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.batch.CurrentStage;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.common.CompletionStatus;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.common.EndDate;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.common.StartDate;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.services.filtrationstage.FiltrationStageCommandService;
+import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.infrastructure.persistance.jpa.repositories.BatchRepository;
 import com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.infrastructure.persistance.jpa.repositories.FiltrationStageRepository;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class FiltrationStageCommandServiceImpl implements FiltrationStageCommandService {
     private final FiltrationStageRepository filtrationStageRepository;
+    private final BatchRepository batchRepository;
 
     @Override
     public Optional<FiltrationStage> handle(CreateFiltrationStageCommand command) {
@@ -79,6 +89,16 @@ public class FiltrationStageCommandServiceImpl implements FiltrationStageCommand
 
                     if (filtrationStage.getCompletionStatus() == CompletionStatus.COMPLETED) {
                         filtrationStage.completePhase();
+
+                        Batch batch = batchRepository.findById(filtrationStage.getBatchId())
+                                .orElseThrow(() -> new BatchNotFoundException(filtrationStage.getBatchId()));
+                        batch.advanceToNextPhase();
+                        batch.setCurrentStage(CurrentStage.BOTTLING);
+
+                        //Calcular el Hash de la etapa
+                        String dataHash = calculateHash(filtrationStage);
+                        filtrationStage.setDataHash(dataHash);
+                        batchRepository.save(batch);
                     }
 
                     return filtrationStageRepository.save(filtrationStage);
@@ -95,5 +115,42 @@ public class FiltrationStageCommandServiceImpl implements FiltrationStageCommand
             return !startDate.getStartDate().isAfter(endDate.getEndDate());
         }
         return false;
+    }
+
+    private String calculateHash(FiltrationStage filtrationStage) {
+        try {
+            StringBuilder dataToHash = getStringBuilder(filtrationStage);
+
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hashBytes = digest.digest(dataToHash.toString().getBytes(StandardCharsets.UTF_8));
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hashBytes) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Error calculating hash", e);
+        }
+    }
+
+    @NotNull
+    private static StringBuilder getStringBuilder(FiltrationStage filtrationStage) {
+        StringBuilder dataToHash = new StringBuilder();
+        if (filtrationStage.getEmployee() != null) { dataToHash.append(filtrationStage.getEmployee()); }
+        if (filtrationStage.getFilterType() != null) { dataToHash.append(filtrationStage.getFilterType()); }
+        if (filtrationStage.getFilterMedium() != null) { dataToHash.append(filtrationStage.getFilterMedium()); }
+        if (filtrationStage.getPorosity() != null) { dataToHash.append(filtrationStage.getPorosity()); }
+        if (filtrationStage.getInitialTurbidity() != null) { dataToHash.append(filtrationStage.getInitialTurbidity()); }
+        if (filtrationStage.getFinalTurbidity() != null) { dataToHash.append(filtrationStage.getFinalTurbidity()); }
+        if (filtrationStage.getTemperature() != null) { dataToHash.append(filtrationStage.getTemperature()); }
+        if (filtrationStage.getPressure() != null) { dataToHash.append(filtrationStage.getPressure()); }
+        if (filtrationStage.getFilteredVolume() != null) { dataToHash.append(filtrationStage.getFilteredVolume()); }
+        if (filtrationStage.getSterileFiltration() != null) { dataToHash.append(filtrationStage.getSterileFiltration()); }
+        if (filtrationStage.getChangedFiltration() != null) { dataToHash.append(filtrationStage.getChangedFiltration()); }
+        if (filtrationStage.getChangeReason() != null) { dataToHash.append(filtrationStage.getChangeReason()); }
+        if (filtrationStage.getComment() != null) { dataToHash.append(filtrationStage.getComment()); }
+        return dataToHash;
     }
 }

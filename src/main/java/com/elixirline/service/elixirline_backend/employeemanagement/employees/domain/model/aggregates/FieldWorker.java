@@ -13,11 +13,6 @@ import jakarta.persistence.*;
 @Entity(name = "field_worker")
 @NoArgsConstructor
 public class FieldWorker extends AuditableAbstractAggregateRoot<FieldWorker> {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "field_worker_id", unique = true)
-    private Long fieldWorkerId;
-
     @Column(name = "user_id", unique = true)
     private Long userId;
 
