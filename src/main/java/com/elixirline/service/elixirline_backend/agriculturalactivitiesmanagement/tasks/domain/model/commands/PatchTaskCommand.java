@@ -12,6 +12,7 @@ public record PatchTaskCommand(
         LocalDate startDate,
         LocalDate endDate,
         Long winegrowerId,
+        String fieldWorkerName,
         Long batchId,
         List<Long> suppliesIds,
         TaskType type

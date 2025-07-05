@@ -11,6 +11,7 @@ public class CreateTaskCommandFromResourceAssembler {
                 resource.startDate(),
                 resource.endDate(),
                 resource.winegrowerId(),
+                resource.fieldWorkerName(),
                 resource.batchId(),
                 resource.suppliesIds()
         );

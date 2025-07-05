@@ -27,6 +27,7 @@ public class TasksCommandServiceImpl implements TasksCommandService {
                 command.startDate(),
                 command.endDate(),
                 command.winegrowerId(),
+                command.fieldWorkerName(),
                 command.batchId(),
                 command.suppliesIds(),
                 TaskType.TASK_FIELD
@@ -43,6 +44,7 @@ public class TasksCommandServiceImpl implements TasksCommandService {
                 command.startDate(),
                 command.endDate(),
                 command.winegrowerId(),
+                command.fieldWorkerName(),
                 command.batchId(),
                 command.suppliesIds(),
                 TaskType.TASK_INDUSTRY
@@ -55,7 +57,7 @@ public class TasksCommandServiceImpl implements TasksCommandService {
     public Optional<Tasks> handle(UpdateTaskCommand command) {
         var task = tasksRepository.findById(command.taskId());
         if(task.isEmpty()) return Optional.empty();
-        var updated = task.get().updateInformation(command.title(), command.description(), command.startDate(), command.endDate(), command.winegrowerId(), command.batchId(), command.suppliesIds(), command.type());
+        var updated = task.get().updateInformation(command.title(), command.description(), command.startDate(), command.endDate(), command.winegrowerId(), command.fieldWorkerName(), command.batchId(), command.suppliesIds(), command.type());
         tasksRepository.save(updated);
         return Optional.of(updated);
     }
@@ -84,6 +86,7 @@ public class TasksCommandServiceImpl implements TasksCommandService {
                 command.startDate(),
                 command.endDate(),
                 command.winegrowerId(),
+                command.fieldWorkerName(),
                 command.batchId(),
                 command.suppliesIds(),
                 command.type()

@@ -12,6 +12,7 @@ public record TasksResource(
         LocalDate startDate,
         LocalDate endDate,
         Long winegrowerId,
+        String fieldWorkerName,
         Long batchId,
         TaskType type,
         List<Long> suppliesIds

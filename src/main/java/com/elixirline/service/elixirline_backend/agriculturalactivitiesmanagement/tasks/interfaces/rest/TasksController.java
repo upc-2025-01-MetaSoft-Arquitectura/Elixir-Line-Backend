@@ -64,6 +64,7 @@ public class TasksController {
                                                         "startDate": "2025-07-01",
                                                         "endDate": "2025-07-02",
                                                         "winegrowerId": "1",
+                                                        "fieldWorkerName": "Juan Pérez",
                                                         "batchId": 12,
                                                         "suppliesIds": [101, 102]
                                                       },
@@ -73,7 +74,8 @@ public class TasksController {
                                                         "description": "Realizar riego en el campo de vid",
                                                         "startDate": "2025-07-03",
                                                         "endDate": "2025-07-04",
-                                                        "assignedTo": "María Gómez",
+                                                        "winegrowerId": "1",
+                                                        "fieldWorkerName": "Juan Pérez",
                                                         "batchId": 14,
                                                         "suppliesIds": [103]
                                                       }
@@ -254,6 +256,7 @@ public class TasksController {
                                               "startDate": "2025-07-12",
                                               "endDate": "2025-07-14",
                                               "winegrowerId": "12",
+                                              "fieldWorkerName": "Juan Pérez",
                                               "batchId": 45,
                                               "suppliesIds": [401, 402]
                                             }
@@ -279,6 +282,7 @@ public class TasksController {
                                                       "startDate": "2025-07-12",
                                                       "endDate": "2025-07-14",
                                                       "winegrowerId": "11",
+                                                      "fieldWorkerName": "Juan Pérez",
                                                       "batchId": 45,
                                                       "suppliesIds": [401, 402]
                                                     }
@@ -380,6 +384,7 @@ public class TasksController {
                                               "startDate": "2025-07-10",
                                               "endDate": "2025-07-11",
                                               "winegrowerId": "21",
+                                              "fieldWorkerName": "Juan Pérez",
                                               "batchId": 33,
                                               "suppliesIds": [301, 302]
                                             }
@@ -405,6 +410,7 @@ public class TasksController {
                                                       "startDate": "2025-07-10",
                                                       "endDate": "2025-07-11",
                                                       "winegrowerId": "22",
+                                                      "fieldWorkerName": "Juan Pérez",
                                                       "batchId": 33,
                                                       "suppliesIds": [301, 302]
                                                     }
@@ -510,6 +516,7 @@ public class TasksController {
                               "startDate": "2025-08-01",
                               "endDate": "2025-08-03",
                               "winegrowerId": 4,
+                              "fieldWorkerName": "Juan Pérez",
                               "batchId": 12,
                               "type": "TASK_FIELD",
                               "suppliesIds": [101, 102]
@@ -526,6 +533,7 @@ public class TasksController {
                               "startDate": "2025-08-05",
                               "endDate": "2025-08-07",
                               "winegrowerId": 5,
+                              "fieldWorkerName": "Juan Pérez",
                               "batchId": 20,
                               "type": "TASK_INDUSTRY",
                               "suppliesIds": [201, 202]
@@ -605,6 +613,7 @@ public class TasksController {
                                                       "startDate": "2025-07-20",
                                                       "endDate": "2025-07-21",
                                                       "winegrowerId": "2",
+                                                      "fieldWorkerName": "Juan Pérez",
                                                       "batchId": 60,
                                                       "suppliesIds": [601, 602]
                                                     }
@@ -759,26 +768,21 @@ public class TasksController {
                             schema = @Schema(implementation = PatchTaskResource.class),
                             examples = {
                                     @ExampleObject(
-                                            name = "Tarea de campo",
-                                            summary = "Actualizar parcialmente una tarea de campo",
+                                            name = "Todos los campos actualizados",
+                                            summary = "Ejemplo completo de actualización parcial",
                                             value = """
-                                                {
-                                                  "title": "Control de malezas",
-                                                  "startDate": "2025-08-10",
-                                                  "suppliesIds": [601, 602]
-                                                }
-                                                """
-                                    ),
-                                    @ExampleObject(
-                                            name = "Tarea industrial",
-                                            summary = "Actualizar parcialmente una tarea industrial",
-                                            value = """
-                                                {
-                                                  "description": "Revisión técnica del sistema de enfriamiento",
-                                                  "endDate": "2025-08-12",
-                                                  "type": "TASK_INDUSTRIAL"
-                                                }
-                                                """
+                        {
+                          "title": "Nueva tarea de campo",
+                          "description": "Aplicación de fertilizante orgánico",
+                          "startDate": "2025-08-01",
+                          "endDate": "2025-08-05",
+                          "winegrowerId": 101,
+                          "fieldWorkerName": "Juan Pérez",
+                          "batchId": 202,
+                          "suppliesIds": [301, 302, 303],
+                          "type": "TASK_FIELD"
+                        }
+                        """
                                     )
                             }
                     )
@@ -794,18 +798,19 @@ public class TasksController {
                                             name = "Respuesta exitosa",
                                             summary = "Datos de la tarea después de la actualización",
                                             value = """
-                                                {
-                                                  "id": 25,
-                                                  "title": "Control de malezas",
-                                                  "description": "Revisión técnica del sistema de enfriamiento",
-                                                  "startDate": "2025-08-10",
-                                                  "endDate": "2025-08-12",
-                                                  "assignedTo": "5",
-                                                  "batchId": 60,
-                                                  "suppliesIds": [601, 602],
-                                                  "type": "TASK_INDUSTRY"
-                                                }
-                                                """
+                        {
+                          "id": 25,
+                          "title": "Nueva tarea de campo",
+                          "description": "Aplicación de fertilizante orgánico",
+                          "startDate": "2025-08-01",
+                          "endDate": "2025-08-05",
+                          "assignedTo": "5",
+                          "batchId": 202,
+                          "suppliesIds": [301, 302, 303],
+                          "type": "TASK_FIELD",
+                          "fieldWorkerName": "Juan Pérez"
+                        }
+                        """
                                     )
                             )
                     ),
@@ -819,14 +824,14 @@ public class TasksController {
                                             name = "Tarea no encontrada",
                                             summary = "ID de tarea inválido",
                                             value = """
-                                                {
-                                                  "status": "ERROR",
-                                                  "message": "Tarea no encontrada.",
-                                                  "details": [
-                                                    "No existe una tarea con el ID proporcionado en la base de datos."
-                                                  ]
-                                                }
-                                                """
+                        {
+                          "status": "ERROR",
+                          "message": "Tarea no encontrada.",
+                          "details": [
+                            "No existe una tarea con el ID proporcionado en la base de datos."
+                          ]
+                        }
+                        """
                                     )
                             )
                     ),
@@ -840,14 +845,14 @@ public class TasksController {
                                             name = "Error inesperado",
                                             summary = "Fallo al actualizar parcialmente",
                                             value = """
-                                                {
-                                                  "status": "ERROR",
-                                                  "message": "Ocurrió un error inesperado al actualizar la tarea.",
-                                                  "details": [
-                                                    "Revisar los logs del backend para más información."
-                                                  ]
-                                                }
-                                                """
+                        {
+                          "status": "ERROR",
+                          "message": "Ocurrió un error inesperado al actualizar la tarea.",
+                          "details": [
+                            "Revisar los logs del backend para más información."
+                          ]
+                        }
+                        """
                                     )
                             )
                     )

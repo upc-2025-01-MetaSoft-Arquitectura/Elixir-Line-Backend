@@ -9,6 +9,7 @@ public record CreateTaskResource(
         LocalDate startDate,
         LocalDate endDate,
         Long winegrowerId,
+        String fieldWorkerName,
         Long batchId,
         List<Long> suppliesIds
 ) {
