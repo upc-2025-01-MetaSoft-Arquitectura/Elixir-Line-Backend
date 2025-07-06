@@ -1,5 +1,6 @@
 package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.common;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.Embeddable;
 
@@ -14,5 +15,10 @@ public record Comment(String comment) {
     @JsonValue
     public String getComment() {
         return comment;
+    }
+
+    @JsonCreator
+    public static Comment from(String comment) {
+        return new Comment(comment);
     }
 }
