@@ -1,5 +1,6 @@
 package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.fermentationstage;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.Embeddable;
 
@@ -15,5 +16,10 @@ public record TankCode(String tankCode) {
     @JsonValue
     public String getTankCode() {
         return tankCode;
+    }
+
+    @JsonCreator
+    public static TankCode from(String tankCode) {
+        return new TankCode(tankCode);
     }
 }

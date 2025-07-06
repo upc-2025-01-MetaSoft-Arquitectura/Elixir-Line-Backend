@@ -5,18 +5,18 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
 @Embeddable
-public record MustUsage(
-        @Column(name = "must_usage_value")
-        String value
+public record Yield(
+        @Column(name = "grape_yield_value")
+        Double value
 ) {
-    public MustUsage {
-        if (value != null && value.length() > 100) {
-            throw new IllegalArgumentException("Must usage cannot be longer than 100 characters.");
+    public Yield {
+        if (value != null && value < 0) {
+            throw new IllegalArgumentException("Yield cannot be less than zero.");
         }
     }
 
     @JsonValue
-    public String getUsage() {
+    public Double getYield() {
         return value;
     }
 }

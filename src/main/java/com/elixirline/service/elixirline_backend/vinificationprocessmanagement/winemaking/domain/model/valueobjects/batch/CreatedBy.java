@@ -1,5 +1,6 @@
 package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.batch;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.Embeddable;
 
@@ -14,5 +15,10 @@ public record CreatedBy(String createdBy) {
     @JsonValue
     public String getCreatedBy() {
         return createdBy;
+    }
+
+    @JsonCreator
+    public static CreatedBy from(String createdBy) {
+        return new CreatedBy(createdBy);
     }
 }

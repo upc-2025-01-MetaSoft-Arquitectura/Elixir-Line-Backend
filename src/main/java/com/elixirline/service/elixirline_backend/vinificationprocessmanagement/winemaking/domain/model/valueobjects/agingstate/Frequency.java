@@ -1,5 +1,6 @@
 package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.agingstate;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.Embeddable;
 
@@ -14,5 +15,10 @@ public record Frequency(Integer frequency) {
     @JsonValue
     public Integer getFrequency() {
         return frequency;
+    }
+
+    @JsonCreator
+    public static Frequency from(Integer frequency) {
+        return new Frequency(frequency);
     }
 }

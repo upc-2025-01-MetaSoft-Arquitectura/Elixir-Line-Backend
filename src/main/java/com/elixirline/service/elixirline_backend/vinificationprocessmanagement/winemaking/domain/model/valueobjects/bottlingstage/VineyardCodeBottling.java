@@ -1,5 +1,6 @@
 package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.bottlingstage;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.Embeddable;
 
@@ -14,5 +15,10 @@ public record VineyardCodeBottling(String vineyardCodeBottling) {
     @JsonValue
     public String getVineyardCodeBottling() {
         return vineyardCodeBottling;
+    }
+
+    @JsonCreator
+    public static VineyardCodeBottling from(String vineyardCodeBottling) {
+        return new VineyardCodeBottling(vineyardCodeBottling);
     }
 }

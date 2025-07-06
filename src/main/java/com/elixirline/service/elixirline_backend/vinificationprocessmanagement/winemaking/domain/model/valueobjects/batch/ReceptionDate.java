@@ -1,5 +1,6 @@
 package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.batch;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.Embeddable;
 import java.time.LocalDate;
@@ -16,6 +17,11 @@ public record ReceptionDate(LocalDate date) {
     @JsonValue
     public LocalDate getReceptionDate() {
         return date;
+    }
+
+    @JsonCreator
+    public static ReceptionDate from(LocalDate date) {
+        return new ReceptionDate(date);
     }
 }
 

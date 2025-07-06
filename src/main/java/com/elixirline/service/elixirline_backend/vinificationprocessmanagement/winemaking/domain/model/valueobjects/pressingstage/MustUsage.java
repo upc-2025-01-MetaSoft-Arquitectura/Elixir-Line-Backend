@@ -1,5 +1,6 @@
 package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.pressingstage;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -18,5 +19,10 @@ public record MustUsage(
     @JsonValue
     public String getMustUsage() {
         return value;
+    }
+
+    @JsonCreator
+    public static MustUsage from(String mustUsage) {
+        return new MustUsage(mustUsage);
     }
 }

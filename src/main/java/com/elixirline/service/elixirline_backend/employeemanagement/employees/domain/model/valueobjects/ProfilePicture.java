@@ -1,5 +1,6 @@
 package com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.valueobjects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.Embeddable;
 
@@ -19,5 +20,10 @@ public record ProfilePicture(String url) {
     @JsonValue
     public String getUrl() {
         return url;
+    }
+
+    @JsonCreator
+    public static ProfilePicture from(String url) {
+        return new ProfilePicture(url);
     }
 }

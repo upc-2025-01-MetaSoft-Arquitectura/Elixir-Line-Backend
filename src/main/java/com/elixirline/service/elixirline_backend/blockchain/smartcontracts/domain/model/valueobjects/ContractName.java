@@ -1,5 +1,6 @@
 package com.elixirline.service.elixirline_backend.blockchain.smartcontracts.domain.model.valueobjects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.Embeddable;
 
@@ -14,5 +15,10 @@ public record ContractName(String contractName) {
     @JsonValue
     public String getContractName() {
         return contractName;
+    }
+
+    @JsonCreator
+    public static ContractName from(String contractName) {
+        return new ContractName(contractName);
     }
 }

@@ -1,5 +1,6 @@
 package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.receptionstage;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.Embeddable;
 
@@ -14,5 +15,10 @@ public record ReceptionSugarLevel(Double sugarLevel) {
     @JsonValue
     public Double getReceptionSugarLevel() {
         return sugarLevel;
+    }
+
+    @JsonCreator
+    public static ReceptionSugarLevel from(Double sugarLevel) {
+        return new ReceptionSugarLevel(sugarLevel);
     }
 }

@@ -1,5 +1,6 @@
 package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.batch;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.Embeddable;
 
@@ -24,6 +25,11 @@ public record Progress(double percentage) {
     @JsonValue
     public double getPercentage() {
         return percentage;
+    }
+
+    @JsonCreator
+    public static Progress from(double percentage) {
+        return new Progress(percentage);
     }
 }
 

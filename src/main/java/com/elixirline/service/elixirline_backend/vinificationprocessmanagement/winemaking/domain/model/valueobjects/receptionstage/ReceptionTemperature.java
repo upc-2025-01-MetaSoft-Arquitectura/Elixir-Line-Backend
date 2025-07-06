@@ -1,5 +1,6 @@
 package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.receptionstage;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.Embeddable;
 
@@ -14,5 +15,10 @@ public record ReceptionTemperature(Double receptionTemperature) {
     @JsonValue
     public Double getTemperature() {
         return receptionTemperature;
+    }
+
+    @JsonCreator
+    public static ReceptionTemperature from(Double receptionTemperature) {
+        return new ReceptionTemperature(receptionTemperature);
     }
 }

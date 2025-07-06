@@ -1,5 +1,6 @@
 package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.agingstate;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.Embeddable;
 
@@ -14,5 +15,10 @@ public record Purpose(String purpose) {
     @JsonValue
     public String getPurpose() {
         return purpose;
+    }
+
+    @JsonCreator
+    public static Purpose from(String purpose) {
+        return new Purpose(purpose);
     }
 }

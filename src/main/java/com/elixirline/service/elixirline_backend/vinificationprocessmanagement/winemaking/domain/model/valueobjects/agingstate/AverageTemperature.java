@@ -1,5 +1,6 @@
 package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.agingstate;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.Embeddable;
 
@@ -14,5 +15,10 @@ public record AverageTemperature(Double averageTemperature) {
     @JsonValue
     public Double getAverageTemperature() {
         return averageTemperature;
+    }
+
+    @JsonCreator
+    public static AverageTemperature from(Double averageTemperature) {
+        return new AverageTemperature(averageTemperature);
     }
 }

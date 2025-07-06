@@ -1,5 +1,6 @@
 package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.correctionstage;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.Embeddable;
 
@@ -14,5 +15,10 @@ public record AddedSulphites(Double addedSulphites) {
     @JsonValue
     public Double getAddedSulphites() {
         return addedSulphites;
+    }
+
+    @JsonCreator
+    public static AddedSulphites from(Double addedSulphites) {
+        return new AddedSulphites(addedSulphites);
     }
 }

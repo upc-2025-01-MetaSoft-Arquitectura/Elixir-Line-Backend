@@ -1,5 +1,6 @@
 package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.fermentationstage;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.Embeddable;
 
@@ -14,5 +15,10 @@ public record Yeast(Double yeast) { //Levedura
     @JsonValue
     public Double getYeast() {
         return yeast;
+    }
+
+    @JsonCreator
+    public static Yeast from(Double yeast) {
+        return new Yeast(yeast);
     }
 }

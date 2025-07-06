@@ -2,6 +2,7 @@ package com.elixirline.service.elixirline_backend.blockchain.smartcontracts.doma
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.Embeddable;
 
@@ -13,5 +14,10 @@ public record DeployedAt(LocalDateTime deployedAt) {
     @JsonValue
     public String getDeployedAt() {
         return deployedAt.toString();
+    }
+
+    @JsonCreator
+    public static DeployedAt from(String deployedAt) {
+        return new DeployedAt(LocalDateTime.parse(deployedAt));
     }
 }

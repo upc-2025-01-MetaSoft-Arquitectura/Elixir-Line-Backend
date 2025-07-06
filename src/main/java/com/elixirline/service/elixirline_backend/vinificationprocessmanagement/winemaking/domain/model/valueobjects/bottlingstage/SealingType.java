@@ -1,5 +1,6 @@
 package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.bottlingstage;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.Embeddable;
 
@@ -14,5 +15,10 @@ public record SealingType(String sealingType) {
     @JsonValue
     public String getSealingType() {
         return sealingType;
+    }
+
+    @JsonCreator
+    public static SealingType from(String sealingType) {
+        return new SealingType(sealingType);
     }
 }

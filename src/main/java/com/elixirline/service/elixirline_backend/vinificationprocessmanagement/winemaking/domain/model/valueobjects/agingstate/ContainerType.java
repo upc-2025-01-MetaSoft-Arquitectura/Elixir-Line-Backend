@@ -1,5 +1,6 @@
 package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.agingstate;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.Embeddable;
 
@@ -14,5 +15,10 @@ public record ContainerType(String containerType) {
     @JsonValue
     public String getContainerType() {
         return containerType;
+    }
+
+    @JsonCreator
+    public static ContainerType from(String containerType) {
+        return new ContainerType(containerType);
     }
 }

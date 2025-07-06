@@ -1,5 +1,6 @@
 package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.clarificationstage;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.Embeddable;
 
@@ -14,5 +15,10 @@ public record ClarificationTurbidity(Double turbidity) {
     @JsonValue
     public Double getTurbidity() {
         return turbidity;
+    }
+
+    @JsonCreator
+    public static ClarificationTurbidity from(Double turbidity) {
+        return new ClarificationTurbidity(turbidity);
     }
 }

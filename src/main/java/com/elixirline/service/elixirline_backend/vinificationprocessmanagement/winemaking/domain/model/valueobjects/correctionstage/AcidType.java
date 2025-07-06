@@ -1,5 +1,6 @@
 package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.correctionstage;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.Embeddable;
 
@@ -14,5 +15,10 @@ public record AcidType(String acidType) {
     @JsonValue
     public String getAcidType() {
         return acidType;
+    }
+
+    @JsonCreator
+    public static AcidType from(String acidType) {
+        return new AcidType(acidType);
     }
 }

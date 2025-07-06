@@ -1,5 +1,6 @@
 package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.fermentationstage;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.Embeddable;
 
@@ -14,5 +15,10 @@ public record TypeFermentation(String typeFermentation) {
     @JsonValue
     public String getTypeFermentation() {
         return typeFermentation;
+    }
+
+    @JsonCreator
+    public static TypeFermentation from(String typeFermentation) {
+        return new TypeFermentation(typeFermentation);
     }
 }

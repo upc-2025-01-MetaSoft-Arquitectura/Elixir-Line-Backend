@@ -1,5 +1,6 @@
 package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.clarificationstage;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.Embeddable;
 
@@ -14,5 +15,10 @@ public record ClarificationVolume(Double volume) {
     @JsonValue
     public Double getVolume() {
         return volume;
+    }
+
+    @JsonCreator
+    public static ClarificationVolume from(Double volume) {
+        return new ClarificationVolume(volume);
     }
 }

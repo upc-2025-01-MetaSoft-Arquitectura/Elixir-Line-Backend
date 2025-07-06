@@ -1,5 +1,6 @@
 package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.filtrationstage;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.Embeddable;
 
@@ -14,5 +15,10 @@ public record ChangeReason(String changeReason) {
     @JsonValue
     public String getReason() {
         return changeReason;
+    }
+
+    @JsonCreator
+    public static ChangeReason from(String changeReason) {
+        return new ChangeReason(changeReason);
     }
 }

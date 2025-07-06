@@ -1,5 +1,6 @@
 package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.agingstate;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.Embeddable;
 
@@ -14,5 +15,10 @@ public record Refills(Integer refills) {
     @JsonValue
     public Integer getRefills() {
         return refills;
+    }
+
+    @JsonCreator
+    public static Refills from(Integer refills) {
+        return new Refills(refills);
     }
 }

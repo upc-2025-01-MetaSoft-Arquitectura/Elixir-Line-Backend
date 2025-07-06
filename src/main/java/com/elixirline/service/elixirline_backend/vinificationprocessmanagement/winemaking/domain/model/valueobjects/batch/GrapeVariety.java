@@ -1,5 +1,6 @@
 package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.batch;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.Embeddable;
 
@@ -14,6 +15,11 @@ public record GrapeVariety(String variety) {
     @JsonValue
     public String getGrapeVariety() {
         return variety;
+    }
+
+    @JsonCreator
+    public static GrapeVariety from(String variety) {
+        return new GrapeVariety(variety);
     }
 }
 

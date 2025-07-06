@@ -1,5 +1,6 @@
 package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.correctionstage;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.Embeddable;
 
@@ -14,5 +15,10 @@ public record Justification(String justification) {
     @JsonValue
     public String getJustification() {
         return justification;
+    }
+
+    @JsonCreator
+    public static Justification from(String justification) {
+        return new Justification(justification);
     }
 }

@@ -1,6 +1,8 @@
 package com.elixirline.service.elixirline_backend.blockchain.smartcontracts.domain.model.valueobjects;
 
 import java.math.BigInteger;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.Embeddable;
 
@@ -15,5 +17,10 @@ public record BlockNumber(BigInteger blockNumber) {
     @JsonValue
     public BigInteger getBlockNumber() {
         return blockNumber;
+    }
+
+    @JsonCreator
+    public static BlockNumber from(BigInteger blockNumber) {
+        return new BlockNumber(blockNumber);
     }
 }

@@ -1,5 +1,6 @@
 package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.pressingstage;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.Embeddable;
 
@@ -14,5 +15,10 @@ public record PressType(String pressType) {
     @JsonValue
     public String getPressType() {
         return pressType;
+    }
+
+    @JsonCreator
+    public static PressType from(String pressType) {
+        return new PressType(pressType);
     }
 }
