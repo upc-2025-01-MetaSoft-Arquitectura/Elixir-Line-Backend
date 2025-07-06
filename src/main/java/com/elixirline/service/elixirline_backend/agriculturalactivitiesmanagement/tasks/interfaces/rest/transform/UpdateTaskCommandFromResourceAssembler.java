@@ -16,6 +16,8 @@ public class UpdateTaskCommandFromResourceAssembler {
                 resource.fieldWorkerName(),
                 resource.batchId(),
                 resource.suppliesIds(),
+                resource.progressPercentage(),
+                resource.status(),
                 resource.type()
         );
     }

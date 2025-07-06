@@ -1,8 +1,8 @@
 package com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.application.internal.queryservices;
 
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.aggregates.Tasks;
-import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.queries.GetFieldTasksQuery;
-import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.queries.GetIndustrialTasksQuery;
+import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.entities.Evidence;
+import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.queries.GetTasksByTypeQuery;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.queries.GetTaskByIdQuery;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.valueobjetcs.TaskType;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.services.TasksQueryService;
@@ -25,12 +25,8 @@ public class TasksQueryServiceImpl implements TasksQueryService {
     }
 
     @Override
-    public List<Tasks> handle(GetFieldTasksQuery query){
-        return tasksRepository.findByType(TaskType.TASK_FIELD);
-    }
-    @Override
-    public List<Tasks> handle(GetIndustrialTasksQuery query){
-        return tasksRepository.findByType(TaskType.TASK_INDUSTRY);
+    public List<Tasks> handle(GetTasksByTypeQuery query){
+        return tasksRepository.findByWinegrowerIdAndType(query.winegrowerId(), query.type());
     }
 
     @Override
@@ -44,8 +40,20 @@ public class TasksQueryServiceImpl implements TasksQueryService {
     }
 
     @Override
-    public List<Tasks> findByTypeWithEvidence(TaskType type) {
-        Set<Long> taskIdsWithEvidence = evidenceRepository.findAll().stream().map(e -> e.getTaskId()).collect(Collectors.toSet());
-        return tasksRepository.findAllById(taskIdsWithEvidence).stream().filter(task -> task.getType() == type).collect(Collectors.toList());
+    public List<Tasks> findByTypeWithEvidence(Long winegrowerId,TaskType type) {
+        List<Tasks> tasks = tasksRepository.findByWinegrowerIdAndType(winegrowerId, type);
+        if (tasks.isEmpty()) {
+            return List.of();
+        }
+
+        List<Long> taskIds = tasks.stream()
+                .map(Tasks::getId)
+                .collect(Collectors.toList());
+
+        List<Long> taskIdsWithEvidence = evidenceRepository.findDistinctTaskIdsIn(taskIds);
+
+        return tasks.stream()
+                .filter(task -> taskIdsWithEvidence.contains(task.getId()))
+                .collect(Collectors.toList());
     }
 }

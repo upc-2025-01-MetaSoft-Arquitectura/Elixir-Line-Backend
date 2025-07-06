@@ -13,7 +13,8 @@ public class CreateTaskCommandFromResourceAssembler {
                 resource.winegrowerId(),
                 resource.fieldWorkerName(),
                 resource.batchId(),
-                resource.suppliesIds()
+                resource.suppliesIds(),
+                resource.type()
         );
     }
 }

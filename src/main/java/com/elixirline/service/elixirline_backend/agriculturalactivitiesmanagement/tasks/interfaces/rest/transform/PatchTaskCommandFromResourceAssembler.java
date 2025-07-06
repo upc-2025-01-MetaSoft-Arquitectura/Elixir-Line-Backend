@@ -15,6 +15,8 @@ public class PatchTaskCommandFromResourceAssembler {
                 resource.fieldWorkerName(),
                 resource.batchId(),
                 resource.suppliesIds(),
+                resource.progressPercentage(),
+                resource.status(),
                 resource.type()
         );
     }

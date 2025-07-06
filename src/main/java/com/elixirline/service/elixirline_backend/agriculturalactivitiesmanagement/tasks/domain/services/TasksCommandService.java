@@ -9,8 +9,7 @@ import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagemen
 import java.util.Optional;
 
 public interface TasksCommandService {
-    Optional<Tasks> createFieldTask(CreateTasksCommand command);
-    Optional<Tasks> createIndustrialTask(CreateTasksCommand command);
+    Optional<Tasks> createTask(CreateTasksCommand command);
     Optional<Tasks> handle(UpdateTaskCommand command);
     Optional<Tasks> handle(PatchTaskCommand command);
     void handle(DeleteTaskCommand command);

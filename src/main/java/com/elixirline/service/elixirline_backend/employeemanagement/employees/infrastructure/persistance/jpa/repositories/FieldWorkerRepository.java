@@ -11,11 +11,10 @@ import java.util.Optional;
 @Repository
 public interface FieldWorkerRepository extends JpaRepository<FieldWorker, Long> {
     List<FieldWorker> findByStatus(EmployeeStatus status);
-
     default List<FieldWorker> findAllActive() {
         return findByStatus(EmployeeStatus.ACTIVE);
     }
-
-    List<FieldWorker> findByWinegrowerId(Long vinegrowerId);
-    List<FieldWorker> findByWinegrowerIdAndStatus(Long vinegrowerId, EmployeeStatus status);
+    List<FieldWorker> findByWinegrowerId(Long winegrowerId);
+    List<FieldWorker> findByWinegrowerIdAndStatus(Long winegrowerId, EmployeeStatus status);
+    Optional<FieldWorker> findByUserId(Long userId);
 }

@@ -504,7 +504,7 @@ public class TasksController {
                               "suppliesIds": [101, 102],
                               "progressPercentage": 50,
                               "status": "IN_PROGRESS",
-                              "type": "TASK_FIELD"
+                              "type": "TASK_FIELD",
                             }
                             """
                                     ),

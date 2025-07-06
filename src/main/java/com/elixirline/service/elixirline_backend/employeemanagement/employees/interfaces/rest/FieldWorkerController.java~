@@ -7,7 +7,6 @@ import com.elixirline.service.elixirline_backend.employeemanagement.employees.do
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.commands.DeleteFieldWorkerCommand;
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.queries.GetAllFieldWorkersQuery;
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.queries.GetFieldWorkerByIdQuery;
-import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.model.queries.GetFieldWorkerByUserIdQuery;
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.services.fieldworker.FieldWorkerCommandService;
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.domain.services.fieldworker.FieldWorkerQueryService;
 import com.elixirline.service.elixirline_backend.employeemanagement.employees.interfaces.rest.resources.CreateFieldWorkerResource;
@@ -250,121 +249,6 @@ public class FieldWorkerController {
     @GetMapping("/{fieldWorkerId}")
     public ResponseEntity<FieldWorkerResource> getById(@PathVariable Long fieldWorkerId) {
         return queryService.handle(new GetFieldWorkerByIdQuery(fieldWorkerId))
-                .map(FieldWorkerResourceAssembler::toResource)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-
-
-    /*GET: /api/v1/fieldworkers/user/{userId}*/
-    @Operation(
-            summary = "Get field worker by User ID",
-            description = "Recupera un trabajador de campo específico utilizando su User ID.",
-            parameters = {
-                    @Parameter(
-                            name = "userId",
-                            description = "User ID del trabajador de campo",
-                            required = true,
-                            schema = @Schema(type = "integer", format = "int64")
-                    )
-            },
-            responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "Operación exitosa. Se devuelve el trabajador de campo solicitado.",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = FieldWorkerResource.class),
-                                    examples = @ExampleObject(
-                                            name = "Ejemplo de trabajador de campo recuperado",
-                                            summary = "Respuesta exitosa con los detalles del trabajador de campo",
-                                            value = """
-                                            [
-                                              {
-                                                "id": 1,
-                                                "userId": 5,
-                                                "name": "Mateo Lucas",
-                                                "lastname": "Hernandez Sanchez",
-                                                "phoneNumber": "987654321",
-                                                "profilePicture":"https://example.com/profile.jpg",
-                                                "winegrowerId": 1,
-                                                "status": "ACTIVE"
-                                              }
-                                            ]
-                                            """
-                                    )
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "401",
-                            description = "No autorizado. Token inválido o no proporcionado.",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = ApiErrorResponse.class),
-                                    examples = @ExampleObject(
-                                            name = "Token inválido",
-                                            summary = "No se proporcionó token Bearer",
-                                            value = """
-                                    {
-                                      "status": "ERROR",
-                                      "message": "Token inválido o no proporcionado.",
-                                      "details": [
-                                        "Debe incluir el encabezado Authorization con el token Bearer."
-                                      ]
-                                    }
-                                    """
-                                    )
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "404",
-                            description = "Trabajador de campo no encontrado. No existe un trabajador de campo con el ID proporcionado.",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = ApiErrorResponse.class),
-                                    examples = @ExampleObject(
-                                            name = "Error de trabajador de campo no encontrado",
-                                            summary = "Respuesta cuando no se encuentra el trabajador de campo",
-                                            value = """
-                                            {
-                                              "status": "ERROR",
-                                              "message": "Trabajador de campo no encontrado.",
-                                              "details": [
-                                                "No existe un trabajador de campo con el ID proporcionado."
-                                              ]
-                                            }
-                                            """
-                                    )
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "500",
-                            description = "Error interno del servidor. Ocurrió un problema al recuperar el trabajador de campo.",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = ApiErrorResponse.class),
-                                    examples = @ExampleObject(
-                                            name = "Error inesperado",
-                                            summary = "Error al recuperar el trabajador de campo",
-                                            value = """
-                                            {
-                                              "status": "ERROR",
-                                              "message": "No se pudo recuperar el trabajador de campo con el ID proporcionado.",
-                                              "details": [
-                                                "Error en el servicio de consulta de trabajadores de campo.",
-                                                "Revisar logs del backend para más detalles."
-                                              ]
-                                            }
-                                            """
-                                    )
-                            )
-                    )
-            }
-    )
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<FieldWorkerResource> getByUserId(@PathVariable Long userId) {
-        return queryService.handle(new GetFieldWorkerByUserIdQuery(userId))
                 .map(FieldWorkerResourceAssembler::toResource)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -625,6 +509,30 @@ public class FieldWorkerController {
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+
+
+
+    /*
+    @PatchMapping(value = "/{fieldWorkerId}")
+    public ResponseEntity<FieldWorkerResource> partialUpdate(@PathVariable Long fieldWorkerId, @RequestBody @Valid PartialUpdateFieldWorkerResource resource) {
+        if (resource.hasNoUpdates()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        var command = PartialUpdateFieldWorkerCommandFromResourceAssembler
+                .toCommandFromResource(fieldWorkerId, resource);
+
+        var updatedFieldWorker = commandService.updatePartial(command);
+
+        return updatedFieldWorker
+                .map(FieldWorkerResourceAssembler::toResource)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+    */
+
+
 
 
     /*DELETE: /api/v1/fieldworkers/{fieldWorkerId}/deactivate*/

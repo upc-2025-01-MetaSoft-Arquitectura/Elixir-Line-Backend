@@ -32,6 +32,4 @@ public class EvidenceQueryServiceImpl implements EvidenceQueryService {
         if (taskIds.isEmpty()) return List.of();
         return evidenceRepository.findByTaskIdIn(taskIds);
     }
-
-
 }

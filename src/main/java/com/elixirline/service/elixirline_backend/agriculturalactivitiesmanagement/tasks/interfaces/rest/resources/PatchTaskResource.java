@@ -1,5 +1,6 @@
 package com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.interfaces.rest.resources;
 
+import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.valueobjetcs.TaskStatus;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.valueobjetcs.TaskType;
 
 import java.time.LocalDate;
@@ -14,6 +15,8 @@ public record PatchTaskResource(
         String fieldWorkerName,
         Long batchId,
         List<Long> suppliesIds,
+        Integer progressPercentage,
+        TaskStatus status,
         TaskType type
 ) {
 }

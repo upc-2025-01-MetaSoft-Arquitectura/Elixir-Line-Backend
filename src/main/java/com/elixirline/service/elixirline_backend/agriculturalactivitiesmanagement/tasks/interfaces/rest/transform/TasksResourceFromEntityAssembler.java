@@ -14,6 +14,8 @@ public class TasksResourceFromEntityAssembler {
                 task.getWinegrowerId(),
                 task.getFieldWorkerName(),
                 task.getBatchId(),
+                task.getProgressPercentage(),
+                task.getStatus(),
                 task.getType(),
                 task.getSuppliesIds()
         );
