@@ -8,21 +8,34 @@ import com.elixirline.service.elixirline_backend.fieldmappingmanagement.map.inte
 import java.util.List;
 
 public class PatchPlotCommandFromResourceAssembler {
+//    public static PatchPlotCommand toCommandFromResource(Long plotId, PatchPlotResource resource) {
+//        List<Coordinate> coordinates = null;
+//        if (resource.path() != null) {
+//            coordinates = resource.path().stream()
+//                    .map(p -> new Coordinate(p.lat(), p.lng()))
+//                    .toList();
+//        }
+//        PlotType type = null;
+//        try {
+//            if (resource.type() != null)
+//                type = PlotType.valueOf(resource.type().toUpperCase());
+//        } catch (IllegalArgumentException ex) {
+//            throw new IllegalArgumentException("Tipo de parcela inválido: " + resource.type());
+//        }
+//        return new PatchPlotCommand(
+//                plotId,
+//                type,
+//                coordinates,
+//                resource.label(),
+//                resource.wineBatchId()
+//        );
+//    }
+
     public static PatchPlotCommand toCommandFromResource(Long plotId, PatchPlotResource resource) {
-        List<Coordinate> coordinates = null;
-        if (resource.path() != null) {
-            coordinates = resource.path().stream()
-                    .map(p -> new Coordinate(p.lat(), p.lng()))
-                    .toList();
-        }
-        PlotType type = null;
-        if (resource.type() != null) {
-            type = PlotType.valueOf(resource.type().toUpperCase());
-        }
         return new PatchPlotCommand(
                 plotId,
-                type,
-                coordinates,
+                resource.type(),
+                resource.path(),
                 resource.label(),
                 resource.wineBatchId()
         );

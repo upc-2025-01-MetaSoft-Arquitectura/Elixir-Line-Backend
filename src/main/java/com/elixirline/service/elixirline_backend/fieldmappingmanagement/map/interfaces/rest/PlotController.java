@@ -10,6 +10,13 @@ import com.elixirline.service.elixirline_backend.fieldmappingmanagement.map.inte
 import com.elixirline.service.elixirline_backend.fieldmappingmanagement.map.interfaces.rest.transform.CreatePlotCommandFromResourceAssembler;
 import com.elixirline.service.elixirline_backend.fieldmappingmanagement.map.interfaces.rest.transform.PatchPlotCommandFromResourceAssembler;
 import com.elixirline.service.elixirline_backend.fieldmappingmanagement.map.interfaces.rest.transform.PlotResourceFromEntityAssembler;
+import com.elixirline.service.elixirline_backend.shared.domain.model.entities.ApiErrorResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +35,96 @@ public class PlotController {
         this.plotCommandService = plotCommandService;
     }
 
+    /* GET: /api/v1/plot */
+    @Operation(
+            summary = "Obtener todas las parcelas",
+            description = "Recupera una lista de todas las parcelas registradas en el sistema, incluyendo su tipo, coordenadas, etiqueta y lote vinícola asociado.",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Operación exitosa. Se devuelve una lista de parcelas.",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = PlotResource.class),
+                                    examples = @ExampleObject(
+                                            name = "Ejemplo de parcelas recuperadas",
+                                            summary = "Respuesta exitosa con lista de parcelas",
+                                            value = """
+                            [
+                              {
+                                "id": "0e21",
+                                "type": "polygon",
+                                "path": [
+                                  {
+                                    "lat": -14.081889944960787,
+                                    "lng": -75.70879652793104
+                                  },
+                                  {
+                                    "lat": -14.083388465024804,
+                                    "lng": -75.70881798560316
+                                  },
+                                  {
+                                    "lat": -14.08340927773425,
+                                    "lng": -75.7063932686537
+                                  },
+                                  {
+                                    "lat": -14.081994009171803,
+                                    "lng": -75.70645764167006
+                                  }
+                                ],
+                                "label": "Parcela-2-Ica",
+                                "wineBatchId": "b123e456-78d9-42a3-b456-426614174000"
+                              }
+                            ]
+                            """
+                                    )
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "No autorizado. Token inválido o no proporcionado.",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            name = "Token inválido",
+                                            summary = "No se proporcionó token Bearer",
+                                            value = """
+                            {
+                              "status": "ERROR",
+                              "message": "Token inválido o no proporcionado.",
+                              "details": [
+                                "Debe incluir el encabezado Authorization con el token Bearer."
+                              ]
+                            }
+                            """
+                                    )
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Error interno del servidor. Ocurrió un problema al recuperar la lista de parcelas.",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            name = "Error inesperado",
+                                            summary = "Error al recuperar las parcelas",
+                                            value = """
+                            {
+                              "status": "ERROR",
+                              "message": "No se pudo recuperar la lista de parcelas.",
+                              "details": [
+                                "Error en el servicio de consulta de parcelas.",
+                                "Revisar logs del backend para más detalles."
+                              ]
+                            }
+                            """
+                                    )
+                            )
+                    )
+            }
+    )
     @GetMapping
     public ResponseEntity<List<PlotResource>> getAllPlots() {
         var getAllPlotsQuery = new GetAllPlotsQuery();
@@ -36,6 +133,153 @@ public class PlotController {
         return ResponseEntity.ok(plotResources);
     }
 
+    /* POST: /api/v1/plot */
+    @Operation(
+            summary = "Crear una nueva parcela",
+            description = "Crea una nueva parcela en el sistema con su tipo, coordenadas, etiqueta y lote vinícola asociado.",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    required = true,
+                    description = "Datos necesarios para crear una nueva parcela",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = CreatePlotResource.class),
+                            examples = @ExampleObject(
+                                    name = "Ejemplo de creación de parcela",
+                                    summary = "Crear parcela con coordenadas y lote vinícola",
+                                    value = """
+                        {
+                          "type": "polygon",
+                          "path": [
+                            {
+                              "lat": -14.081889944960787,
+                              "lng": -75.70879652793104
+                            },
+                            {
+                              "lat": -14.083388465024804,
+                              "lng": -75.70881798560316
+                            },
+                            {
+                              "lat": -14.08340927773425,
+                              "lng": -75.7063932686537
+                            },
+                            {
+                              "lat": -14.081994009171803,
+                              "lng": -75.70645764167006
+                            }
+                          ],
+                          "label": "Parcela-2-Ica",
+                          "wineBatchId": "b123e456-78d9-42a3-b456-426614174000"
+                        }
+                        """
+                            )
+                    )
+            ),
+            responses = {
+                    @ApiResponse(
+                            responseCode = "201",
+                            description = "Parcela creada exitosamente.",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = PlotResource.class),
+                                    examples = @ExampleObject(
+                                            name = "Respuesta exitosa",
+                                            summary = "Parcela creada correctamente",
+                                            value = """
+                            {
+                              "id": "0e21",
+                              "type": "polygon",
+                              "path": [
+                                {
+                                  "lat": -14.081889944960787,
+                                  "lng": -75.70879652793104
+                                },
+                                {
+                                  "lat": -14.083388465024804,
+                                  "lng": -75.70881798560316
+                                },
+                                {
+                                  "lat": -14.08340927773425,
+                                  "lng": -75.7063932686537
+                                },
+                                {
+                                  "lat": -14.081994009171803,
+                                  "lng": -75.70645764167006
+                                }
+                              ],
+                              "label": "Parcela-2-Ica",
+                              "wineBatchId": "b123e456-78d9-42a3-b456-426614174000"
+                            }
+                            """
+                                    )
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Solicitud inválida. Faltan campos obligatorios o datos malformados.",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            name = "Solicitud inválida",
+                                            summary = "Error en los datos enviados",
+                                            value = """
+                            {
+                              "status": "ERROR",
+                              "message": "Datos inválidos para la creación de parcela.",
+                              "details": [
+                                "El campo 'type' no puede ser nulo.",
+                                "La lista 'path' debe tener al menos 3 puntos geográficos."
+                              ]
+                            }
+                            """
+                                    )
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "No autorizado. Token inválido o ausente.",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            name = "Token inválido",
+                                            summary = "Falta token Bearer",
+                                            value = """
+                            {
+                              "status": "ERROR",
+                              "message": "Token inválido o no proporcionado.",
+                              "details": [
+                                "Debe incluir el encabezado Authorization con el token Bearer."
+                              ]
+                            }
+                            """
+                                    )
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Error interno del servidor.",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            name = "Error inesperado",
+                                            summary = "Fallo al crear parcela",
+                                            value = """
+                            {
+                              "status": "ERROR",
+                              "message": "No se pudo registrar la parcela.",
+                              "details": [
+                                "Ocurrió un error inesperado durante la creación.",
+                                "Revisar logs del backend para más detalles."
+                              ]
+                            }
+                            """
+                                    )
+                            )
+                    )
+            }
+    )
     @PostMapping
     public ResponseEntity<PlotResource> createPlot(@RequestBody CreatePlotResource resource) {
         var command = CreatePlotCommandFromResourceAssembler.toCommandFromResource(resource);
@@ -45,6 +289,97 @@ public class PlotController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    /* DELETE: /api/v1/plot/{plotId} */
+    @Operation(
+            summary = "Eliminar una parcela",
+            description = "Elimina una parcela del sistema utilizando su ID único.",
+            parameters = {
+                    @Parameter(
+                            name = "plotId",
+                            description = "ID de la parcela a eliminar",
+                            required = true,
+                            example = "0e21"
+                    )
+            },
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Parcela eliminada exitosamente.",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    examples = @ExampleObject(
+                                            name = "Parcela eliminada",
+                                            summary = "Eliminación exitosa",
+                                            value = "\"Deleted Plot\""
+                                    )
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "No se encontró la parcela con el ID proporcionado.",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            name = "Parcela no encontrada",
+                                            summary = "ID inválido o inexistente",
+                                            value = """
+                            {
+                              "status": "ERROR",
+                              "message": "Parcela no encontrada.",
+                              "details": [
+                                "No existe una parcela con el ID proporcionado."
+                              ]
+                            }
+                            """
+                                    )
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "No autorizado. Token inválido o no proporcionado.",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            name = "Token inválido",
+                                            summary = "No se proporcionó token Bearer",
+                                            value = """
+                            {
+                              "status": "ERROR",
+                              "message": "Token inválido o no proporcionado.",
+                              "details": [
+                                "Debe incluir el encabezado Authorization con el token Bearer."
+                              ]
+                            }
+                            """
+                                    )
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Error interno del servidor al intentar eliminar la parcela.",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            name = "Error interno",
+                                            summary = "Fallo inesperado al eliminar",
+                                            value = """
+                            {
+                              "status": "ERROR",
+                              "message": "No se pudo eliminar la parcela.",
+                              "details": [
+                                "Ocurrió un error inesperado durante la eliminación.",
+                                "Revisar logs del backend para más detalles."
+                              ]
+                            }
+                            """
+                                    )
+                            )
+                    )
+            }
+    )
     @DeleteMapping("/{plotId}")
     public ResponseEntity<?> deletePlot(@PathVariable Long plotId) {
         var deletePlotCommand = new DeletePlotCommand(plotId);
@@ -52,6 +387,157 @@ public class PlotController {
         return ResponseEntity.ok("Deleted Plot");
     }
 
+    /* PATCH: /api/v1/plot/{plotId} */
+    @Operation(
+            summary = "Actualizar parcialmente una parcela",
+            description = "Permite modificar uno o más campos de una parcela sin necesidad de enviar todo el objeto.",
+            parameters = {
+                    @Parameter(
+                            name = "plotId",
+                            description = "ID de la parcela a actualizar",
+                            required = true,
+                            example = "1"
+                    )
+            },
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    required = true,
+                    description = "Campos de la parcela que se desean modificar",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = PatchPlotResource.class),
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Actualizar todos los campos",
+                                            summary = "Ejemplo de actualización completa de la parcela",
+                                            value = """
+                            {
+                              "type": "polygon",
+                              "path": [
+                                { "lat": -14.081, "lng": -75.708 },
+                                { "lat": -14.083, "lng": -75.709 },
+                                { "lat": -14.083, "lng": -75.706 },
+                                { "lat": -14.082, "lng": -75.706 }
+                              ],
+                              "label": "Parcela Actualizada",
+                              "wineBatchId": "12"
+                            }
+                            """
+                                    ),
+                                    @ExampleObject(
+                                            name = "Actualizar solo el label",
+                                            summary = "Modificar solo el nombre de la parcela",
+                                            value = """
+                            {
+                              "label": "Nuevo Nombre Parcela"
+                            }
+                            """
+                                    ),
+                                    @ExampleObject(
+                                            name = "Actualizar tipo y lote",
+                                            summary = "Actualizar tipo de parcela y lote vinícola",
+                                            value = """
+                            {
+                              "type": "polygon",
+                              "wineBatchId": "31"
+                            }
+                            """
+                                    )
+                            }
+                    )
+            ),
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Parcela actualizada exitosamente.",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = PlotResource.class),
+                                    examples = @ExampleObject(
+                                            name = "Respuesta exitosa",
+                                            summary = "Parcela después de ser actualizada",
+                                            value = """
+                            {
+                              "id": "0e21",
+                              "type": "polygon",
+                              "path": [
+                                { "lat": -14.081, "lng": -75.708 },
+                                { "lat": -14.083, "lng": -75.709 },
+                                { "lat": -14.083, "lng": -75.706 },
+                                { "lat": -14.082, "lng": -75.706 }
+                              ],
+                              "label": "Parcela Actualizada",
+                              "wineBatchId": "b123e456-78d9-42a3-b456-426614174000"
+                            }
+                            """
+                                    )
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Parcela no encontrada con el ID especificado.",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            name = "Parcela no encontrada",
+                                            summary = "No existe una parcela con ese ID",
+                                            value = """
+                            {
+                              "status": "ERROR",
+                              "message": "Parcela no encontrada.",
+                              "details": [
+                                "No se halló una parcela con el ID proporcionado."
+                              ]
+                            }
+                            """
+                                    )
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Solicitud inválida. Datos inconsistentes.",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            name = "Datos inválidos",
+                                            summary = "Error de validación de coordenadas o campos",
+                                            value = """
+                            {
+                              "status": "ERROR",
+                              "message": "Datos de entrada inválidos.",
+                              "details": [
+                                "La latitud debe estar entre -90 y 90.",
+                                "La longitud debe estar entre -180 y 180."
+                              ]
+                            }
+                            """
+                                    )
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Error inesperado del servidor.",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            name = "Error inesperado",
+                                            summary = "Fallo en la actualización",
+                                            value = """
+                            {
+                              "status": "ERROR",
+                              "message": "No se pudo actualizar la parcela.",
+                              "details": [
+                                "Ocurrió un error interno en el servidor."
+                              ]
+                            }
+                            """
+                                    )
+                            )
+                    )
+            }
+    )
     @PatchMapping("/{plotId}")
     public ResponseEntity<PlotResource> patchPlot(@PathVariable Long plotId, @RequestBody PatchPlotResource resource) {
         var command = PatchPlotCommandFromResourceAssembler.toCommandFromResource(plotId, resource);
