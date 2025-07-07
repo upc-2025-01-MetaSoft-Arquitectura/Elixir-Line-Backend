@@ -5,6 +5,7 @@ import com.elixirline.service.elixirline_backend.fieldmappingmanagement.map.doma
 import com.elixirline.service.elixirline_backend.fieldmappingmanagement.map.domain.model.commands.DeletePlotCommand;
 import com.elixirline.service.elixirline_backend.fieldmappingmanagement.map.domain.model.commands.PatchPlotCommand;
 import com.elixirline.service.elixirline_backend.fieldmappingmanagement.map.domain.services.PlotCommandService;
+import com.elixirline.service.elixirline_backend.fieldmappingmanagement.map.infrastructure.persistence.jpa.external.maps.LocationValidator;
 import com.elixirline.service.elixirline_backend.fieldmappingmanagement.map.infrastructure.persistence.jpa.repositories.PlotRepository;
 import org.springframework.stereotype.Service;
 
@@ -13,11 +14,25 @@ import java.util.Optional;
 @Service
 public class PlotCommandServiceImpl implements PlotCommandService {
     private final PlotRepository plotRepository;
-    PlotCommandServiceImpl(PlotRepository plotRepository) {
+    private final LocationValidator locationValidator;
+    PlotCommandServiceImpl(PlotRepository plotRepository,  LocationValidator locationValidator) {
         this.plotRepository = plotRepository;
+        this.locationValidator = locationValidator;
     }
     @Override
     public Optional<Plot> handle(CreatePlotCommand command) {
+
+        if (command.path() == null || command.path().isEmpty()) {
+            throw new IllegalArgumentException("La parcela debe tener al menos un punto geográfico.");
+        }
+
+        var primerPunto = command.path().get(0);
+        boolean esValido = locationValidator.estaEnPeru(primerPunto.getLat(), primerPunto.getLng());
+
+        if (!esValido) {
+            throw new IllegalArgumentException("La ubicación debe estar dentro de Perú.");
+        }
+
         Plot plot = new Plot(
                 command.type(),
                 command.path(),
@@ -37,6 +52,13 @@ public class PlotCommandServiceImpl implements PlotCommandService {
         var existing = plotRepository.findById(command.plotId());
         if (existing.isEmpty()) return Optional.empty();
         var plot = existing.get();
+        if (command.path() != null && !command.path().isEmpty()) {
+            var primerPunto = command.path().get(0);
+            boolean esValido = locationValidator.estaEnPeru(primerPunto.getLat(), primerPunto.getLng());
+            if (!esValido) {
+                throw new IllegalArgumentException("La nueva ubicación no está en Perú.");
+            }
+        }
         plot.updateInformation(
                 command.type(),
                 command.path(),
