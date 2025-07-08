@@ -1,7 +1,6 @@
 package com.elixirline.service.elixirline_backend.fieldmappingmanagement.map.interfaces.rest;
 
 import com.elixirline.service.elixirline_backend.fieldmappingmanagement.map.domain.model.commands.DeletePlotCommand;
-import com.elixirline.service.elixirline_backend.fieldmappingmanagement.map.domain.model.queries.GetAllPlotsByWinegrowerIdQuery;
 import com.elixirline.service.elixirline_backend.fieldmappingmanagement.map.domain.model.queries.GetAllPlotsQuery;
 import com.elixirline.service.elixirline_backend.fieldmappingmanagement.map.domain.services.PlotCommandService;
 import com.elixirline.service.elixirline_backend.fieldmappingmanagement.map.domain.services.PlotQueryService;
@@ -230,8 +229,8 @@ public class PlotController {
     )
     @GetMapping("/{winegrowerId}")
     public ResponseEntity<List<PlotResource>> getAllPlotsByWinegrowerId(@PathVariable Long winegrowerId) {
-        var getAllPlotsByWinegrowerIdQuery = new GetAllPlotsByWinegrowerIdQuery(winegrowerId);
-        var plots = plotQueryService.handle(getAllPlotsByWinegrowerIdQuery);
+        var getAllPlotsQuery = new GetAllPlotsQuery();
+        var plots = plotQueryService.handle(getAllPlotsQuery);
         var plotResources = plots.stream().map(PlotResourceFromEntityAssembler::toResourceFromEntity).toList();
         return ResponseEntity.ok(plotResources);
     }

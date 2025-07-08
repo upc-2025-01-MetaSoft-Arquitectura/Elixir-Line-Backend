@@ -64,7 +64,7 @@ public class PlotCommandServiceImpl implements PlotCommandService {
                 command.type(),
                 command.path(),
                 command.label(),
-                command.batchId()
+                command.batchId(),
         );
         return Optional.of(plotRepository.save(plot));
     }

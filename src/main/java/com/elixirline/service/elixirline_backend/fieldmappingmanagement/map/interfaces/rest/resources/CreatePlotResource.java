@@ -6,6 +6,7 @@ public record CreatePlotResource(
         String type,
         List<CoordinateResource> path,
         String label,
-        Long wineBatchId
+        Long batchId,
+        Long winegrowerId
 ) {
 }

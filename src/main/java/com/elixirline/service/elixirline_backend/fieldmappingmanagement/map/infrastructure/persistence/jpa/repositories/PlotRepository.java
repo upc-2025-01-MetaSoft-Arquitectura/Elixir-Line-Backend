@@ -4,6 +4,9 @@ import com.elixirline.service.elixirline_backend.fieldmappingmanagement.map.doma
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface PlotRepository extends JpaRepository<Plot, Long> {
+    List<Plot> findByWinegrowerId(Long winegrowerId);
 }

@@ -37,7 +37,7 @@ public class PatchPlotCommandFromResourceAssembler {
                 resource.type(),
                 resource.path(),
                 resource.label(),
-                resource.wineBatchId()
+                resource.batchId()
         );
     }
 }

@@ -10,6 +10,6 @@ public record PatchPlotCommand(
         PlotType type,
         List<Coordinate> path,
         String label,
-        Long wineBatchId
+        Long batchId
 ) {
 }

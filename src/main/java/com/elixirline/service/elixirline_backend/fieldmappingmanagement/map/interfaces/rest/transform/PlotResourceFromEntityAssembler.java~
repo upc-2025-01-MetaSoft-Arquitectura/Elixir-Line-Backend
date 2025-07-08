@@ -17,8 +17,7 @@ public class PlotResourceFromEntityAssembler {
                 entity.getType().name(),
                 coordinates,
                 entity.getLabel(),
-                entity.getBatchId(),
-                entity.getWinegrowerId()
+                entity.getWineBatchId()
         );
     }
 }

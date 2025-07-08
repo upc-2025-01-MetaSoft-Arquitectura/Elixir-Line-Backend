@@ -17,7 +17,8 @@ public class CreatePlotCommandFromResourceAssembler {
                 PlotType.valueOf(resource.type()),
                 coordinates,
                 resource.label(),
-                resource.wineBatchId()
+                resource.batchId(),
+                resource.winegrowerId()
         );
     }
 }

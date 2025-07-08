@@ -7,7 +7,7 @@ public record PlotResource(
         String type,
         List<CoordinateResource> path,
         String label,
-        Long batchId,
+        Long wineBatchId,
         Long winegrowerId
 ) {
 }
