@@ -1,6 +1,7 @@
 package com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.interfaces.rest;
 
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.commands.DeleteTaskCommand;
+import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.queries.GetAllTasksByWinegrowerIdByFieldWorkerIdQuery;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.queries.GetTasksByTypeQuery;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.queries.GetTaskByIdQuery;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.valueobjetcs.TaskType;
@@ -335,6 +336,111 @@ public class TasksController {
     }
 
 
+    /* GET: /api/v1/tasks/winegrower/{winegrowerId}/fieldworker/{fieldWorkerId} */
+    @Operation(
+            summary = "Obtener todas las tareas para un determinado Vinicultor y un determinado trabajador de campo",
+            description = "Recupera una lista de tareas agrícolas del vinicultor y trabajador de campo especificados",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Operación exitosa. Se devuelve una lista de tareas de tipo TASK_FIELD y  TASK_INDUSTRY.",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = TasksResource.class),
+                                    examples = @ExampleObject(
+                                            name = "Ejemplo, listar todas las tareas",
+                                            summary = "Ejemplo exitoso de listas todas las tareas",
+                                            value = """
+                                                    [
+                                                      {
+                                                        "id": 1,
+                                                        "title": "Aplicar fertilizante",
+                                                        "description": "Aplicar fertilizante al lote 4A",
+                                                        "startDate": "2025-07-01",
+                                                        "endDate": "2025-07-02",
+                                                        "winegrowerId": "1",
+                                                        "fieldWorkerName": "Juan Pérez",
+                                                        "batchId": 12,
+                                                        "suppliesIds": [101, 102],
+                                                        "progressPercentage": 50,
+                                                        "status": "IN_PROGRESS",
+                                                        "type": "TASK_FIELD"
+                                                      },
+                                                      {
+                                                        "id": 2,
+                                                        "title": "Riego por goteo",
+                                                        "description": "Realizar riego en el campo de vid",
+                                                        "startDate": "2025-07-03",
+                                                        "endDate": "2025-07-04",
+                                                        "winegrowerId": "1",
+                                                        "fieldWorkerName": "Juan Pérez",
+                                                        "batchId": 14,
+                                                        "suppliesIds": [103],
+                                                        "progressPercentage": 0,
+                                                        "status": "NOT_STARTED",
+                                                        "type": "TASK_INDUSTRY"
+                                                      }
+                                                    ]
+                                                    """
+                                    )
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "No autorizado. Token inválido o no proporcionado.",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            name = "Token inválido",
+                                            summary = "Token faltante o inválido",
+                                            value = """
+                                                    {
+                                                      "status": "ERROR",
+                                                      "message": "Token inválido o no proporcionado.",
+                                                      "details": [
+                                                        "Debe incluir el encabezado Authorization con el token Bearer."
+                                                      ]
+                                                    }
+                                                    """
+                                    )
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Error interno del servidor al recuperar las tareas.",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            name = "Error en servidor",
+                                            summary = "Fallo al obtener tareas",
+                                            value = """
+                                                    {
+                                                      "status": "ERROR",
+                                                      "message": "No se pudo recuperar la lista de tareas.",
+                                                      "details": [
+                                                        "Error en el servicio de consulta de tareas.",
+                                                        "Revisar los logs del backend para más información."
+                                                      ]
+                                                    }
+                                                    """
+                                    )
+                            )
+                    )
+            }
+    )
+    @GetMapping("/winegrower/{winegrowerId}/fieldworker/{fieldWorkerId}")
+    public ResponseEntity<List<TasksResource>> getTasksByWinegrowerIdAndFieldWorkerId(@PathVariable Long winegrowerId, @PathVariable Long fieldWorkerId) {
+        var query = new GetAllTasksByWinegrowerIdByFieldWorkerIdQuery(winegrowerId, fieldWorkerId);
+        var tasks = tasksQueryService.findByAllTasksByWinegrowerIdAndFieldWorkerId(query);
+        var resources = tasks.stream()
+                .map(TasksResourceFromEntityAssembler::toResourceFromEntity)
+                .toList();
+        return ResponseEntity.ok(resources);
+    }
+
+
 
 
     /* POST: /api/v1/tasks */
@@ -358,10 +464,9 @@ public class TasksController {
                                               "endDate": "2025-07-14",
                                               "winegrowerId": "12",
                                               "fieldWorkerName": "Juan Pérez",
+                                              "fieldWorkerId": 9,
                                               "batchId": 45,
                                               "suppliesIds": [401, 402],
-                                              "progressPercentage": 0,
-                                              "status": "NOT_STARTED",
                                               "type": "TASK_FIELD"
                                             }
                                             """
@@ -500,11 +605,11 @@ public class TasksController {
                               "endDate": "2025-08-03",
                               "winegrowerId": 4,
                               "fieldWorkerName": "Juan Pérez",
+                              "fieldWorkerId": 9,
                               "batchId": 12,
                               "suppliesIds": [101, 102],
                               "progressPercentage": 50,
-                              "status": "IN_PROGRESS",
-                              "type": "TASK_FIELD",
+                              "type": "TASK_FIELD"
                             }
                             """
                                     ),
@@ -600,10 +705,10 @@ public class TasksController {
                                               "endDate": "2025-08-05",
                                               "winegrowerId": 101,
                                               "fieldWorkerName": "Juan Pérez",
+                                              "fieldWorkerId": 9,
                                               "batchId": 202,
                                               "suppliesIds": [301, 302, 303],
                                               "progressPercentage": 50,
-                                              "status": "IN_PROGRESS",
                                               "type": "TASK_FIELD"
                                             }
                                             """

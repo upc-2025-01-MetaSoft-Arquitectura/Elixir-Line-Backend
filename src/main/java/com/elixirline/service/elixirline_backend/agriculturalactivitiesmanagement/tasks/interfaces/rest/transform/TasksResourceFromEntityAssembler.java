@@ -13,6 +13,7 @@ public class TasksResourceFromEntityAssembler {
                 task.getEndDate(),
                 task.getWinegrowerId(),
                 task.getFieldWorkerName(),
+                task.getFieldWorkerId(),
                 task.getBatchId(),
                 task.getProgressPercentage(),
                 task.getStatus(),

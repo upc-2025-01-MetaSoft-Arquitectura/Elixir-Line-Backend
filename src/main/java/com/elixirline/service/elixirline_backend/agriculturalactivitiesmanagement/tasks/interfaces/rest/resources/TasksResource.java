@@ -14,6 +14,7 @@ public record TasksResource(
         LocalDate endDate,
         Long winegrowerId,
         String fieldWorkerName,
+        Long fieldWorkerId,
         Long batchId,
         Integer progressPercentage,
         TaskStatus status,

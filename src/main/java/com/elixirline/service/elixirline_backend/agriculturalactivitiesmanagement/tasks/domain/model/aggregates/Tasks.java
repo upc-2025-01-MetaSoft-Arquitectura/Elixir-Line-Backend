@@ -22,6 +22,7 @@ public class Tasks extends AuditableAbstractAggregateRoot<Tasks> {
     private LocalDate endDate;
     private Long winegrowerId;
     private String fieldWorkerName;
+    private Long fieldWorkerId;
     private Long batchId;
 
     @ElementCollection
@@ -42,6 +43,7 @@ public class Tasks extends AuditableAbstractAggregateRoot<Tasks> {
             LocalDate endDate,
             Long winegrowerId,
             String fieldWorkerName,
+            Long fieldWorkerId,
             Long batchId,
             List<Long> suppliesIds,
             Integer progressPercentage,
@@ -54,6 +56,7 @@ public class Tasks extends AuditableAbstractAggregateRoot<Tasks> {
         this.endDate = endDate;
         this.winegrowerId = winegrowerId;
         this.fieldWorkerName = fieldWorkerName;
+        this.fieldWorkerId = fieldWorkerId;
         this.batchId = batchId;
         this.suppliesIds = suppliesIds;
         this.progressPercentage = progressPercentage;
@@ -68,10 +71,9 @@ public class Tasks extends AuditableAbstractAggregateRoot<Tasks> {
             LocalDate endDate,
             Long winegrowerId,
             String fieldWorkerName,
+            Long fieldWorkerId,
             Long batchId,
             List<Long> suppliesIds,
-            Integer progressPercentage,
-            TaskStatus status,
             TaskType type
     ) {
         if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
@@ -84,10 +86,9 @@ public class Tasks extends AuditableAbstractAggregateRoot<Tasks> {
         this.endDate = endDate != null ? endDate : this.endDate;
         this.winegrowerId = winegrowerId != null ? winegrowerId : this.winegrowerId;
         this.fieldWorkerName = fieldWorkerName != null ? fieldWorkerName : this.fieldWorkerName;
+        this.fieldWorkerId = fieldWorkerId != null ? fieldWorkerId : this.fieldWorkerId;
         this.batchId = batchId != null ? batchId : this.batchId;
         this.suppliesIds = suppliesIds != null ? suppliesIds : this.suppliesIds;
-        this.progressPercentage = progressPercentage != null ? progressPercentage : this.progressPercentage;
-        this.status = status != null ? status : this.status;
         this.type = type != null ? type : this.type;
 
         return this;
