@@ -13,10 +13,9 @@ public class PatchTaskCommandFromResourceAssembler {
                 resource.endDate(),
                 resource.winegrowerId(),
                 resource.fieldWorkerName(),
+                resource.fieldWorkerId(),
                 resource.batchId(),
                 resource.suppliesIds(),
-                resource.progressPercentage(),
-                resource.status(),
                 resource.type()
         );
     }

@@ -14,10 +14,9 @@ public record UpdateTaskCommand(
         LocalDate endDate,
         Long winegrowerId,
         String fieldWorkerName,
+        Long fieldWorkerId,
         Long batchId,
         List<Long> suppliesIds,
-        Integer progressPercentage,
-        TaskStatus status,
         TaskType type
 ) {
 }

@@ -13,6 +13,7 @@ public record CreateTasksCommand(
         LocalDate endDate,
         Long winegrowerId,
         String fieldWorkerName,
+        Long fieldWorkerId,
         Long batchId,
         List<Long> suppliesIds,
         TaskType type

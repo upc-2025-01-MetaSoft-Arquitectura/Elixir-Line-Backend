@@ -95,10 +95,9 @@ public class EvidenceCommandServiceImpl implements EvidenceCommandService {
                 task.getEndDate(),
                 task.getWinegrowerId(),
                 task.getFieldWorkerName(),
+                task.getFieldWorkerId(),
                 task.getBatchId(),
                 task.getSuppliesIds(),
-                task.getProgressPercentage(),
-                task.getStatus(),
                 task.getType()
         ));
     }

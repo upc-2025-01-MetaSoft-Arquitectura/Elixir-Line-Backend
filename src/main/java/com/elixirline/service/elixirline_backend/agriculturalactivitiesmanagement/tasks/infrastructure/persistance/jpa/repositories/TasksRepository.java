@@ -13,4 +13,5 @@ public interface TasksRepository extends JpaRepository<Tasks, Long> {
     List<Tasks> findByWinegrowerId(Long winegrowerId);
     List<Tasks> findByIdInAndType(List<Long> ids, TaskType type);
     List<Tasks> findByWinegrowerIdAndType(Long winegrowerId, TaskType type);
+    List<Tasks> findByWinegrowerIdAndFieldWorkerId(Long winegrowerId, Long fieldWorkerId);
 }

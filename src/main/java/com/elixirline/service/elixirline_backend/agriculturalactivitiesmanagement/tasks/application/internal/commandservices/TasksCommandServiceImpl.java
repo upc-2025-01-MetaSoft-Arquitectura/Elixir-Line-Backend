@@ -27,6 +27,7 @@ public class TasksCommandServiceImpl implements TasksCommandService {
                 command.endDate(),
                 command.winegrowerId(),
                 command.fieldWorkerName(),
+                command.fieldWorkerId(),
                 command.batchId(),
                 command.suppliesIds(),
                 0,
@@ -49,16 +50,11 @@ public class TasksCommandServiceImpl implements TasksCommandService {
                 command.endDate(),
                 command.winegrowerId(),
                 command.fieldWorkerName(),
+                command.fieldWorkerId(),
                 command.batchId(),
                 command.suppliesIds(),
-                command.progressPercentage(),
-                command.status(),
                 command.type()
         );
-
-        if(command.progressPercentage() == 100) {
-            updated.setStatus(TaskStatus.FINISHED);
-        }
 
         tasksRepository.save(updated);
         return Optional.of(updated);
@@ -77,16 +73,11 @@ public class TasksCommandServiceImpl implements TasksCommandService {
                 command.endDate(),
                 command.winegrowerId(),
                 command.fieldWorkerName(),
+                command.fieldWorkerId(),
                 command.batchId(),
                 command.suppliesIds(),
-                command.progressPercentage(),
-                command.status(),
                 command.type()
         );
-
-        if(command.progressPercentage() == 100) {
-            task.setStatus(TaskStatus.FINISHED);
-        }
 
         return Optional.of(tasksRepository.save(task));
     }

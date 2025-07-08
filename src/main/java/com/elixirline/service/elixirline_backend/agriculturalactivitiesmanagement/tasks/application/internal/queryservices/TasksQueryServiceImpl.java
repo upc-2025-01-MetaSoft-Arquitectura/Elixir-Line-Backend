@@ -2,6 +2,7 @@ package com.elixirline.service.elixirline_backend.agriculturalactivitiesmanageme
 
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.aggregates.Tasks;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.entities.Evidence;
+import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.queries.GetAllTasksByWinegrowerIdByFieldWorkerIdQuery;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.queries.GetTasksByTypeQuery;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.queries.GetTaskByIdQuery;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.valueobjetcs.TaskType;
@@ -55,5 +56,10 @@ public class TasksQueryServiceImpl implements TasksQueryService {
         return tasks.stream()
                 .filter(task -> taskIdsWithEvidence.contains(task.getId()))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Tasks> findByAllTasksByWinegrowerIdAndFieldWorkerId(GetAllTasksByWinegrowerIdByFieldWorkerIdQuery query) {
+        return tasksRepository.findByWinegrowerIdAndFieldWorkerId(query.winegrowerId(), query.fieldWorkerId());
     }
 }

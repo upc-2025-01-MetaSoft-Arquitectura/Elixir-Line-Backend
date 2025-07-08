@@ -1,5 +1,6 @@
 package com.elixirline.service.elixirline_backend.vinificationprocessmanagement.winemaking.domain.model.valueobjects.common;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.Embeddable;
 
@@ -15,5 +16,10 @@ public record Employee(String employee) {
     @JsonValue
     public String getEmployee() {
         return employee;
+    }
+
+    @JsonCreator
+    public static Employee from(String employee) {
+        return new Employee(employee);
     }
 }
