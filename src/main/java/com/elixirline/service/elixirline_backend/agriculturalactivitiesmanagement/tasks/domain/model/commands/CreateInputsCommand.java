@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 public record CreateInputsCommand(
         String name,
         String description,
-        Long quantity,
+        Double quantity,
         Long winegrowerId,
         UnitType unit,
         MultipartFile imageFile

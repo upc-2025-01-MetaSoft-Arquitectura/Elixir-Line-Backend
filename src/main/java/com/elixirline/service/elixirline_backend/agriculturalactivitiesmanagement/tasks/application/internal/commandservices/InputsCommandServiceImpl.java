@@ -8,18 +8,18 @@ import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagemen
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.services.InputsCommandService;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.infrastructure.persistance.jpa.repositories.InputsRepository;
 import com.elixirline.service.elixirline_backend.shared.infrastructure.storage.AzureBlobService;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class InputsCommandServiceImpl implements InputsCommandService {
-    private InputsRepository inputsRepository;
-    private AzureBlobService azureBlobService;
-    public InputsCommandServiceImpl(InputsRepository inputsRepository, AzureBlobService azureBlobService) {
-        this.inputsRepository = inputsRepository;
-        this.azureBlobService = azureBlobService;
-    }
+    private final InputsRepository inputsRepository;
+    private final AzureBlobService azureBlobService;
 
     @Override
     public Optional<Inputs> handle(CreateInputsCommand command) {
@@ -29,21 +29,42 @@ public class InputsCommandServiceImpl implements InputsCommandService {
         return Optional.of(inputs);
     }
 
+    @Transactional
     @Override
     public Optional<Inputs> handle(UpdateInputsCommand command) {
+        return inputsRepository.findById(command.inputsId()).map(input -> {
+            if (command.name() != null) input.setName(command.name());
+            if (command.description() != null) input.setDescription(command.description());
+            if (command.quantity() != null) input.setQuantity(command.quantity());
+            if (command.winegrowerId() != null) input.setWinegrowerId(command.winegrowerId());
+            if (command.unit() != null) input.setUnits(command.unit());
 
-        Optional<Inputs> existing = inputsRepository.findById(command.inputsId());
-        if (existing.isEmpty()) return Optional.empty();
+            if (command.image() != null && !command.image().isEmpty()) {
+                String imageUrl = azureBlobService.upload(command.image());
+                input.setImage(imageUrl);
+            }
+            return inputsRepository.save(input);
+        });
+    }
 
-        Inputs input = existing.get();
-        input.updateInformation(command.name(), command.description(), command.quantity(), command.winegrowerId(), command.unit());
+    @Override
+    public Optional<Inputs> handle(PatchInputsCommand command) {
+        return inputsRepository.findById(command.inputsId()).map(input -> {
+            command.name().ifPresent(input::setName);
+            command.description().ifPresent(input::setDescription);
+            command.quantity().ifPresent(input::setQuantity);
+            command.winegrowerId().ifPresent(input::setWinegrowerId);
+            command.unit().ifPresent(input::setUnits);
 
-        if (command.image() != null && !command.image().isEmpty()) {
-            String imageUrl = azureBlobService.upload(command.image());
-            input.updateImage(imageUrl);
-        }
-        inputsRepository.save(input);
-        return Optional.of(input);
+            command.image().ifPresent(image -> {
+                if (!image.isEmpty()) {
+                    String imageUrl = azureBlobService.upload(image);
+                    input.setImage(imageUrl);
+                }
+            });
+
+            return inputsRepository.save(input);
+        });
     }
 
     @Override
@@ -56,27 +77,5 @@ public class InputsCommandServiceImpl implements InputsCommandService {
         }catch (Exception ex){
             throw new IllegalArgumentException("Error deleting input " + command.InputsId());
         }
-    }
-
-    @Override
-    public Optional<Inputs> handle(PatchInputsCommand command) {
-        var existing = inputsRepository.findById(command.inputsId());
-        if (existing.isEmpty()) return Optional.empty();
-
-        var input = existing.get();
-        input.updateInformation(
-                command.name(),
-                command.description(),
-                command.quantity(),
-                command.winegrowerId(),
-                command.unit()
-        );
-
-        if (command.image() != null && !command.image().isEmpty()) {
-            String imageUrl = azureBlobService.upload(command.image());
-            input.updateImage(imageUrl);
-        }
-
-        return Optional.of(inputsRepository.save(input));
     }
 }

@@ -1,12 +1,12 @@
 package com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.interfaces.rest.resources;
 
-
-public record IncidentResource(
+public record InputsResource(
         Long id,
-        Long taskId,
+        String name,
         String description,
-        String imageUrl,
-        String createdAt,
-        String updatedAt
+        Long quantity,
+        Long winegrowerId,
+        String unit,
+        String image
 ) {
 }

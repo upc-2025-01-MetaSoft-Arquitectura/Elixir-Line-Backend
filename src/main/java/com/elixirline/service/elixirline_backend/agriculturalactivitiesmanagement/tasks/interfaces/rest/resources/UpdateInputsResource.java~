@@ -10,7 +10,7 @@ public record UpdateInputsResource(
         @Nullable  String description,
         @Nullable  Double quantity,
         @Nullable  Long winegrowerId,
-        @Nullable  String unit,
+        @Nullable  UnitType unit,
         @Nullable MultipartFile image
 ) {
 }

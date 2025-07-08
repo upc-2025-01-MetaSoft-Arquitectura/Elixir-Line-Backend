@@ -4,7 +4,7 @@ public record InputsResource(
         Long id,
         String name,
         String description,
-        Long quantity,
+        Double quantity,
         Long winegrowerId,
         String unit,
         String image

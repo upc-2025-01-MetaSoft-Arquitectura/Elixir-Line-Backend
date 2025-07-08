@@ -37,10 +37,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
-import static org.springframework.http.MediaType.*;
-
 @RestController
-@RequestMapping(value = "api/v1/inputs", produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "api/v1/inputs", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Inputs", description = "Input Management Endpoints")
 public class InputsController {
     private final InputsQueryService inputsQueryService;
@@ -516,7 +514,7 @@ public class InputsController {
                     )
             )
     })
-    @PostMapping(consumes = MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<InputsResource> createInputs(
             @RequestPart("input") @Valid CreateInputsResource resource,
             @RequestPart ("image") MultipartFile image
@@ -537,20 +535,120 @@ public class InputsController {
 
 
     /*PUT: /api/v1/inputs/{inputId}*/
-    @PutMapping(
-            value = "/{inputId}",
-            consumes = MULTIPART_FORM_DATA_VALUE,
-            produces = APPLICATION_JSON_VALUE
-    )
     @Operation(
             summary = "Update Input",
             description = "Actualiza un insumo existente.",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = UpdateInputsResource.class)
+                            mediaType = MediaType.MULTIPART_FORM_DATA_VALUE,
+                            schema = @Schema(
+                                    type = "object",
+                                    example = """
+                                    {
+                                      "name": "string",
+                                      "description": "string",
+                                      "quantity": 0,
+                                      "winegrowerId": "string",
+                                      "unit": "string"
+                                    }
+                                    """
+                            )
                     )
             )
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Operación exitosa. Se actualizó el insumo correctamente.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = InputsResource.class),
+                            examples = @ExampleObject(
+                                    name = "Ejemplo de respuesta exitosa",
+                                    summary = "Respuesta exitosa con los detalles del insumo actualizado",
+                                    value = """
+                                    {
+                                      "id": 1,
+                                      "name": "Fertilizante Mejorado",
+                                      "description": "Nueva fórmula mejorada",
+                                      "quantity": 25.0,
+                                      "winegrowerId": 3,
+                                      "unit": "KG",
+                                      "image": "https://storage.azure.net/insumos/fertilizante-1.jpg"
+                                    }
+                                    """
+                            )
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "No autorizado. Token inválido o no proporcionado.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ApiErrorResponse.class),
+                            examples = @ExampleObject(
+                                    name = "Token inválido",
+                                    summary = "No se proporcionó token Bearer",
+                                    value = """
+                                    {
+                                      "status": "ERROR",
+                                      "message": "Token inválido o no proporcionado.",
+                                      "details": [
+                                        "Debe incluir el encabezado Authorization con el token Bearer."
+                                      ]
+                                    }
+                                    """
+                            )
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "No encontrado. No se encuentra el insumo con el ID proporcionado.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ApiErrorResponse.class),
+                            examples = @ExampleObject(
+                                    name = "Error de insumo no encontrado",
+                                    summary = "Respuesta cuando no se encuentra el insumo",
+                                    value = """
+                                    {
+                                      "status": "ERROR",
+                                      "message": "Insumo no encontrado.",
+                                      "details": [
+                                        "No existe un Insumo con el ID proporcionado."
+                                      ]
+                                    }
+                                    """
+                            )
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Error interno del servidor. Ocurrió un problema al intentar actualizar el insumo.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ApiErrorResponse.class),
+                            examples = @ExampleObject(
+                                    name = "Error inesperado",
+                                    summary = "Error al actualizar el insumo",
+                                    value = """
+                                    {
+                                      "status": "ERROR",
+                                      "message": "No se pudo actualizar el insumo.",
+                                      "details": [
+                                        "Error en el servicio de actualización de insumos.",
+                                        "Revisar logs del backend para más detalles."
+                                      ]
+                                    }
+                                    """
+                            )
+                    )
+            )
+    })
+    @PutMapping(
+            value = "/{inputId}",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<InputsResource> updateInputs(
             @PathVariable Long inputId,
@@ -562,10 +660,8 @@ public class InputsController {
             @RequestPart(required = false) MultipartFile image
     ) {
         try {
-            Double quantityDouble = (quantity != null && !quantity.isEmpty()) ?
-                    Double.parseDouble(quantity) : null;
-            Long winegrowerIdLong = (winegrowerId != null && !winegrowerId.isEmpty()) ?
-                    Long.parseLong(winegrowerId) : null;
+            Double quantityDouble = (quantity != null && !quantity.isEmpty()) ? Double.parseDouble(quantity) : null;
+            Long winegrowerIdLong = (winegrowerId != null && !winegrowerId.isEmpty()) ? Long.parseLong(winegrowerId) : null;
 
             var resource = new UpdateInputsResource(
                     name,
@@ -594,7 +690,7 @@ public class InputsController {
 
 
     /*PATCH: /api/v1/inputs/{inputId}*/
-    @PatchMapping(value = "/{inputId}", consumes = MULTIPART_FORM_DATA_VALUE)
+    @PatchMapping(value = "/{inputId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(
             summary = "Update input partially",
             description = "Actualiza parcialmente un insumo existente"

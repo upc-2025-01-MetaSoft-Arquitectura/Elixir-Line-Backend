@@ -7,7 +7,10 @@ import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagemen
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.valueobjetcs.TaskType;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.services.EvidenceCommandService;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.services.EvidenceQueryService;
-import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.interfaces.rest.resources.*;
+import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.interfaces.rest.resources.CreateEvidenceResource;
+import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.interfaces.rest.resources.CreateInputsResource;
+import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.interfaces.rest.resources.EvidenceResource;
+import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.interfaces.rest.resources.InputsResource;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.interfaces.rest.transform.CreateEvidenceCommandFromRequestAssembler;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.interfaces.rest.transform.EvidenceResourceFromEntityAssembler;
 import com.elixirline.service.elixirline_backend.shared.domain.model.entities.ApiErrorResponse;
@@ -238,26 +241,9 @@ public class EvidenceController {
     @Operation(
             summary = "Update Reception Stage",
             description = "Actualiza parcialmente una evidencia existente. Solo se actualizarán los campos especificados",
-            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                    description = "Datos de la evidencia a actualizar",
-                    required = true,
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = PatchEvidenceResource.class),
-                            examples = @ExampleObject(
-                                    name = "Ejemplo de actualización de evidencia",
-                                    summary = "Solicitud de actualización de evidencia",
-                                    value = """
-                                    {
-                                      "taskId": 3,
-                                      "description": "Fórmula mejorada para mayor rendimiento",
-                                      "progressPercentage": 30,
-                                      "image": "https://storage.azure.net/insumos/fertilizante-1.jpg"
-                                    }
-                                    """
-                            )
-                    )
-            )
+            parameters = {
+                    @Parameter(name = "taskId", description = "ID de la tarea", required = true)
+            }
     )
     @ApiResponses(value = {
             @ApiResponse(

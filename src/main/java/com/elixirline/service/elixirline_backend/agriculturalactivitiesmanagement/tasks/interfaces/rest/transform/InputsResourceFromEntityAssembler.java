@@ -11,7 +11,7 @@ public class InputsResourceFromEntityAssembler {
                 entity.getDescription(),
                 entity.getQuantity(),
                 entity.getWinegrowerId(),
-                entity.getUnits().name(),
+                entity.getUnits() != null ? entity.getUnits().name() : null,
                 entity.getImage()
         );
     }

@@ -2,11 +2,24 @@ package com.elixirline.service.elixirline_backend.agriculturalactivitiesmanageme
 
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.commands.UpdateInputsCommand;
 import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.domain.model.valueobjetcs.UnitType;
+import com.elixirline.service.elixirline_backend.agriculturalactivitiesmanagement.tasks.interfaces.rest.resources.UpdateInputsResource;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Nullable;
+
 public class UpdateInputsCommandFromRequestAssembler {
-    public static UpdateInputsCommand toCommand(Long id, String name, String description, Long quantity, Long winegrowerId, String unit, MultipartFile imageFile) {
-        UnitType unitType = UnitType.valueOf(unit.toUpperCase());
-        return new UpdateInputsCommand(id, name, description, quantity, winegrowerId,unitType, imageFile);
+    public static UpdateInputsCommand toCommand(
+            Long inputId,
+            UpdateInputsResource resource
+    ) {
+        return new UpdateInputsCommand(
+                inputId,
+                resource.name() != null ? resource.name() : null,
+                resource.description() != null ? resource.description() : null,
+                resource.quantity() != null ? resource.quantity() : null,
+                resource.winegrowerId() != null ? resource.winegrowerId() : null,
+                resource.unit() != null ? UnitType.valueOf(resource.unit()) : null,
+                resource.image() != null ? resource.image() : null
+        );
     }
 }

@@ -14,7 +14,7 @@ import lombok.Setter;
 public class Inputs extends AuditableAbstractAggregateRoot<Inputs> {
     private String name;
     private String description;
-    private Double quantity;
+    private Long quantity;
     private Long winegrowerId;
 
     @Enumerated(EnumType.STRING)
@@ -23,7 +23,7 @@ public class Inputs extends AuditableAbstractAggregateRoot<Inputs> {
     private String image;
 
 
-    public Inputs(String name, String description, Double quantity, Long winegrowerId,UnitType units, String imageUrl){
+    public Inputs(String name, String description, Long quantity, Long winegrowerId,UnitType units, String imageUrl){
         this.name = name;
         this.description = description;
         this.quantity = quantity;
@@ -32,7 +32,7 @@ public class Inputs extends AuditableAbstractAggregateRoot<Inputs> {
         this.image = imageUrl;
     }
 
-    public Inputs updateInformation(String name, String description, Double quantity, Long winegrowerId, UnitType unit){
+    public Inputs updateInformation(String name, String description, Long quantity, Long winegrowerId, UnitType unit){
         this.name = name != null ? name : this.name;
         this.description = description != null ? description : this.description;
         this.quantity = quantity != null ? quantity : this.quantity;

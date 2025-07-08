@@ -5,12 +5,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Nullable;
 
-public record UpdateInputsResource(
-        @Nullable  String name,
-        @Nullable  String description,
-        @Nullable  Double quantity,
-        @Nullable  Long winegrowerId,
-        @Nullable  String unit,
+public record PatchInputsResource(
+        @Nullable String name,
+        @Nullable String description,
+        @Nullable Double quantity,
+        @Nullable Long winegrowerId,
+        @Nullable UnitType unit,
         @Nullable MultipartFile image
 ) {
 }
