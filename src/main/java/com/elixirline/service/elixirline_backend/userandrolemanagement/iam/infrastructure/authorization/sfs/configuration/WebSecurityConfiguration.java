@@ -87,7 +87,7 @@ public class WebSecurityConfiguration {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200", "http://localhost:8082", "http://localhost:5173", "http://127.0.0.1:8081", "http://192.168.32.1:8081", "http://169.254.238.70:8080", "https://elixirline-service-28111382458.us-west1.run.app", "https://site1.moralis-nodes.com/sepolia"));
+        configuration.setAllowedOrigins(Arrays.asList("https://elixir-line7.web.app" ,"http://localhost:4200", "http://localhost:8082", "http://localhost:5173", "http://127.0.0.1:8081", "http://192.168.32.1:8081", "http://169.254.238.70:8080", "https://elixirline-service-28111382458.us-west1.run.app", "https://site1.moralis-nodes.com/sepolia"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList(
                 "Origin",
